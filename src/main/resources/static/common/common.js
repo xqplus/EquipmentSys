@@ -7,31 +7,31 @@
  */
 let addUserContent = '<form class="layui-form" id="dialogAddForm">\n' +
     '    <div class="layui-form-item">\n' +
-    '        <label class="layui-form-label input-required">用户名</label>\n' +
+    '        <label class="layui-form-label input-required">用户名：</label>\n' +
     '        <div class="layui-input-block">\n' +
     '            <input id="userName" type="text" class="layui-input" name="userName" required lay-verify="required" placeholder="请输入用户名" autocomplete="off"/>\n' +
     '        </div>\n' +
     '    </div>\n' +
     '    <div class="layui-form-item">\n' +
-    '        <label class="layui-form-label input-required">密码</label>\n' +
+    '        <label class="layui-form-label input-required">密码：</label>\n' +
     '        <div class="layui-input-block">\n' +
     '            <input id="pwd" type="password" class="layui-input" name="password" required lay-verify="required" placeholder="请输入密码"/>\n' +
     '        </div>\n' +
     '    </div>\n' +
     '    <div class="layui-form-item">\n' +
-    '        <label class="layui-form-label input-required">再次输入</label>\n' +
+    '        <label class="layui-form-label input-required">再次输入：</label>\n' +
     '        <div class="layui-input-block">\n' +
     '            <input id="pwd2" type="password" class="layui-input" name="password2" required lay-verify="required" placeholder="请再次输入密码"/>\n' +
     '        </div>\n' +
     '    </div>\n' +
     '    <div class="layui-form-item">\n' +
-    '        <label class="layui-form-label">真实姓名</label>\n' +
+    '        <label class="layui-form-label">真实姓名：</label>\n' +
     '        <div class="layui-input-block">\n' +
     '            <input class="layui-input" name="trueName" placeholder="请输入真实姓名" autocomplete="off"/>\n' +
     '        </div>\n' +
     '    </div>\n' +
     '    <div class="layui-form-item">\n' +
-    '        <label class="layui-form-label input-required">职位</label>\n' +
+    '        <label class="layui-form-label input-required">职位：</label>\n' +
     '        <div class="layui-input-block">\n' +
     '            <select name="roleType" id="roleType" lay-verify="required" lay-filter="roleType">\n' +
     '                <!-- TODO 管理员，维修员注册需申请流程 可暂存redis -->\n' +
@@ -43,7 +43,7 @@ let addUserContent = '<form class="layui-form" id="dialogAddForm">\n' +
     '        </div>\n' +
     '    </div>\n' +
     '    <div class="layui-form-item">\n' +
-    '        <label class="layui-form-label input-required">部门</label>\n' +
+    '        <label class="layui-form-label input-required">部门：</label>\n' +
     '        <div class="layui-input-block">\n' +
     '            <select name="deptNumber" id="deptNumber" lay-verify="required">\n' +
     '                <option value=""></option>\n' +
@@ -67,25 +67,25 @@ let addUserContent = '<form class="layui-form" id="dialogAddForm">\n' +
  */
 let editUserContent = '<form class="layui-form" id="dialogAddForm">\n' +
     '    <div class="layui-form-item">\n' +
-    '        <label class="layui-form-label input-required">用户名</label>\n' +
+    '        <label class="layui-form-label input-required">用户名：</label>\n' +
     '        <div class="layui-input-block">\n' +
     '            <input id="userName" type="text" class="layui-input" name="userName" required lay-verify="required" placeholder="请输入用户名" autocomplete="off"/>\n' +
     '        </div>\n' +
     '    </div>\n' +
     '    <div class="layui-form-item">\n' +
-    '        <label class="layui-form-label input-required">密码</label>\n' +
+    '        <label class="layui-form-label input-required">密码：</label>\n' +
     '        <div class="layui-input-block">\n' +
     '            <input id="password" type="text" class="layui-input layui-btn-disabled" name="password" required lay-verify="required" placeholder="请输入密码"/>\n' +
     '        </div>\n' +
     '    </div>\n' +
     '    <div class="layui-form-item">\n' +
-    '        <label class="layui-form-label">真实姓名</label>\n' +
+    '        <label class="layui-form-label">真实姓名：</label>\n' +
     '        <div class="layui-input-block">\n' +
     '            <input id="trueName" class="layui-input" name="trueName" placeholder="请输入真实姓名" autocomplete="off"/>\n' +
     '        </div>\n' +
     '    </div>\n' +
     '    <div class="layui-form-item">\n' +
-    '        <label class="layui-form-label input-required">职位</label>\n' +
+    '        <label class="layui-form-label input-required">职位：</label>\n' +
     '        <div class="layui-input-block">\n' +
     '            <select name="roleType" id="roleType" lay-verify="required" lay-filter="roleType">\n' +
     '                <!-- TODO 管理员，维修员注册需申请流程 可暂存redis -->\n' +
@@ -97,7 +97,7 @@ let editUserContent = '<form class="layui-form" id="dialogAddForm">\n' +
     '        </div>\n' +
     '    </div>\n' +
     '    <div class="layui-form-item">\n' +
-    '        <label class="layui-form-label input-required">部门</label>\n' +
+    '        <label class="layui-form-label input-required">部门：</label>\n' +
     '        <div class="layui-input-block">\n' +
     '            <select name="deptNumber" id="deptNumber" lay-verify="required">\n' +
     '                <option value=""></option>\n' +
@@ -122,7 +122,7 @@ let editUserContent = '<form class="layui-form" id="dialogAddForm">\n' +
 let deptContent = '<form class="layui-form" id="dialogAddForm">\n' +
     '    <input id="deptId" type="hidden" name="id" readonly>\n' +
     '    <div class="layui-form-item">\n' +
-    '        <label class="layui-form-label input-required">部门类型</label>\n' +
+    '        <label class="layui-form-label input-required">部门类型：</label>\n' +
     '        <div class="layui-input-block">\n' +
     '            <select name="roleType" id="roleType" lay-verify="required" lay-filter="roleTypeDept">\n' +
     '                <option value=""></option>\n' +
@@ -133,19 +133,19 @@ let deptContent = '<form class="layui-form" id="dialogAddForm">\n' +
     '        </div>\n' +
     '    </div>\n' +
     '    <div class="layui-form-item">\n' +
-    '        <label class="layui-form-label input-required">部门编号</label>\n' +
+    '        <label class="layui-form-label input-required">部门编号：</label>\n' +
     '        <div class="layui-input-block">\n' +
     '            <input id="deptNumber" type="text" readonly class="layui-input layui-disabled" name="deptNumber" lay-verify="required" placeholder="不可用,选择类型自动填充" autocomplete="off"/>\n' +
     '        </div>\n' +
     '    </div>\n' +
     '    <div class="layui-form-item">\n' +
-    '        <label class="layui-form-label input-required">部门名称</label>\n' +
+    '        <label class="layui-form-label input-required">部门名称：</label>\n' +
     '        <div class="layui-input-block">\n' +
     '            <input type="text" id="deptName" readonly class="layui-input layui-disabled" name="deptName" lay-verify="required" placeholder="不可用,选择类型自动填充" autocomplete="off"/>\n' +
     '        </div>\n' +
     '    </div>\n' +
     '    <div class="layui-form-item">\n' +
-    '        <label class="layui-form-label">部门简介</label>\n' +
+    '        <label class="layui-form-label">部门简介：</label>\n' +
     '        <div class="layui-input-block">\n' +
     '            <textarea id="deptIntroduce" class="layui-textarea" name="deptIntroduce" rows="3"></textarea>\n' +
     '        </div>\n' +
@@ -165,13 +165,13 @@ let deptContent = '<form class="layui-form" id="dialogAddForm">\n' +
 let equipContent = '<form class="layui-form" id="dialogAddForm">\n' +
     '    <input id="equipId" type="hidden" name="id" readonly>\n' +
     '    <div class="layui-form-item">\n' +
-    '        <label class="layui-form-label input-required">设备编号</label>\n' +
+    '        <label class="layui-form-label input-required">设备编号：</label>\n' +
     '        <div class="layui-input-block">\n' +
     '            <input id="equipNumber" type="text" readonly class="layui-input layui-disabled" name="equipNumber" lay-verify="required" autocomplete="off"/>\n' +
     '        </div>\n' +
     '    </div>\n' +
     '    <div class="layui-form-item">\n' +
-    '        <label class="layui-form-label input-required">设备类型</label>\n' +
+    '        <label class="layui-form-label input-required">设备类型：</label>\n' +
     '        <div class="layui-input-block">\n' +
     '            <select name="equipTypeNumber" id="equipTypeNumber" lay-verify="required" lay-filter="equipTypeNumber">\n' +
     '                <option value=""></option>\n' +
@@ -183,15 +183,47 @@ let equipContent = '<form class="layui-form" id="dialogAddForm">\n' +
     '        </div>\n' +
     '    </div>\n' +
     '    <div class="layui-form-item">\n' +
-    '        <label class="layui-form-label input-required">设备名称</label>\n' +
+    '        <label class="layui-form-label input-required">设备名称：</label>\n' +
     '        <div class="layui-input-block">\n' +
     '            <input type="text" id="equipName" class="layui-input" name="equipName" required lay-verify="required" placeholder="请输入设备名称" autocomplete="off"/>\n' +
     '        </div>\n' +
     '    </div>\n' +
     '    <div class="layui-form-item">\n' +
-    '        <label class="layui-form-label">设备概述</label>\n' +
+    '        <label class="layui-form-label">设备概述：</label>\n' +
     '        <div class="layui-input-block">\n' +
     '            <textarea id="equipSummary" class="layui-textarea" name="equipSummary" rows="3"></textarea>\n' +
+    '        </div>\n' +
+    '    </div>\n' +
+    '    <div class="layui-form-item">\n' +
+    '        <div class="dialog-btn-container">\n' +
+    '            <button id="dialogSave" type="button" class="layui-btn layui-btn-normal" lay-submit lay-filter="dialogSave">保存</button>\n' +
+    '            <button id="cancel" type="button" class="layui-btn layui-btn-primary">取消</button>\n' +
+    '        </div>\n' +
+    '    </div>\n' +
+    '</form>'
+
+/**
+ * 设备类型信息弹窗内容
+ * @type {string}
+ */
+let equipTypeContent = '<form class="layui-form" id="dialogAddForm">\n' +
+    '    <input id="equipTypeId" type="hidden" name="id" readonly>\n' +
+    '    <div class="layui-form-item">\n' +
+    '        <label class="layui-form-label input-required">设备类型编号：</label>\n' +
+    '        <div class="layui-input-block">\n' +
+    '            <input id="equipTypeNumber" name="equipTypeNumber" type="text" readonly class="layui-input layui-disabled" lay-verify="required" autocomplete="off"/>\n' +
+    '        </div>\n' +
+    '    </div>\n' +
+    '    <div class="layui-form-item">\n' +
+    '        <label class="layui-form-label input-required">设备类型名称：</label>\n' +
+    '        <div class="layui-input-block">\n' +
+    '            <input id="equipTypeName" type="text" class="layui-input" name="equipTypeName" required lay-verify="required" placeholder="请输入设备类型名称" autocomplete="off"/>\n' +
+    '        </div>\n' +
+    '    </div>\n' +
+    '    <div class="layui-form-item">\n' +
+    '        <label class="layui-form-label">设备类型概述：</label>\n' +
+    '        <div class="layui-input-block">\n' +
+    '            <textarea id="equipTypeSummary" class="layui-textarea" name="equipTypeSummary" rows="3"></textarea>\n' +
     '        </div>\n' +
     '    </div>\n' +
     '    <div class="layui-form-item">\n' +
@@ -400,6 +432,15 @@ function addFormDialog(layer, form, $, title, content, userNameSelector, pwdId1,
                 $('#equipName').val(data.equipName);
                 $('#equipSummary').val(data.equipSummary);
             }
+            if (type === 'addEquipType') {
+                // 将最新设备类型编号下一个显示在输入框
+                getNextEquipTypeNumber();
+            }
+            if (type === 'editEquipType') {
+                $('#equipTypeNumber').val(data.equipTypeNumber);
+                $('#equipTypeName').val(data.equipTypeName);
+                $('#equipTypeSummary').val(data.equipTypeSummary);
+            }
             // 弹窗成功后监听表单dialogSave提交
             form.on('submit(dialogSave)', function (data) {
                 // TODO 未填写必填项不应该发送请求和关闭弹窗,此处不可用 msg冲突
@@ -426,6 +467,10 @@ function addFormDialog(layer, form, $, title, content, userNameSelector, pwdId1,
                         if (data === 'existsUser') {
                             layer.alert('更新失败，该部门下存在用户；如果您仍要变更，请先慎重考虑后删除该部门下用户再执行该操作！', {icon: 5});
                         }
+                        // 设备类型信息变更时有当前类型设备存在的情况
+                        if (data === 'existsEquip') {
+                            layer.alert('更新失败，该类型下存在设备；如果您仍要变更，请先慎重考虑后删除属于该类型设备再执行该操作！', {icon: 5});
+                        }
                         if (data === 'error') {
                             if (type.substring(0,3) === 'add') {
                                 layer.msg('新增失败，请重试或联系管理员',{icon: 2, anim: 6});
@@ -448,7 +493,6 @@ function addFormDialog(layer, form, $, title, content, userNameSelector, pwdId1,
 /**
  * 通过类型获取下一个部门信息，专用于部门模块
  * @param form layui form组件
- * @param filter 监听的事件
  * @param $ layui jquery组件
  * @description 为避免与部门模块角色部门级联冲突，监听事件名限定为roleTypeDept
  */
@@ -506,5 +550,24 @@ function timeConverter(data) {
         data.field.startTime = startTime; // 设置提交数据的值
         data.field.endTime = endTime;
     }
+}
+
+/**
+ * 获取最新的设备类型编号下一个，用于新增
+ * @description 选择器限定'#equipTypeNumber'
+ */
+function getNextEquipTypeNumber() {
+    $.ajax({
+        async: false, // 异步提交
+        type: 'GET',
+        url: '/equipmentSys/equipmentType/getNextEquipTypeNumber',
+        data: {
+        },
+        // dataType: 'json',
+        success: function (data) {
+            // 将对应信息显示在表单上
+            $('#equipTypeNumber').val(data.equipTypeNumber);
+        }
+    });
 }
 

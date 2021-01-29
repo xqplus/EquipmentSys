@@ -7,79 +7,115 @@
     <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
     <link rel="stylesheet" th:href="@{/common/common.css}">
     <script rel="script" th:src="@{/layui/layui.js}"></script>
+    <script rel="script" th:src="@{/jquery/jquery-3.5.1.js}"></script>
+    <script rel="script" th:src="@{/common/common.js}"></script>
 </head>
 
 <body>
-<!-- 导航条 -->
-<ul class="layui-nav layui-bg-blue" lay-filter="">
-    <li class="layui-nav-item margin-left-15">
-        <i class="layui-icon layui-icon-home icon-small"></i>
-        <a th:href="@{/equipmentSys/router/index}">首&nbsp;&nbsp;页</a>
-    </li>
-    <li class="layui-nav-item margin-left-15">
-        <i class="layui-icon layui-icon-username icon-small"></i>
-        <a th:href="@{/equipmentSys/router/userManagement}">用户管理</a>
-    </li>
-    <li class="layui-nav-item margin-left-15">
-        <i class="layui-icon layui-icon-user icon-small"></i>
-        <a th:href="@{/equipmentSys/router/deptManagement}">部门管理</a>
-    </li>
-    <li class="layui-nav-item margin-left-15 layui-this">
-        <i class="layui-icon layui-icon-engine icon-small"></i>
-        <a href="javascript:;">设备管理</a>
-        <dl class="layui-nav-child"> <!-- 二级菜单 -->
-            <dd><a th:href="@{/equipmentSys/router/equipManagement}">设备管理</a></dd>
-            <dd class="layui-this"><a th:href="@{/equipmentSys/router/equipTypeManagement}">设备类型管理</a></dd>
-        </dl>
-    </li>
-    <li class="layui-nav-item margin-left-15">
-        <i class="layui-icon layui-icon-set icon-small"></i>
-        <a th:href="@{/equipmentSys/router/repairManagement}">维修管理</a>
-    </li>
-    <!-- 已登录显示用户 -->
-    <li class="layui-nav-item nav-right-150" sec:authorize="isAuthenticated()">
-        <a href="">
-            当前用户：<span sec:authentication="name"></span>
-        </a>
-    </li>
-    <!-- 未登录显示登录 -->
-    <li class="layui-nav-item nav-right-150" sec:authorize="!isAuthenticated()">
-        <i class="layui-icon layui-icon-layer icon-small"></i>
-        <a th:href="@{/equipmentSys/router/login}">登录</a>
-    </li>
-    <!-- 已登录显示注销 -->
-    <li class="layui-nav-item nav-right-50" sec:authorize="isAuthenticated()">
-        <i class="layui-icon layui-icon-logout icon-small"></i>
-        <a th:href="@{/logout}">注&nbsp;&nbsp;销</a>
-    </li>
-</ul>
-<!-- 轮播图 -->
-<!--<div class="layui-carousel" style="margin-top: 10px" id="carousel1">-->
-<!--    <div carousel-item>-->
-<!--        <div><img th:src="@{/images/desktop1.png}" alt="desktop1"></div>-->
-<!--        <div><img th:src="@{/images/desktop2.png}" alt="desktop2"></div>-->
-<!--        <div><img th:src="@{/images/desktop3.png}" alt="desktop3"></div>-->
-<!--        <div><img th:src="@{/images/image.png}"></div>-->
-<!--    </div>-->
-<!--</div>-->
-<div class="layui-footer footer">
-    <span>Copyright © chenq</span>
+<!-- 导航栏底色填充 nav bgcolor fill -->
+<div th:replace="common :: navcolor-fill"></div>
+<div class="container">
+    <!-- 导航条 -->
+    <div class="layui-col-md12">
+        <ul class="layui-nav layui-bg-blue" lay-filter="">
+            <li class="layui-nav-item margin-left-15">
+                <i class="layui-icon layui-icon-home icon-small"></i>
+                <a th:href="@{/equipmentSys/router/index}">首&nbsp;&nbsp;页</a>
+            </li>
+            <li class="layui-nav-item margin-left-15">
+                <i class="layui-icon layui-icon-username icon-small"></i>
+                <a th:href="@{/equipmentSys/router/userManagement}">用户管理</a>
+            </li>
+            <li class="layui-nav-item margin-left-15">
+                <i class="layui-icon layui-icon-user icon-small"></i>
+                <a th:href="@{/equipmentSys/router/deptManagement}">部门管理</a>
+            </li>
+            <li class="layui-nav-item margin-left-15 layui-this">
+                <i class="layui-icon layui-icon-engine icon-small"></i>
+                <a href="javascript:;">设备管理</a>
+                <dl class="layui-nav-child"> <!-- 二级菜单 -->
+                    <dd><a th:href="@{/equipmentSys/router/equipManagement}">设备管理</a></dd>
+                    <dd class="layui-this"><a th:href="@{/equipmentSys/router/equipTypeManagement}">设备类型管理</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item margin-left-15">
+                <i class="layui-icon layui-icon-set icon-small"></i>
+                <a th:href="@{/equipmentSys/router/repairManagement}">维修管理</a>
+            </li>
+            <!-- 已登录显示用户 -->
+            <li class="layui-nav-item nav-right-150" sec:authorize="isAuthenticated()">
+                <a href="">
+                    当前用户：<span sec:authentication="name"></span>
+                </a>
+            </li>
+            <!-- 未登录显示登录 -->
+            <li class="layui-nav-item nav-right-150" sec:authorize="!isAuthenticated()">
+                <i class="layui-icon layui-icon-layer icon-small"></i>
+                <a th:href="@{/equipmentSys/router/login}">登录</a>
+            </li>
+            <!-- 已登录显示注销 -->
+            <li class="layui-nav-item nav-right-50" sec:authorize="isAuthenticated()">
+                <i class="layui-icon layui-icon-logout icon-small"></i>
+                <a th:href="@{/logout}">注&nbsp;&nbsp;销</a>
+            </li>
+        </ul>
+    </div>
+    <!-- 搜索框 search -->
+    <div class="layui-col-md12 margin-top-10">
+        <div class="search-panel border-radius-2">
+            <form class="layui-form">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label" style="width: 100px">设备类型编号：</label>
+                        <div class="layui-input-inline">
+                            <input type="text" class="layui-input" name="equipTypeNumber" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label" style="width: 100px">设备类型名称：</label>
+                        <div class="layui-input-inline">
+                            <input type="text" class="layui-input" name="equipTypeName" autocomplete="off">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label" style="width: 100px">创建时间：</label>
+                        <div class="layui-input-inline">
+                            <!--<i class="layui-icon layui-icon-logout icon-date" id="dateIcon"></i>-->
+                            <input type="text" class="layui-icon layui-input" style="font-size: 14px; cursor: pointer" name="createTime" id="createTime" placeholder="&#xe637;">
+                        </div>
+                    </div>
+                    <!-- 用于数据提交 -->
+                    <input type="hidden" name="startTime">
+                    <input type="hidden" name="endTime">
+                </div>
+                <div class="layui-form-item line-height-60" style="text-align: center">
+                    <button type="button" class="layui-btn layui-btn-normal" lay-submit lay-filter="search">搜索</button>
+                    <button type="reset" class="layui-btn margin-left-100 layui-btn-primary">重置</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- 数据表格 table -->
+    <!-- 表格带有上下10的margin,所以class不带margin-top-10 -->
+    <div class="layui-col-md12">
+        <table class="layui-hide" id="equipTypeData" lay-filter="equipTypeData"></table>
+        <script type="text/html" id="topToolBar">
+            <div class="layui-btn-container">
+                <button class="layui-btn layui-btn-sm layui-btn-warm" lay-event="add">新增设备类型（暂定）</button>
+                <button class="layui-btn layui-btn-sm layui-btn-warm" lay-event="getCheckLength">获取选中数目</button>
+                <button class="layui-btn layui-btn-sm layui-btn-warm" lay-event="isAll">验证是否全选</button>
+            </div>
+        </script>
+        <script type="text/html" id="rightToolBar">
+            <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+        </script>
+    </div>
 </div>
-<script>
-    layui.use('element', function(){
-        let element = layui.element;
-    });
-    layui.use('carousel', function (){
-        let carousel = layui.carousel;
-        carousel.render({
-            elem: '#carousel1',
-            width: '100%', //设置容器宽度
-            arrow: 'hover', //始终显示箭头
-            height: '500px',
-            anim: 'fade',
-            //,anim: 'updown' //切换动画方式
-        });
-    });
-</script>
+<!-- 页脚 footer -->
+<div th:replace="common :: footer"></div>
+<script th:src="@{/common/js/equipmentType.js}"></script>
 </body>
 </html>

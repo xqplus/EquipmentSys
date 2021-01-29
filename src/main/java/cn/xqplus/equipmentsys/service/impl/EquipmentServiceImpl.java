@@ -1,6 +1,5 @@
 package cn.xqplus.equipmentsys.service.impl;
 
-import cn.xqplus.equipmentsys.form.DepartmentForm;
 import cn.xqplus.equipmentsys.form.EquipmentForm;
 import cn.xqplus.equipmentsys.mapper.IEquipmentMapper;
 import cn.xqplus.equipmentsys.model.Equipment;
@@ -73,7 +72,6 @@ public class EquipmentServiceImpl implements IEquipmentService {
             equipment.setEquipNumber("0001");
             return equipment;
         }
-
     }
 
     @Override
@@ -92,6 +90,11 @@ public class EquipmentServiceImpl implements IEquipmentService {
     public boolean removeById(Serializable id) {
         int i = equipmentMapper.deleteById(id);
         return (i >= 1);
+    }
+
+    @Override
+    public Equipment getOne(Wrapper<Equipment> queryWrapper) {
+        return equipmentMapper.selectOne(queryWrapper);
     }
 
     @Override

@@ -12,7 +12,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface IEquipmentService extends IService<Equipment> {
 
     /**
-     *
      * @param page 分页辅助
      * @param wrapper 搜索查询条件
      * @return Page<EquipmentForm>

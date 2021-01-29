@@ -6,6 +6,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
+/**
+ * mybatis-plus 字段填充策略
+ */
 
 @Component
 public class FillMetaObjectHandler implements MetaObjectHandler {
