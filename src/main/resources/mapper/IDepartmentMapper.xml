@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.xqplus.equipmentsys.mapper.IDepartmentMapper">
+    <select id="getDeptByRole"
+            resultType="cn.xqplus.equipmentsys.form.UserForm">
+        SELECT
+            r.dept_number,
+            d.dept_name
+        FROM
+            t_role_dept r
+        LEFT JOIN
+            t_department d
+        ON
+            r.dept_number = d.dept_number
+        WHERE
+            r.is_del = 0
+        AND d.is_del = 0
+        <if test="role != null and role != ''">
+        AND r.role_type = #{role}
+        </if>
+    </select>
+
+    <select id="getList"
+            resultType="cn.xqplus.equipmentsys.form.DepartmentForm">
+        SELECT
+            id,
+            dept_number,
+            dept_name,
+            dept_introduce,
+            create_time,
+            update_time
+        FROM
+            t_department
+        WHERE
+            is_del = 0
+        <if test="q.deptNumber != null and q.deptNumber != ''">
+            AND dept_number = #{q.deptNumber}
+        </if>
+        <if test="q.deptName != null and q.deptName != ''">
+            AND dept_name LIKE CONCAT(CONCAT('%', #{q.deptName}), '%')
+        </if>
+        <if test="q.deptType != null and q.deptType != ''">
+            AND dept_name LIKE CONCAT(#{q.deptType}, '%')
+        </if>
+        <if test="q.startTime != null and q.startTime != ''">
+            AND create_time &gt;= #{q.startTime}
+        </if>
+        <if test="q.endTime != null and q.endTime != ''">
+            AND create_time &lt;= #{q.endTime}
+        </if>
+    </select>
+</mapper>

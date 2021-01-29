@@ -1,0 +1,153 @@
+
+/* common stylesheet */
+
+html,body {
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff;
+    /*background-color: #40AFFE;*/
+    /*background-image: url("/images/desktop2.png");*/
+}
+
+.container {
+    padding: 15px 100px 0 100px;
+    margin: 0 auto;
+    height: auto;
+    /*border: 1px solid gray;*/
+}
+
+/* 导航栏底色填充 nav bgcolor fill */
+.bg-color-fill {
+    position: absolute;
+    top: 15px;
+    width: 100%;
+    height: 60px;
+    background-color: #1E9FFF;
+}
+
+.login-area {
+    padding: 30px 10px;
+    border: 1px solid gray;
+    text-align: center;
+}
+
+.login-area > span {
+    font-size: 20px;
+    /*color: #fff9ec;*/
+    /*font-weight: bold;*/
+    line-height: 60px;
+    text-align: center;
+}
+
+.area-center {
+    margin-left: 50%;
+    transform: translateX(-50%);
+    margin-top: 50px;
+    width: 500px;
+}
+
+/* 导航栏 nav */
+.nav {
+    margin-bottom: 10px;
+    position: fixed;
+    z-index: 1000;
+    display: inline;
+}
+
+.nav-right-50 {
+    position: absolute!important;
+    right: 50px;
+}
+
+.nav-right-150 {
+    position: absolute!important;
+    right: 150px;
+}
+
+/* 图标样式 icon */
+.icon-small {
+    font-size: 16px;
+    position: absolute;
+}
+
+.icon-date {
+    font-size: 20px;
+    position: absolute;
+    line-height: 38px;
+    margin-left: 10px;
+}
+
+.input-required:after {
+    top: 6px;
+    right: 5px;
+    color: red;
+    content: '*';
+    position: absolute;
+    margin-left: 4px;
+    font-weight: 700;
+    line-height: 1.8em;
+}
+
+/* 搜索面板 search panel */
+.search-panel {
+    height: 160px;
+    background-color: #F2F2F2;
+    padding: 20px 150px;
+}
+
+
+/* 布局 layout */
+.border-radius-2 {
+    border-radius: 2px;
+}
+
+.display-inline {
+    display: inline;
+}
+
+.line-height-60 {
+    line-height: 60px;
+}
+
+.margin-left-15 {
+    margin-left: 15px;
+}
+
+.margin-left-100 {
+    margin-left: 100px!important;
+}
+
+.margin-left-500 {
+    margin-left: 500px;
+}
+
+.margin-top-10 {
+    margin-top: 10px;
+}
+
+.margin-top-120 {
+    margin-top: 120px;
+}
+
+/* 弹窗 dialog */
+.dialog-btn-container {
+    text-align: center;
+    line-height: 38px;
+    margin: 40px 0 -10px 0;
+}
+
+/* 页脚 footer */
+.footer {
+    height: 40px;
+    padding-top: 20px;
+    text-align: center;
+    background-color: #848ba4;
+    font-size: 12px;
+    color: #c3c4c5;
+}
+
+.footer-position-bottom0 {
+    position: absolute;
+    bottom: 0;
+    width: 100%
+}

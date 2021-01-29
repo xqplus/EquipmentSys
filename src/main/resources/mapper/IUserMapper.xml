@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.xqplus.equipmentsys.mapper.IUserMapper">
+    <select id="getList"
+            resultType="cn.xqplus.equipmentsys.form.UserForm">
+        SELECT
+            u.id,
+            u.user_number,
+            u.user_name,
+            u.password,
+            u.true_name,
+            u.create_time,
+            u.update_time,
+            d.dept_name,
+            r.role_name
+        FROM
+            t_user u
+        LEFT JOIN
+            t_department d
+        ON
+            u.dept_number = d.dept_number
+        LEFT JOIN
+            t_role r
+        ON
+            u.role_type = r.role_type
+        WHERE
+            u.is_del = 0
+        AND d.is_del = 0
+        AND r.is_del = 0
+        <if test="q.userNumber != null and q.userNumber != ''">
+            AND u.user_number = #{q.userNumber}
+        </if>
+        <if test="q.userName != null and q.userName != ''">
+            AND u.user_name LIKE CONCAT(CONCAT('%', #{q.userName}), '%') -- 双边模糊查询
+        </if>
+        -- Integer类型roleType=0时 != ''校验为false 即mybatis判断roleType=0='',所以不加!=''校验
+        <if test="q.roleType != null">
+            AND u.role_type = #{q.roleType}
+        </if>
+        <if test="q.deptName != null and q.deptName != ''">
+            AND d.dept_name LIKE CONCAT(CONCAT('%', #{q.deptName}), '%')
+        </if>
+        <if test="q.startTime != null and q.startTime != ''">
+            AND u.create_time &gt;= #{q.startTime}  -- 第一种转义 &gt; >
+        </if>
+        <if test="q.endTime != null and q.endTime != ''">
+            AND u.create_time <![CDATA[ <= ]]> #{q.endTime} -- 第二种转义
+        </if>
+
+        -- TODO
+
+    </select>
+</mapper>

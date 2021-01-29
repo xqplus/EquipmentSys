@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.xqplus.equipmentsys.mapper.IEquipmentMapper">
+    <select id="getList"
+            resultType="cn.xqplus.equipmentsys.form.EquipmentForm">
+        SELECT
+            e.id,
+            e.equip_number,
+            e.equip_name,
+            e.equip_summary,
+            e.equip_state,
+            e.create_time,
+            e.update_time,
+            t.equip_type_name
+        FROM
+            t_equipment e
+        LEFT JOIN
+            t_equipment_type t
+        ON
+            e.equip_type_number = t.equip_type_number
+        WHERE
+            e.is_del = 0
+        AND t.is_del = 0
+        <if test="q.equipNumber != null and q.equipNumber != ''">
+            AND e.equip_number = #{q.equipNumber}
+        </if>
+        <if test="q.equipName != null and q.equipName != ''">
+            AND e.equip_name LIKE CONCAT('%', CONCAT(#{q.equipName}, '%'))
+        </if>
+        -- Integer类型不判''
+        <if test="q.equipState != null">
+            AND e.equip_state = #{q.equipState}
+        </if>
+        <if test="q.startTime != null and q.startTime != ''">
+            AND e.create_time &gt;= #{q.startTime}
+        </if>
+        <if test="q.endTime != null and q.endTime != ''">
+            AND e.create_time &lt;= #{q.endTime}
+        </if>
+    </select>
+    <select id="getListByNumberDesc"
+            resultType="cn.xqplus.equipmentsys.model.Equipment">
+        SELECT
+            equip_number
+            -- TODO
+        FROM
+            t_equipment
+        WHERE
+            is_del = 0
+        ORDER BY
+            equip_number
+        DESC
+    </select>
+</mapper>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>注册-设备管理系统</title>
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+    <link rel="stylesheet" th:href="@{/common/common.css}">
+    <script rel="script" th:src="@{/layui/layui.js}"></script>
+    <script rel="script" th:src="@{/jquery/jquery-3.5.1.js}"></script>
+    <script rel="script" th:src="@{/common/common.js}"></script>
+</head>
+<body>
+<div class="layui-container">
+    <div class="login-area area-center">
+        <span>注 册</span>
+        <form class="layui-form login-form layui-form-pane" id="form1">
+            <div class="layui-form-item">
+                <label class="layui-form-label input-required">用户名</label>
+                <div class="layui-input-block">
+                    <input id="userName" type="text" class="layui-input" name="userName" required lay-verify="required" autocomplete="off" placeholder="请输入用户名"/>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label input-required">密码</label>
+                <div class="layui-input-block">
+                    <input id="pwd" type="password" class="layui-input" name="password" required lay-verify="required" placeholder="请输入密码"/>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label input-required">再次输入</label>
+                <div class="layui-input-block">
+                    <input id="pwd2" type="password" class="layui-input" name="password2" required lay-verify="required" placeholder="请再次输入密码"/>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">真实姓名</label>
+                <div class="layui-input-block">
+                    <input type="text" class="layui-input" name="trueName" autocomplete="off" placeholder="请输入真实姓名"/>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label input-required">职位</label>
+                <div class="layui-input-block">
+                    <select name="roleType" lay-verify="required" lay-filter="roleType">
+                        <option value=""></option>
+                        <option value="0">管理员</option>
+                        <option value="1">普通用户</option>
+                        <option value="2">维修员</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label input-required">部门</label>
+                <div class="layui-input-block">
+                    <select id="deptNumber" name="deptNumber" lay-verify="required">
+                        <option value=""></option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item" style="line-height: 50px">
+                <button type="button" class="layui-btn" lay-submit lay-filter="registry">注册</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="footer-position-bottom0">
+    <div th:replace="common :: footer"></div>
+</div>
+</body>
+<script th:src="@{/common/js/registry.js}"></script>
+</html>

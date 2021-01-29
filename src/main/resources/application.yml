@@ -1,0 +1,32 @@
+# 端口号
+server:
+  port: 8090
+
+# hikari连接池
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/db_equipment?serverTimezone=UTC&useUnicode=true&character=utf8&useSSL=true
+    username: root
+    password: root
+    hikari:
+      connection-test-query: SELECT 1 # mysql数据库测试连接  oracle: SELECT 1 FROM DUAL
+      connection-timeout: 60000 # 等待来自池的连接的最大毫秒数
+      maximum-pool-size: 10 # 池中最大连接数，包括闲置和使用中的连接
+      minimum-idle: 1 # 池中维护的最小空闲连接数
+
+  # 关闭thymeleaf缓存
+  thymeleaf:
+    cache: false
+
+# 系统应用相关
+  application:
+    name: 设备管理系统
+
+# mybatis-plus相关
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+# 配置日志
+  configuration:
+    # 仅控制台输出的日志
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

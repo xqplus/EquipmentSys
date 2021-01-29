@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <title>设备类型管理-设备管理系统</title>
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+    <link rel="stylesheet" th:href="@{/common/common.css}">
+    <script rel="script" th:src="@{/layui/layui.js}"></script>
+</head>
+
+<body>
+<!-- 导航条 -->
+<ul class="layui-nav layui-bg-blue" lay-filter="">
+    <li class="layui-nav-item margin-left-15">
+        <i class="layui-icon layui-icon-home icon-small"></i>
+        <a th:href="@{/equipmentSys/router/index}">首&nbsp;&nbsp;页</a>
+    </li>
+    <li class="layui-nav-item margin-left-15">
+        <i class="layui-icon layui-icon-username icon-small"></i>
+        <a th:href="@{/equipmentSys/router/userManagement}">用户管理</a>
+    </li>
+    <li class="layui-nav-item margin-left-15">
+        <i class="layui-icon layui-icon-user icon-small"></i>
+        <a th:href="@{/equipmentSys/router/deptManagement}">部门管理</a>
+    </li>
+    <li class="layui-nav-item margin-left-15 layui-this">
+        <i class="layui-icon layui-icon-engine icon-small"></i>
+        <a href="javascript:;">设备管理</a>
+        <dl class="layui-nav-child"> <!-- 二级菜单 -->
+            <dd><a th:href="@{/equipmentSys/router/equipManagement}">设备管理</a></dd>
+            <dd class="layui-this"><a th:href="@{/equipmentSys/router/equipTypeManagement}">设备类型管理</a></dd>
+        </dl>
+    </li>
+    <li class="layui-nav-item margin-left-15">
+        <i class="layui-icon layui-icon-set icon-small"></i>
+        <a th:href="@{/equipmentSys/router/repairManagement}">维修管理</a>
+    </li>
+    <!-- 已登录显示用户 -->
+    <li class="layui-nav-item nav-right-150" sec:authorize="isAuthenticated()">
+        <a href="">
+            当前用户：<span sec:authentication="name"></span>
+        </a>
+    </li>
+    <!-- 未登录显示登录 -->
+    <li class="layui-nav-item nav-right-150" sec:authorize="!isAuthenticated()">
+        <i class="layui-icon layui-icon-layer icon-small"></i>
+        <a th:href="@{/equipmentSys/router/login}">登录</a>
+    </li>
+    <!-- 已登录显示注销 -->
+    <li class="layui-nav-item nav-right-50" sec:authorize="isAuthenticated()">
+        <i class="layui-icon layui-icon-logout icon-small"></i>
+        <a th:href="@{/logout}">注&nbsp;&nbsp;销</a>
+    </li>
+</ul>
+<!-- 轮播图 -->
+<!--<div class="layui-carousel" style="margin-top: 10px" id="carousel1">-->
+<!--    <div carousel-item>-->
+<!--        <div><img th:src="@{/images/desktop1.png}" alt="desktop1"></div>-->
+<!--        <div><img th:src="@{/images/desktop2.png}" alt="desktop2"></div>-->
+<!--        <div><img th:src="@{/images/desktop3.png}" alt="desktop3"></div>-->
+<!--        <div><img th:src="@{/images/image.png}"></div>-->
+<!--    </div>-->
+<!--</div>-->
+<div class="layui-footer footer">
+    <span>Copyright © chenq</span>
+</div>
+<script>
+    layui.use('element', function(){
+        let element = layui.element;
+    });
+    layui.use('carousel', function (){
+        let carousel = layui.carousel;
+        carousel.render({
+            elem: '#carousel1',
+            width: '100%', //设置容器宽度
+            arrow: 'hover', //始终显示箭头
+            height: '500px',
+            anim: 'fade',
+            //,anim: 'updown' //切换动画方式
+        });
+    });
+</script>
+</body>
+</html>
