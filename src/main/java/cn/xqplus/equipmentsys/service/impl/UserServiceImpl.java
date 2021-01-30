@@ -19,6 +19,7 @@ import com.baomidou.mybatisplus.extension.kotlin.KtQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.kotlin.KtUpdateChainWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
@@ -78,6 +79,15 @@ public class UserServiceImpl implements IUserService {
         page.setRecords(userForms);
         page.setTotal(userForms.size());
         return page;
+    }
+
+    @Override
+    public User getCurrentUserInfo() {
+        org.springframework.security.core.userdetails.User currentUser =
+                (org.springframework.security.core.userdetails.User)
+                        SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return userMapper.selectOne(new QueryWrapper<User>()
+                .eq("user_name", currentUser.getUsername()));
     }
 
     @Override

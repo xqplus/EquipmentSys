@@ -91,7 +91,7 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                         }
                     });
                 });
-            } else if (obj.event === 'reportRepair') {
+            } else if (obj.event === 'reportRepair') { // 报修
                 layer.confirm('当前设备：'+data.equipTypeName+data.equipName+'，设备编号：'+data.equipNumber+'，确认报修？', {icon: 3, title: '提示'}, function (index) {
                     $.ajax({
                         async: false,
@@ -115,7 +115,7 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                         }
                     });
                 });
-            } else if (obj.event === 'scrap') {
+            } else if (obj.event === 'scrap') { // 报废
                 layer.confirm('当前设备：'+data.equipTypeName+data.equipName+'，设备编号：'+data.equipNumber+'，确认报废？', {icon: 3, title: '警告'}, function (index) {
                     $.ajax({
                         async: false,

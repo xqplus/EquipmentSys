@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 
 /**
- * mybatis-plus 字段填充策略
+ * mybatis-plus 通用字段填充策略
  */
 
 @Component
@@ -21,6 +21,8 @@ public class FillMetaObjectHandler implements MetaObjectHandler {
     public void insertFill(MetaObject metaObject) {
         this.setFieldValByName("createTime", new Date().getTime(), metaObject);
         this.setFieldValByName("updateTime", new Date().getTime(), metaObject);
+        // 维修信息数据字段填充策略
+        this.setFieldValByName("reportTime", new Date().getTime(), metaObject);
     }
 
     /**
@@ -30,5 +32,7 @@ public class FillMetaObjectHandler implements MetaObjectHandler {
     @Override
     public void updateFill(MetaObject metaObject) {
         this.setFieldValByName("updateTime", new Date().getTime(), metaObject);
+        // 维修信息数据字段填充策略
+        this.setFieldValByName("repairTime", new Date().getTime(), metaObject);
     }
 }

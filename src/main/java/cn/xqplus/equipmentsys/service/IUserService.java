@@ -44,4 +44,11 @@ public interface IUserService extends IService<User> {
      * @return
      */
     Page<UserForm> selectPage(Page<UserForm> page, UserForm wrapper);
+
+    /**
+     * 获取当前登录用户
+     * @param userName
+     * @return
+     */
+    User getCurrentUserInfo();
 }
