@@ -1,6 +1,5 @@
 package cn.xqplus.equipmentsys.controller;
 
-import cn.xqplus.equipmentsys.ext.PageResult;
 import cn.xqplus.equipmentsys.form.UserForm;
 import cn.xqplus.equipmentsys.model.PasswordVisible;
 import cn.xqplus.equipmentsys.model.User;

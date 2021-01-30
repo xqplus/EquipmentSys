@@ -59,13 +59,14 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
             ,cellMinWidth: 80 // 全局常规单元格最小宽度
             ,cols: [
                 [{type: 'checkbox', fixed: 'left'}
-                    ,{field: 'id', title: 'ID', sort: true, fixed: 'left', width: 80}
-                    ,{field: 'deptNumber', title: '部门编号', sort: true}
-                    ,{field: 'deptName', title: '部门名称'}
-                    ,{field: 'deptIntroduce', title: '部门简介'}
-                    ,{field: 'createDate', title: '创建时间', sort: true}
-                    ,{field: 'updateDate', title: '修改时间', sort: true}
-                    ,{fixed: 'right', title:'操作', toolbar: '#rightToolBar'}]
+                ,{type: 'numbers', title: '序号', fixed: 'left', sort: true, width: 80}
+                ,{field: 'id', title: 'ID', sort: true, fixed: 'left', width: 80, hide: true} // 隐藏数据表id
+                ,{field: 'deptNumber', title: '部门编号', sort: true}
+                ,{field: 'deptName', title: '部门名称'}
+                ,{field: 'deptIntroduce', title: '部门简介'}
+                ,{field: 'createDate', title: '创建时间', sort: true}
+                ,{field: 'updateDate', title: '修改时间', sort: true}
+                ,{fixed: 'right', title:'操作', toolbar: '#rightToolBar'}]
             ]
         });
     }

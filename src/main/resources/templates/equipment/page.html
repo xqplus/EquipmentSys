@@ -127,9 +127,12 @@
             {{# } }}
             <!-- 当设备状态为维修中才显示 -->
             {{# if(d.equipState === 1){ }}
+                <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="repair">维修</a>
                 <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="scrap">报废</a>
             {{# } }}
-            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+            {{# if(d.equipState === 2){ }}
+                <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+            {{# } }}
         </script>
     </div>
 </div>

@@ -61,16 +61,17 @@ layui.use(['element', 'table', 'laydate', 'form', 'jquery'], function(){
             ,cellMinWidth: 80 // 全局常规单元格最小宽度
             ,cols: [
                 [{type: 'checkbox', fixed: 'left'}
-                    ,{field: 'id', title: 'ID', sort: true, fixed: 'left', width: 80}
-                    ,{field: 'userNumber', title: '用户编号', sort: true}
-                    ,{field: 'userName', title: '用户名'}
-                    ,{field: 'password', title: '密码'}
-                    ,{field: 'trueName', title: '真实姓名'}
-                    ,{field: 'roleName', title: '角色名称'}
-                    ,{field: 'deptName', title: '所在部门'}
-                    ,{field: 'createDate', title: '创建时间', sort: true}
-                    ,{field: 'updateDate', title: '修改时间', sort: true}
-                    ,{fixed: 'right', title:'操作', toolbar: '#rightToolBar'}]
+                ,{type: 'numbers', title: '序号', fixed: 'left', sort: true, width: 80}
+                ,{field: 'id', title: 'ID', sort: true, fixed: 'left', width: 80, hide: true} // 隐藏数据表id
+                ,{field: 'userNumber', title: '用户编号', sort: true}
+                ,{field: 'userName', title: '用户名'}
+                ,{field: 'password', title: '密码'}
+                ,{field: 'trueName', title: '真实姓名'}
+                ,{field: 'roleName', title: '角色名称'}
+                ,{field: 'deptName', title: '所在部门'}
+                ,{field: 'createDate', title: '创建时间', sort: true}
+                ,{field: 'updateDate', title: '修改时间', sort: true}
+                ,{fixed: 'right', title:'操作', toolbar: '#rightToolBar'}]
             ]
         });
     }

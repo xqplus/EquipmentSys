@@ -20,7 +20,7 @@ import java.util.List;
 
 /**
  * Spring Security 安全认证服务层
- * implements security UserDetailsService接口
+ * implements security UserDetailsService
  */
 
 @Service
