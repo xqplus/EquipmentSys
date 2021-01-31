@@ -57,7 +57,13 @@ public class Repair implements Serializable {
      * 维修时间（更新时间，严格更新时插入）
      */
     @TableField(value = "repair_time", jdbcType = JdbcType.DECIMAL, fill = FieldFill.UPDATE)
-    private String repairTime;
+    private Long repairTime;
+
+    /**
+     * 维修是否结束 0 未结束 1 结束
+     */
+    @TableField(value = "is_end", jdbcType = JdbcType.INTEGER)
+    private Integer isEnd = 0;
 
     /**
      * 逻辑删除（0 存在 1 删除）

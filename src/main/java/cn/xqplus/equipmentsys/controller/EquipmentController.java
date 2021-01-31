@@ -7,16 +7,11 @@ import cn.xqplus.equipmentsys.model.User;
 import cn.xqplus.equipmentsys.service.IEquipmentService;
 import cn.xqplus.equipmentsys.service.IRepairService;
 import cn.xqplus.equipmentsys.service.IUserService;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sun.istack.internal.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * 设备信息管理 接口
@@ -110,23 +105,4 @@ public class EquipmentController {
         }
     }
 
-    @GetMapping(value = "/scrap", name = "设备报废")
-    public String scrap(@NotNull int id) {
-        Equipment equipment = equipmentService.getById(id);
-        // 只有维修中的设备才能报废
-        if (equipment.getEquipState() == 1) {
-            Equipment equipment1 = new Equipment();
-            equipment1.setEquipState(2);
-            boolean id1 = equipmentService.update(equipment1, new UpdateWrapper<Equipment>()
-                    .eq("id", id));
-            if (id1) {
-                return "success";
-            } else {
-                return "error";
-            }
-        } else {
-            // 流程不正确 （使用中 -报修-> 维修中 -报废-> 已报废）
-            return "noProcess";
-        }
-    }
 }

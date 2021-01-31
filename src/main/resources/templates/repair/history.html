@@ -3,7 +3,7 @@
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <meta charset="UTF-8">
-    <title>设备管理-设备管理系统</title>
+    <title>维修历史记录-设备管理系统</title>
     <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
     <link rel="stylesheet" th:href="@{/common/common.css}">
     <script rel="script" th:src="@{/layui/layui.js}"></script>
@@ -30,7 +30,7 @@
                 <i class="layui-icon layui-icon-user icon-small"></i>
                 <a th:href="@{/equipmentSys/router/deptManagement}">部门管理</a>
             </li>
-            <li class="layui-nav-item margin-left-15 layui-this">
+            <li class="layui-nav-item margin-left-15">
                 <i class="layui-icon layui-icon-engine icon-small"></i>
                 <a href="javascript:;">设备管理</a>
                 <dl class="layui-nav-child"> <!-- 二级菜单 -->
@@ -38,12 +38,12 @@
                     <dd><a th:href="@{/equipmentSys/router/equipTypeManagement}">设备类型管理</a></dd>
                 </dl>
             </li>
-            <li class="layui-nav-item margin-left-15">
+            <li class="layui-nav-item margin-left-15 layui-this">
                 <i class="layui-icon layui-icon-set icon-small"></i>
                 <a href="javascript:;">维修管理</a>
                 <dl class="layui-nav-child"> <!-- 二级菜单 -->
                     <dd><a th:href="@{/equipmentSys/router/repairManagement}">维修管理</a></dd>
-                    <dd><a th:href="@{/equipmentSys/router/repairHistory}">维修历史记录</a></dd>
+                    <dd class="layui-this"><a th:href="@{/equipmentSys/router/repairHistory}">维修历史记录</a></dd>
                 </dl>
             </li>
             <!-- 已登录显示用户 -->
@@ -127,10 +127,15 @@
             <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
             <!-- 当设备状态为使用中才显示 -->
             {{# if(d.equipState === 0){ }}
-                <a class="layui-btn layui-btn-xs" lay-event="reportRepair">报修</a>
+            <a class="layui-btn layui-btn-xs" lay-event="reportRepair">报修</a>
+            {{# } }}
+            <!-- 当设备状态为维修中才显示 -->
+            {{# if(d.equipState === 1){ }}
+            <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="repair">维修</a>
+            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="scrap">报废</a>
             {{# } }}
             {{# if(d.equipState === 2){ }}
-                <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
             {{# } }}
         </script>
     </div>

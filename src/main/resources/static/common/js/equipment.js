@@ -58,7 +58,7 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                     break;
             }
         });
-        // 监听行工具事件(编辑，报修，报废，删除)
+        // 监听行工具事件(编辑，报修，删除)
         table.on('tool(equipmentData)', function(obj){
             let data = obj.data; // 操作行数据
             if (obj.event === 'edit') {
@@ -115,30 +115,6 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                         }
                     });
                 });
-            } else if (obj.event === 'scrap') { // 报废
-                layer.confirm('当前设备：'+data.equipTypeName+data.equipName+'，设备编号：'+data.equipNumber+'，确认报废？', {icon: 3, title: '警告'}, function (index) {
-                    $.ajax({
-                        async: false,
-                        type: 'GET',
-                        url: '/equipmentSys/equipment/scrap', // 报废接口
-                        data: {id: data.id},
-                        success: function (data) {
-                            layer.close(index);
-                            if (data === 'success') {
-                                layer.msg('报废成功', {icon: 1});
-                                setTimeout(function () {
-                                    window.location.reload();
-                                }, 3000);
-                            }
-                            if (data === 'noProcess') {
-                                layer.msg('抱歉，当前设备状态不能报废', {icon: 2});
-                            }
-                            if (data === 'error') {
-                                layer.msg('报修失败，请重试或联系管理员！', {icon: 2});
-                            }
-                        }
-                    });
-                });
             }
         });
     }
@@ -183,7 +159,7 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                 ,{field: 'equipSummary', title: '设备概述'},{field: 'equipStateName', title: '设备状态'}
                 ,{field: 'createDate', title: '创建时间', sort: true}
                 ,{field: 'updateDate', title: '修改时间', sort: true}
-                ,{fixed: 'right', title:'操作', toolbar: '#rightToolBar', width: 200}]
+                ,{fixed: 'right', title:'操作', toolbar: '#rightToolBar', width: 150}]
             ]
         });
     }

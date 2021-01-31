@@ -1,14 +1,18 @@
 package cn.xqplus.equipmentsys.service.impl;
 
+import cn.xqplus.equipmentsys.form.RepairForm;
 import cn.xqplus.equipmentsys.mapper.IRepairMapper;
 import cn.xqplus.equipmentsys.model.Repair;
 import cn.xqplus.equipmentsys.service.IRepairService;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +27,30 @@ public class RepairServiceImpl implements IRepairService {
 
     @Autowired
     private IRepairMapper repairMapper;
+
+    @Override
+    public Page<RepairForm> selectPage(Page<RepairForm> page, RepairForm wrapper) {
+        List<RepairForm> list = repairMapper.getList(page, wrapper);
+        if (CollectionUtils.isNotEmpty(list)) {
+            for (RepairForm repairForm : list) {
+                // 时间转换
+                repairForm.setReportDate(new SimpleDateFormat("yyyy-MM-dd").format(repairForm.getReportTime()));
+                // 设备状态转换（String展示）
+                if (repairForm.getEquipState() == 1) {
+                    repairForm.setCurrentState("待维修");
+                }
+                // 设置报修人
+                repairForm.setReporterName(repairForm.getUserName());
+            }
+        }
+        // 设置返回状态码
+        page.setMaxLimit(0L);
+        // 设置msg
+        page.setCountId("success");
+        page.setRecords(list);
+        page.setTotal(list.size());
+        return page;
+    }
 
     @Override
     public Repair getNextRepairNumber() {
@@ -41,9 +69,20 @@ public class RepairServiceImpl implements IRepairService {
     }
 
     @Override
+    public Repair getById(Serializable id) {
+        return repairMapper.selectById(id);
+    }
+
+    @Override
     public boolean save(Repair entity) {
         int insert = repairMapper.insert(entity);
         return (insert >= 1);
+    }
+
+    @Override
+    public boolean update(Repair entity, Wrapper<Repair> updateWrapper) {
+        int update = repairMapper.update(entity, updateWrapper);
+        return (update >= 1);
     }
 
     @Override
