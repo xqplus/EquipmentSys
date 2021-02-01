@@ -59,5 +59,8 @@ public class RouterController {
         return "registry/forgotPassword";
     }
 
-
+    @GetMapping(value = "/repairHistory", name = "维修历史记录")
+    public String repairHistory() {
+        return "repair/history";
+    }
 }

@@ -28,7 +28,7 @@
             r.reporter_number = u.user_number
         WHERE
             e.equip_state = 1
-        AND r.is_end = 0
+        AND r.repair_state = 1
         AND r.is_del = 0
         AND e.is_del = 0
         AND t.is_del = 0
@@ -65,5 +65,62 @@
         ORDER BY
             repair_number
         DESC
+    </select>
+
+    <select id="getHistoryList"
+            resultType="cn.xqplus.equipmentsys.form.RepairForm">
+        SELECT
+            r.id,
+            r.repair_number,
+            r.reporter_number,
+            r.report_time,
+            r.repair_time,
+            r.repair_state,
+            e.equip_number,
+            e.equip_name,
+            e.equip_state,
+            t.equip_type_name,
+            u.user_name
+        FROM
+            t_repair r
+        LEFT JOIN
+            t_equipment e
+        ON
+            r.equip_number = e.equip_number
+        LEFT JOIN
+            t_equipment_type t
+        ON
+            e.equip_type_number = t.equip_type_number
+        LEFT JOIN
+            t_user u
+        ON
+            r.repairer_number = u.user_number
+        WHERE
+            r.repair_state != 1
+        AND r.is_del = 0
+        AND e.is_del = 0
+        AND t.is_del = 0
+        AND u.is_del = 0
+        <if test="q.repairNumber != null and q.repairNumber != ''">
+            AND r.repair_number = #{q.repairNumber}
+        </if>
+        <if test="q.equipName != null and q.equipName != ''">
+            AND e.equip_name LIKE CONCAT('%', CONCAT(#{q.equipName}, '%'))
+        </if>
+        <if test="q.repairerName != null and q.repairerName != ''">
+            AND u.user_name LIKE CONCAT('%', CONCAT(#{q.repairerName}, '%'))
+        </if>
+        <if test="q.startTime != null and q.startTime != ''">
+            AND r.report_time &gt;= #{q.startTime}
+        </if>
+        <if test="q.endTime != null and q.endTime != ''">
+            AND r.report_time &lt;= #{q.endTime}
+        </if>
+        <if test="q.startTime1 != null and q.startTime1 != ''">
+            AND r.repair_time &gt;= #{q.startTime1}
+        </if>
+        <if test="q.endTime1 != null and q.endTime1 != ''">
+            AND r.repair_time &lt;= #{q.endTime1}
+        </if>
     </select>
 </mapper>

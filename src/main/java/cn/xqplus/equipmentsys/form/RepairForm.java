@@ -38,7 +38,12 @@ public class RepairForm extends Repair {
     private Integer equipState;
 
     /**
-     * 当前状态（设备状态 equipState）
+     * 维修情况
+     */
+    private String repairStateName;
+
+    /**
+     * 当前状态
      */
     private String currentState;
 
@@ -71,4 +76,14 @@ public class RepairForm extends Repair {
      * 结束时间（查询传参 时间戳）
      */
     private Long endTime;
+
+    /**
+     * 维修时间查询传参
+     */
+    private Long startTime1;
+
+    /**
+     * 维修时间查询传参
+     */
+    private Long endTime1;
 }

@@ -60,10 +60,10 @@ public class Repair implements Serializable {
     private Long repairTime;
 
     /**
-     * 维修是否结束 0 未结束 1 结束
+     * 维修状态 0 维修完成 1 维修中 2 报废处理 默认为维修中
      */
-    @TableField(value = "is_end", jdbcType = JdbcType.INTEGER)
-    private Integer isEnd = 0;
+    @TableField(value = "repair_state", jdbcType = JdbcType.INTEGER)
+    private Integer repairState = 1;
 
     /**
      * 逻辑删除（0 存在 1 删除）

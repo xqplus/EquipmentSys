@@ -3,8 +3,11 @@ package cn.xqplus.equipmentsys.service.impl;
 import cn.xqplus.equipmentsys.form.RepairForm;
 import cn.xqplus.equipmentsys.mapper.IRepairMapper;
 import cn.xqplus.equipmentsys.model.Repair;
+import cn.xqplus.equipmentsys.model.User;
 import cn.xqplus.equipmentsys.service.IRepairService;
+import cn.xqplus.equipmentsys.service.IUserService;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -28,6 +31,9 @@ public class RepairServiceImpl implements IRepairService {
     @Autowired
     private IRepairMapper repairMapper;
 
+    @Autowired
+    private IUserService userService;
+
     @Override
     public Page<RepairForm> selectPage(Page<RepairForm> page, RepairForm wrapper) {
         List<RepairForm> list = repairMapper.getList(page, wrapper);
@@ -49,6 +55,38 @@ public class RepairServiceImpl implements IRepairService {
         page.setCountId("success");
         page.setRecords(list);
         page.setTotal(list.size());
+        return page;
+    }
+
+    @Override
+    public Page<RepairForm> selectHistoryPage(Page<RepairForm> page, RepairForm wrapper) {
+        List<RepairForm> historyList = repairMapper.getHistoryList(page, wrapper);
+        if (CollectionUtils.isNotEmpty(historyList)) {
+            for (RepairForm repairForm : historyList) {
+                // 设置维修人
+                repairForm.setRepairerName(repairForm.getUserName());
+                // 设置报修人 TODO 循环里sql 数据量大时有效率问题
+                User user = userService.getOne(new QueryWrapper<User>()
+                        .eq("user_number", repairForm.getReporterNumber()));
+                repairForm.setReporterName(user.getUserName());
+                // 时间转换
+                repairForm.setReportDate(new SimpleDateFormat("yyyy-MM-dd").format(repairForm.getReportTime()));
+                repairForm.setRepairDate(new SimpleDateFormat("yyyy-MM-dd").format(repairForm.getRepairTime()));
+                // 状态转换
+                if (repairForm.getRepairState() == 0) {
+                    repairForm.setRepairStateName("维修完成");
+                }
+                if (repairForm.getRepairState() == 2) {
+                    repairForm.setRepairStateName("报废处理");
+                }
+            }
+        }
+        // 设置返回状态码
+        page.setMaxLimit(0L);
+        // 设置msg
+        page.setCountId("success");
+        page.setRecords(historyList);
+        page.setTotal(historyList.size());
         return page;
     }
 

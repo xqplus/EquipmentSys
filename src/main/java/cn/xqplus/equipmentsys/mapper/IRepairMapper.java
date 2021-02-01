@@ -33,4 +33,12 @@ public interface IRepairMapper extends BaseMapper<Repair> {
      * @return List<RepairForm>
      */
     List<RepairForm> getList(Page<RepairForm> page, @Param("q") RepairForm wrapper);
+
+    /**
+     * 历史记录list
+     * @param page 分页
+     * @param wrapper 条件
+     * @return List<RepairForm>
+     */
+    List<RepairForm> getHistoryList(Page<RepairForm> page, @Param("q") RepairForm wrapper);
 }

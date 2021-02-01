@@ -1,6 +1,5 @@
 package cn.xqplus.equipmentsys.controller;
 
-import cn.xqplus.equipmentsys.form.EquipmentForm;
 import cn.xqplus.equipmentsys.form.RepairForm;
 import cn.xqplus.equipmentsys.model.Equipment;
 import cn.xqplus.equipmentsys.model.Repair;
@@ -51,8 +50,8 @@ public class RepairController {
                 .eq("equip_number", repair.getEquipNumber()));
         Repair repair1 = new Repair();
         repair1.setRepairerNumber(userService.getCurrentUserInfo().getUserNumber());
-        // 维修结束
-        repair1.setIsEnd(1);
+        // 维修完成，维修状态
+        repair1.setRepairState(0);
         // 更新维修信息
         boolean repairUpdate = repairService.update(repair1, new UpdateWrapper<Repair>()
                 .eq("id", id));
@@ -76,8 +75,8 @@ public class RepairController {
                     .eq("equip_number", equipment.getEquipNumber()));
             Repair repair1 = new Repair();
             repair1.setRepairerNumber(userService.getCurrentUserInfo().getUserNumber());
-            // 维修结束
-            repair1.setIsEnd(1);
+            // 报废处理
+            repair1.setRepairState(2);
             boolean repairUpdate = repairService.update(repair1, new UpdateWrapper<Repair>()
                     .eq("id", id));
             if (update && repairUpdate) {
@@ -89,5 +88,12 @@ public class RepairController {
             // 流程不正确 （使用中 -报修-> 维修中 -报废-> 已报废）
             return "noProcess";
         }
+    }
+
+    @GetMapping(value = "/historyPage", name = "维修历史记录page")
+    public Object historyPage(@RequestParam(defaultValue = "1") int page,
+                              @RequestParam(defaultValue = "10") int limit, RepairForm wrapper) {
+        Page<RepairForm> historyPage = new Page<>(page, limit);
+        return repairService.selectHistoryPage(historyPage, wrapper);
     }
 }

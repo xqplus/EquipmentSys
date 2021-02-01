@@ -24,4 +24,12 @@ public interface IRepairService extends IService<Repair> {
      * @return Page<RepairForm>
      */
     Page<RepairForm> selectPage(Page<RepairForm> page, RepairForm wrapper);
+
+    /**
+     * 获取history分页list
+     * @param page 分页辅助
+     * @param wrapper 查询条件
+     * @return Page<RepairForm>
+     */
+    Page<RepairForm> selectHistoryPage(Page<RepairForm> page, RepairForm wrapper);
 }

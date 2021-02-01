@@ -70,9 +70,9 @@
             <form class="layui-form">
                 <div class="layui-form-item">
                     <div class="layui-inline">
-                        <label class="layui-form-label">设备编号：</label>
+                        <label class="layui-form-label">维修编号：</label>
                         <div class="layui-input-inline">
-                            <input type="text" class="layui-input" name="equipNumber" autocomplete="off">
+                            <input type="text" class="layui-input" name="repairNumber" autocomplete="off">
                         </div>
                     </div>
                     <div class="layui-inline">
@@ -82,28 +82,32 @@
                         </div>
                     </div>
                     <div class="layui-inline">
-                        <label class="layui-form-label">设备状态：</label>
+                        <label class="layui-form-label">维修人：</label>
                         <div class="layui-input-inline">
-                            <select name="equipState" id="equipState">
-                                <option value=""></option>
-                                <option value="0">使用中</option>
-                                <option value="1">维修中</option>
-                                <option value="2">已报废</option>
-                            </select>
+                            <input type="text" class="layui-input" name="repairerName" autocomplete="off">
                         </div>
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <div class="layui-inline">
-                        <label class="layui-form-label">创建时间：</label>
+                        <label class="layui-form-label">报修时间：</label>
                         <div class="layui-input-inline">
                             <!--<i class="layui-icon layui-icon-logout icon-date" id="dateIcon"></i>-->
                             <input type="text" class="layui-icon layui-input" style="font-size: 14px; cursor: pointer" name="createTime" id="createTime" placeholder="&#xe637;">
                         </div>
                     </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">维修时间：</label>
+                        <div class="layui-input-inline">
+                            <!--<i class="layui-icon layui-icon-logout icon-date" id="dateIcon"></i>-->
+                            <input type="text" class="layui-icon layui-input" style="font-size: 14px; cursor: pointer" name="repairTime" id="repairTime" placeholder="&#xe637;">
+                        </div>
+                    </div>
                     <!-- 用于数据提交 -->
                     <input type="hidden" name="startTime">
                     <input type="hidden" name="endTime">
+                    <input type="hidden" name="startTime1">
+                    <input type="hidden" name="endTime1">
                 </div>
                 <div class="layui-form-item line-height-60" style="text-align: center">
                     <button type="button" class="layui-btn layui-btn-normal" lay-submit lay-filter="search">搜索</button>
@@ -115,33 +119,21 @@
     <!-- 数据表格 table -->
     <!-- 表格带有上下10的margin,所以class不带margin-top-10 -->
     <div class="layui-col-md12">
-        <table class="layui-hide" id="equipmentData" lay-filter="equipmentData"></table>
+        <table class="layui-hide" id="repairHistory" lay-filter="repairHistory"></table>
         <script type="text/html" id="topToolBar">
             <div class="layui-btn-container">
-                <button class="layui-btn layui-btn-sm layui-btn-warm" lay-event="add">新增设备（暂定）</button>
+<!--                <button class="layui-btn layui-btn-sm layui-btn-warm" lay-event="add">新增设备（暂定）</button>-->
                 <button class="layui-btn layui-btn-sm layui-btn-warm" lay-event="getCheckLength">获取选中数目</button>
                 <button class="layui-btn layui-btn-sm layui-btn-warm" lay-event="isAll">验证是否全选</button>
             </div>
         </script>
         <script type="text/html" id="rightToolBar">
-            <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-            <!-- 当设备状态为使用中才显示 -->
-            {{# if(d.equipState === 0){ }}
-            <a class="layui-btn layui-btn-xs" lay-event="reportRepair">报修</a>
-            {{# } }}
-            <!-- 当设备状态为维修中才显示 -->
-            {{# if(d.equipState === 1){ }}
-            <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="repair">维修</a>
-            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="scrap">报废</a>
-            {{# } }}
-            {{# if(d.equipState === 2){ }}
-            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-            {{# } }}
+            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除记录</a>
         </script>
     </div>
 </div>
 <!-- 页脚 footer -->
 <div th:replace="common :: footer"></div>
-<script th:src="@{/common/js/equipment.js}"></script>
+<script th:src="@{/common/js/repairHistory.js}"></script>
 </body>
 </html>
