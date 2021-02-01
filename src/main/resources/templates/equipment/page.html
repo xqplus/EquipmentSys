@@ -124,13 +124,13 @@
             </div>
         </script>
         <script type="text/html" id="rightToolBar">
-            <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+            <a class="layui-btn layui-btn-xs" lay-event="edit" sec:authorize="hasRole('ADMIN')">编辑</a>
             <!-- 当设备状态为使用中才显示 -->
             {{# if(d.equipState === 0){ }}
                 <a class="layui-btn layui-btn-xs" lay-event="reportRepair">报修</a>
             {{# } }}
             {{# if(d.equipState === 2){ }}
-                <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+                <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" sec:authorize="hasRole('ADMIN')">删除</a>
             {{# } }}
         </script>
     </div>

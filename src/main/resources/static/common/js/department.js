@@ -63,10 +63,10 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                 ,{field: 'id', title: 'ID', sort: true, fixed: 'left', width: 80, hide: true} // 隐藏数据表id
                 ,{field: 'deptNumber', title: '部门编号', sort: true}
                 ,{field: 'deptName', title: '部门名称'}
-                ,{field: 'deptIntroduce', title: '部门简介'}
+                ,{field: 'deptIntroduce', title: '部门简介', width: 250}
                 ,{field: 'createDate', title: '创建时间', sort: true}
                 ,{field: 'updateDate', title: '修改时间', sort: true}
-                ,{fixed: 'right', title:'操作', toolbar: '#rightToolBar'}]
+                ,{fixed: 'right', title:'操作', toolbar: '#rightToolBar', width: 120}]
             ]
         });
     }

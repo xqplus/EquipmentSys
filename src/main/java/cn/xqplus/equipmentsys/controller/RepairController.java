@@ -11,10 +11,7 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sun.istack.internal.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 维修信息管理 接口
@@ -95,5 +92,15 @@ public class RepairController {
                               @RequestParam(defaultValue = "10") int limit, RepairForm wrapper) {
         Page<RepairForm> historyPage = new Page<>(page, limit);
         return repairService.selectHistoryPage(historyPage, wrapper);
+    }
+
+    @PostMapping(value = "/historyDel", name = "维修历史记录删除")
+    public String historyDel(@NotNull int id) {
+        boolean removeById = repairService.removeById(id);
+        if (removeById) {
+            return "success";
+        } else {
+            return "error";
+        }
     }
 }

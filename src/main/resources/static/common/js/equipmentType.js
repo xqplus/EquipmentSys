@@ -63,10 +63,10 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                 ,{field: 'id', title: 'ID', sort: true, fixed: 'left', hide: true} // 隐藏列
                 ,{field: 'equipTypeNumber', title: '设备类型编号', sort: true, width: 130}
                 ,{field: 'equipTypeName', title: '设备类型名称'}
-                ,{field: 'equipTypeSummary', title: '设备类型概述', width: 250}
+                ,{field: 'equipTypeSummary', title: '设备类型概述', width: 300}
                 ,{field: 'createDate', title: '创建时间', sort: true}
                 ,{field: 'updateDate', title: '修改时间', sort: true}
-                ,{fixed: 'right', title:'操作', toolbar: '#rightToolBar'}]
+                ,{fixed: 'right', title:'操作', toolbar: '#rightToolBar', width: 120}]
             ]
         });
     }

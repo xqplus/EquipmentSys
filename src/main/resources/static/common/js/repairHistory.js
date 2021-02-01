@@ -96,19 +96,19 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
      */
     function toolProcess() {
         // 头工具栏事件(新增)
-        table.on('toolbar(repairData)', function(obj){
+        table.on('toolbar(repairHistory)', function(obj){
             let checkStatus = table.checkStatus(obj.config.id); // 选中行信息
             switch(obj.event){
-                case 'add':
-                    addFormDialog(layer, form, $,
-                        '新增设备信息', equipContent,
-                        null,
-                        null,
-                        null,
-                        null,
-                        '/equipmentSys/equipment/add',
-                        'addEquip');
-                    break;
+                // case 'add':
+                //     addFormDialog(layer, form, $,
+                //         '新增设备信息', equipContent,
+                //         null,
+                //         null,
+                //         null,
+                //         null,
+                //         '/equipmentSys/equipment/add',
+                //         'addEquip');
+                //     break;
                 case 'getCheckLength':
                     let data = checkStatus.data;
                     layer.msg('选中了：'+ data.length + ' 个');
@@ -123,49 +123,26 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
             }
         });
         // 监听行工具事件(维修，报废)
-        table.on('tool(repairData)', function(obj){
+        table.on('tool(repairHistory)', function(obj){
             let data = obj.data; // 操作行数据
-            if (obj.event === 'repair') {
-                layer.confirm('当前设备：'+data.equipTypeName+data.equipName+'，维修编号：'+data.repairNumber+'，确认维修完成？', {icon: 3, title: '提示'}, function (index) {
+            if (obj.event === 'del') {
+                layer.confirm('当前维修编号：'+data.repairNumber+'，设备名称：'+data.equipName+'，维修情况：'
+                    +data.repairStateName+'，确认删除此条记录？', {icon: 3, title: '警告'}, function (index) {
                     $.ajax({
                         async: false,
-                        type: 'GET',
-                        url: '/equipmentSys/repair/repair', // 维修接口
+                        type: 'POST',
+                        url: '/equipmentSys/repair/historyDel', // 删除记录接口
                         data: {id: data.id},
                         success: function (data) {
                             layer.close(index);
                             if (data === 'success') {
-                                layer.msg('维修成功', {icon: 1});
+                                layer.msg('删除成功', {icon: 1});
                                 setTimeout(function () {
                                     window.location.reload();
                                 }, 1000);
                             }
                             if (data === 'error') {
-                                layer.msg('维修失败，请重试或联系管理员！', {icon: 2});
-                            }
-                        }
-                    });
-                });
-            } else if (obj.event === 'scrap') {
-                layer.confirm('当前设备：'+data.equipTypeName+data.equipName+'，维修编号：'+data.repairNumber+'，确认报废？', {icon: 3, title: '警告'}, function (index) {
-                    $.ajax({
-                        async: false,
-                        type: 'GET',
-                        url: '/equipmentSys/repair/scrap', // 报废接口
-                        data: {id: data.id},
-                        success: function (data) {
-                            layer.close(index);
-                            if (data === 'success') {
-                                layer.msg('报废成功', {icon: 1});
-                                setTimeout(function () {
-                                    window.location.reload();
-                                }, 1000);
-                            }
-                            if (data === 'noProcess') {
-                                layer.msg('抱歉，当前设备状态不能报废', {icon: 2});
-                            }
-                            if (data === 'error') {
-                                layer.msg('报修失败，请重试或联系管理员！', {icon: 2});
+                                layer.msg('删除失败，请重试或联系管理员！', {icon: 2});
                             }
                         }
                     });

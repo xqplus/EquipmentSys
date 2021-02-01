@@ -151,3 +151,25 @@ html,body {
     bottom: 0;
     width: 100%
 }
+
+/* 404 */
+.image-404 {
+    /* 取决于图片的宽高 */
+    width: 990px;
+    height: 440px;
+    margin-left: 50%;
+    margin-top: 100px;
+    transform: translate(-50%);
+    background-image: url("/images/404-2.png");
+}
+
+/* 403 */
+.image-403 {
+    /* 取决于图片的宽高 */
+    width: 500px;
+    height: 375px;
+    margin-left: 50%;
+    margin-top: 100px;
+    transform: translate(-50%);
+    background-image: url("/images/403.png");
+}

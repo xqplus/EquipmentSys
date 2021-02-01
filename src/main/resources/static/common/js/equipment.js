@@ -159,7 +159,7 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                 ,{field: 'equipSummary', title: '设备概述'},{field: 'equipStateName', title: '设备状态'}
                 ,{field: 'createDate', title: '创建时间', sort: true}
                 ,{field: 'updateDate', title: '修改时间', sort: true}
-                ,{fixed: 'right', title:'操作', toolbar: '#rightToolBar', width: 150}]
+                ,{fixed: 'right', title:'操作', toolbar: '#rightToolBar', width: 120}]
             ]
         });
     }

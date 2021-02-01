@@ -124,6 +124,12 @@ public class RepairServiceImpl implements IRepairService {
     }
 
     @Override
+    public boolean removeById(Serializable id) {
+        int deleteById = repairMapper.deleteById(id);
+        return (deleteById >= 1);
+    }
+
+    @Override
     public boolean saveBatch(Collection<Repair> entityList, int batchSize) {
         return false;
     }

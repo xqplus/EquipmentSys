@@ -128,7 +128,7 @@
             </div>
         </script>
         <script type="text/html" id="rightToolBar">
-            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除记录</a>
+            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" sec:authorize="hasRole('ADMIN')">删除记录</a>
         </script>
     </div>
 </div>
