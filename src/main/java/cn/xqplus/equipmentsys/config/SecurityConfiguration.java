@@ -47,15 +47,34 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .antMatchers("/", "/equipmentSys/router/index", "/index").permitAll()
-//                .antMatchers("/equipmentSys/router/userManagement").hasRole("ADMIN")
+        http
+                .authorizeRequests()
+                // 各个页面的访问权限
+                    .antMatchers("/", "/equipmentSys/router/index", "/index")
+                        .permitAll()
+                    .antMatchers("/equipmentSys/router/userManagement")
+                        .hasRole("ADMIN")
+                    .antMatchers("/equipmentSys/router/deptManagement")
+                        .hasRole("ADMIN")
+                    .antMatchers("/equipmentSys/router/equipManagement")
+                        .hasAnyRole("ADMIN", "USER", "REPAIR")
+                    .antMatchers("/equipmentSys/router/equipTypeManagement")
+                        .hasRole("ADMIN")
+                    .antMatchers("/equipmentSys/router/repairManagement")
+                        .hasAnyRole("ADMIN", "REPAIR")
+                    .antMatchers("/equipmentSys/router/repairHistory")
+                        .hasAnyRole("ADMIN", "USER", "REPAIR")
+                    .and()
+                // 登录页定制
+                .formLogin()
+                    .loginPage("/equipmentSys/router/login")
+                    .loginProcessingUrl("/equipmentSys/router/login")
+                        .usernameParameter("userName").passwordParameter("password").permitAll()
+                    .and()
+                // 记住我功能定制 cookie保存14天
+                .rememberMe().rememberMeParameter("switch")
                 .and()
-                .formLogin().loginPage("/equipmentSys/router/login")
-                .loginProcessingUrl("/equipmentSys/router/login").usernameParameter("userName").passwordParameter("password").permitAll()
-                .and()
-                .rememberMe().rememberMeParameter("switch") // 记住我功能定制 cookie保存14天
-                .and()
+                // 退出后显示页面
                 .logout().logoutSuccessUrl("/").permitAll();
         // 关闭防止csrf功能
         http.csrf().disable();

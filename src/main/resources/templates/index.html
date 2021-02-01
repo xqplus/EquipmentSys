@@ -38,7 +38,11 @@
             </li>
             <li class="layui-nav-item margin-left-15">
                 <i class="layui-icon layui-icon-set icon-small"></i>
-                <a th:href="@{/equipmentSys/router/repairManagement}">维修管理</a>
+                <a href="javascript:;">维修管理</a>
+                <dl class="layui-nav-child"> <!-- 二级菜单 -->
+                    <dd><a th:href="@{/equipmentSys/router/repairManagement}">维修管理</a></dd>
+                    <dd><a th:href="@{/equipmentSys/router/repairHistory}">维修历史记录</a></dd>
+                </dl>
             </li>
             <!-- 已登录显示用户 -->
             <li class="layui-nav-item nav-right-150" sec:authorize="isAuthenticated()">
