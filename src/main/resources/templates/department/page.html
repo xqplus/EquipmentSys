@@ -22,11 +22,11 @@
                 <i class="layui-icon layui-icon-home icon-small"></i>
                 <a th:href="@{/equipmentSys/router/index}">首&nbsp;&nbsp;页</a>
             </li>
-            <li class="layui-nav-item margin-left-15">
+            <li class="layui-nav-item margin-left-15" sec:authorize="hasRole('ADMIN')">
                 <i class="layui-icon layui-icon-username icon-small"></i>
                 <a th:href="@{/equipmentSys/router/userManagement}">用户管理</a>
             </li>
-            <li class="layui-nav-item margin-left-15 layui-this">
+            <li class="layui-nav-item margin-left-15 layui-this" sec:authorize="hasRole('ADMIN')">
                 <i class="layui-icon layui-icon-user icon-small"></i>
                 <a th:href="@{/equipmentSys/router/deptManagement}">部门管理</a>
             </li>
@@ -35,14 +35,18 @@
                 <a href="javascript:;">设备管理</a>
                 <dl class="layui-nav-child"> <!-- 二级菜单 -->
                     <dd><a th:href="@{/equipmentSys/router/equipManagement}">设备管理</a></dd>
-                    <dd><a th:href="@{/equipmentSys/router/equipTypeManagement}">设备类型管理</a></dd>
+                    <dd sec:authorize="hasRole('ADMIN')">
+                        <a th:href="@{/equipmentSys/router/equipTypeManagement}">设备类型管理</a>
+                    </dd>
                 </dl>
             </li>
             <li class="layui-nav-item margin-left-15">
                 <i class="layui-icon layui-icon-set icon-small"></i>
                 <a href="javascript:;">维修管理</a>
                 <dl class="layui-nav-child"> <!-- 二级菜单 -->
-                    <dd><a th:href="@{/equipmentSys/router/repairManagement}">维修管理</a></dd>
+                    <dd sec:authorize="hasRole('ADMIN') || hasRole('REPAIR')">
+                        <a th:href="@{/equipmentSys/router/repairManagement}">维修管理</a>
+                    </dd>
                     <dd><a th:href="@{/equipmentSys/router/repairHistory}">维修历史记录</a></dd>
                 </dl>
             </li>
