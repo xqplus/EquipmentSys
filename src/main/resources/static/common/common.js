@@ -235,6 +235,56 @@ let equipTypeContent = '<form class="layui-form" id="dialogAddForm">\n' +
     '</form>'
 
 /**
+ * 职位申请信息弹窗内容
+ * @type {string}
+ */
+let applyContent = '<form class="layui-form" id="dialogAddForm">\n' +
+    '    <input id="applyId" type="hidden" name="id" readonly>\n' +
+    '    <div class="layui-form-item">\n' +
+    '        <label class="layui-form-label input-required">申请编号：</label>\n' +
+    '        <div class="layui-input-block">\n' +
+    '            <input id="applyNumber" name="applyNumber" type="text" readonly class="layui-input layui-disabled" lay-verify="required" autocomplete="off" placeholder="不可编辑，根据职位部门自动生成"/>\n' +
+    '        </div>\n' +
+    '    </div>\n' +
+    '    <div class="layui-form-item">\n' +
+    '        <label class="layui-form-label input-required">申请人：</label>\n' +
+    '        <div class="layui-input-block">\n' +
+    '            <input type="text" id="userName" class="layui-input layui-disabled" name="userName" readonly lay-verify="required" autocomplete="off"/>\n' +
+    '        </div>\n' +
+    '    </div>\n' +
+    '    <div class="layui-form-item">\n' +
+    '        <label class="layui-form-label input-required">职位类型：</label>\n' +
+    '        <div class="layui-input-block">\n' +
+    '            <select name="applyType" lay-verify="required" lay-filter="applyType">\n' +
+    '                <option value=""></option>\n' +
+    '                <option value="0">管理员</option>\n' +
+    '                <option value="2">维修员</option>\n' +
+    '            </select>\n' +
+    '        </div>\n' +
+    '    </div>\n' +
+    '    <div class="layui-form-item">\n' +
+    '        <label class="layui-form-label input-required">意向部门：</label>\n' +
+    '        <div class="layui-input-block">\n' +
+    '            <select name="deptNumber" id="deptNumber" lay-verify="required" lay-filter="deptNumber">\n' +
+    '                <option value=""></option>\n' +
+    '            </select>\n' +
+    '        </div>\n' +
+    '    </div>\n' +
+    '    <div class="layui-form-item">\n' +
+    '        <label class="layui-form-label input-required">申请理由：</label>\n' +
+    '        <div class="layui-input-block">\n' +
+    '            <textarea id="applyReason" class="layui-textarea" required lay-verify="required" name="applyReason" rows="3"></textarea>\n' +
+    '        </div>\n' +
+    '    </div>\n' +
+    '    <div class="layui-form-item">\n' +
+    '        <div class="dialog-btn-container">\n' +
+    '            <button id="dialogSave" type="button" class="layui-btn layui-btn-normal" lay-submit lay-filter="dialogSave">保存</button>\n' +
+    '            <button id="cancel" type="button" class="layui-btn layui-btn-primary">取消</button>\n' +
+    '        </div>\n' +
+    '    </div>\n' +
+    '</form>'
+
+/**
  * 两次密码输入校验
  * @param $ layui jquery组件
  * @param pwdId1 input id1
@@ -441,6 +491,12 @@ function addFormDialog(layer, form, $, title, content, userNameSelector, pwdId1,
                 $('#equipTypeName').val(data.equipTypeName);
                 $('#equipTypeSummary').val(data.equipTypeSummary);
             }
+            if (type === 'addApply') {
+                $('#userName').val(getCurrentUserInfo().userName);
+                roleDeptCascade(form, $, filter);
+                // 获取最新的申请编号
+                getNextApplyNumberByDept(form, $);
+            }
             // 弹窗成功后监听表单dialogSave提交
             form.on('submit(dialogSave)', function (data) {
                 // TODO 未填写必填项不应该发送请求和关闭弹窗,此处不可用 msg冲突
@@ -461,7 +517,7 @@ function addFormDialog(layer, form, $, title, content, userNameSelector, pwdId1,
                             // 新增成功后要刷新页面,延迟3s刷新保证提示显示完
                             setTimeout(function () {
                                 window.location.reload();
-                            }, 3000);
+                            }, 1000);
                         }
                         // 部门编辑变更时部门下有用户的情况
                         if (data === 'existsUser') {
@@ -478,6 +534,18 @@ function addFormDialog(layer, form, $, title, content, userNameSelector, pwdId1,
                             if (type.substring(0,4) === 'edit') {
                                 layer.msg('更新失败，请重试或联系管理员',{icon: 2, anim: 6});
                             }
+                        }
+                        if (data === 'applySuccess') {
+                            layer.msg('申请成功', {icon: 1});
+                            setTimeout(function () {
+                                window.location.reload();
+                            }, 1000);
+                        }
+                        if (data === 'conflict') {
+                            layer.msg('您已经是该职位，不可申请', {icon: 0});
+                        }
+                        if (data === 'applyError') {
+                            layer.msg('申请失败，请重试或联系管理员', {icon: 2, anim: 6});
                         }
                     }
                 });
@@ -569,5 +637,44 @@ function getNextEquipTypeNumber() {
             $('#equipTypeNumber').val(data.equipTypeNumber);
         }
     });
+}
+
+/**
+ * 通过部门编号获取最新设备编号，用于新建申请信息
+ */
+function getNextApplyNumberByDept(form, $) {
+    form.on('select(deptNumber)', function (data) {
+        if (data.value !== '') {
+            $.ajax({
+                async: false, // 异步提交
+                type: 'GET',
+                url: '/equipmentSys/apply/getNextApplyNumberByDeptNumber',
+                data: {
+                    deptNumber: data.value
+                },
+                // dataType: 'json',
+                success: function (data) {
+                    $('#applyNumber').val(data);
+                }
+            });
+        }
+    });
+}
+
+/**
+ * 获取当前登录用户信息
+ * @returns currentUserInfo
+ */
+function getCurrentUserInfo() {
+    let currentUserInfo = null;
+    $.ajax({
+        async: false,
+        type: 'GET',
+        url: '/equipmentSys/user/getCurrentUserInfo',
+        success: function (data) {
+            currentUserInfo = data;
+        }
+    });
+    return currentUserInfo;
 }
 

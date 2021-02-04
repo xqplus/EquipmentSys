@@ -63,4 +63,9 @@ public class RouterController {
     public String repairHistory() {
         return "repair/history";
     }
+
+    @GetMapping(value = "/positionApply", name = "职位申请")
+    public String positionApply() {
+        return "positionApply/page";
+    }
 }

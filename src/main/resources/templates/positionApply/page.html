@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>维修历史记录-设备管理系统</title>
+    <title>职位申请-设备管理系统</title>
     <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
     <link rel="stylesheet" th:href="@{/common/common.css}">
     <script rel="script" th:src="@{/layui/layui.js}"></script>
@@ -15,7 +15,7 @@
 <!-- 导航栏底色填充 nav bgcolor fill -->
 <div th:replace="common :: navcolor-fill"></div>
 <div class="container">
-    <!-- 导航条 -->
+    <!-- 导航条 nav -->
     <div class="layui-col-md12">
         <ul class="layui-nav layui-bg-blue" lay-filter="">
             <li class="layui-nav-item margin-left-15">
@@ -40,17 +40,17 @@
                     </dd>
                 </dl>
             </li>
-            <li class="layui-nav-item margin-left-15 layui-this">
+            <li class="layui-nav-item margin-left-15">
                 <i class="layui-icon layui-icon-set icon-small"></i>
                 <a href="javascript:;">维修管理</a>
                 <dl class="layui-nav-child"> <!-- 二级菜单 -->
                     <dd sec:authorize="hasRole('ADMIN') || hasRole('REPAIR')">
                         <a th:href="@{/equipmentSys/router/repairManagement}">维修管理</a>
                     </dd>
-                    <dd class="layui-this"><a th:href="@{/equipmentSys/router/repairHistory}">维修历史记录</a></dd>
+                    <dd><a th:href="@{/equipmentSys/router/repairHistory}">维修历史记录</a></dd>
                 </dl>
             </li>
-            <li class="layui-nav-item margin-left-15">
+            <li class="layui-nav-item margin-left-15 layui-this">
                 <i class="layui-icon layui-icon-form icon-small"></i>
                 <a th:href="@{/equipmentSys/router/positionApply}">职位申请</a>
             </li>
@@ -78,9 +78,9 @@
             <form class="layui-form">
                 <div class="layui-form-item">
                     <div class="layui-inline">
-                        <label class="layui-form-label">维修编号：</label>
+                        <label class="layui-form-label">设备编号：</label>
                         <div class="layui-input-inline">
-                            <input type="text" class="layui-input" name="repairNumber" autocomplete="off">
+                            <input type="text" class="layui-input" name="equipNumber" autocomplete="off">
                         </div>
                     </div>
                     <div class="layui-inline">
@@ -90,32 +90,28 @@
                         </div>
                     </div>
                     <div class="layui-inline">
-                        <label class="layui-form-label">维修人：</label>
+                        <label class="layui-form-label">设备状态：</label>
                         <div class="layui-input-inline">
-                            <input type="text" class="layui-input" name="repairerName" autocomplete="off">
+                            <select name="equipState" id="equipState">
+                                <option value=""></option>
+                                <option value="0">使用中</option>
+                                <option value="1">维修中</option>
+                                <option value="2">已报废</option>
+                            </select>
                         </div>
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <div class="layui-inline">
-                        <label class="layui-form-label">报修时间：</label>
+                        <label class="layui-form-label">创建时间：</label>
                         <div class="layui-input-inline">
                             <!--<i class="layui-icon layui-icon-logout icon-date" id="dateIcon"></i>-->
                             <input type="text" class="layui-icon layui-input" style="font-size: 14px; cursor: pointer" name="createTime" id="createTime" placeholder="&#xe637;">
                         </div>
                     </div>
-                    <div class="layui-inline">
-                        <label class="layui-form-label">维修时间：</label>
-                        <div class="layui-input-inline">
-                            <!--<i class="layui-icon layui-icon-logout icon-date" id="dateIcon"></i>-->
-                            <input type="text" class="layui-icon layui-input" style="font-size: 14px; cursor: pointer" name="repairTime" id="repairTime" placeholder="&#xe637;">
-                        </div>
-                    </div>
                     <!-- 用于数据提交 -->
                     <input type="hidden" name="startTime">
                     <input type="hidden" name="endTime">
-                    <input type="hidden" name="startTime1">
-                    <input type="hidden" name="endTime1">
                 </div>
                 <div class="layui-form-item line-height-60" style="text-align: center">
                     <button type="button" class="layui-btn layui-btn-normal" lay-submit lay-filter="search">搜索</button>
@@ -127,21 +123,37 @@
     <!-- 数据表格 table -->
     <!-- 表格带有上下10的margin,所以class不带margin-top-10 -->
     <div class="layui-col-md12">
-        <table class="layui-hide" id="repairHistory" lay-filter="repairHistory"></table>
+        <table class="layui-hide" id="applyData" lay-filter="applyData"></table>
         <script type="text/html" id="topToolBar">
             <div class="layui-btn-container">
-<!--                <button class="layui-btn layui-btn-sm layui-btn-warm" lay-event="add">新增设备（暂定）</button>-->
+                <button sec:authorize="!hasRole('ADMIN')" class="layui-btn layui-btn-sm layui-btn-warm" lay-event="apply">立即申请</button>
                 <button class="layui-btn layui-btn-sm layui-btn-warm" lay-event="getCheckLength">获取选中数目</button>
                 <button class="layui-btn layui-btn-sm layui-btn-warm" lay-event="isAll">验证是否全选</button>
             </div>
         </script>
         <script type="text/html" id="rightToolBar">
-            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" sec:authorize="hasRole('ADMIN')">删除记录</a>
+            {{# if (d.applyStateName === '审批中') { }}
+                <a class="layui-btn layui-btn-xs" lay-event="edit" sec:authorize="!hasRole('ADMIN')">编辑</a>
+                <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="pass" sec:authorize="hasRole('ADMIN')">通过</a>
+                <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="reject" sec:authorize="hasRole('ADMIN')">驳回</a>
+            {{# } }}
+        </script>
+        <!-- 根据申请状态显示颜色 -->
+        <script type="text/html" id="applyStateName">
+            {{# if (d.applyStateName === '审批中') { }}
+                <span style="color: #01AAED;">{{ d.applyStateName }}</span>
+            {{# } }}
+            {{# if (d.applyStateName === '审批通过') { }}
+                <span style="color: green;">{{ d.applyStateName }}</span>
+            {{# } }}
+            {{# if (d.applyStateName === '审批驳回') { }}
+                <span style="color: red;">{{ d.applyStateName }}</span>
+            {{# } }}
         </script>
     </div>
 </div>
 <!-- 页脚 footer -->
 <div th:replace="common :: footer"></div>
-<script th:src="@{/common/js/repairHistory.js}"></script>
+<script th:src="@{/common/js/positionApply.js}"></script>
 </body>
 </html>

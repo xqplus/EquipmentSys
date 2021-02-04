@@ -13,7 +13,7 @@ layui.use(['element', 'table', 'laydate', 'form', 'jquery'], function(){
     form.on('submit(search)', function (data) {
         timeConverter(data);
         delete data.field.createTime; // 传入后台可能出现类型不匹配问题，删除
-        // search 后端数据渲染
+        // search 后端数据渲染 TODO 表格数据重载
         tableRender(data.field);
         toolProcess();
     });
@@ -84,6 +84,7 @@ layui.use(['element', 'table', 'laydate', 'form', 'jquery'], function(){
             let checkStatus = table.checkStatus(obj.config.id); // 选中行信息
             switch(obj.event){
                 case 'add':
+                    console.log(table.cache.userData.length > 0);
                     addFormDialog(layer, form, $,
                         '新增用户信息', addUserContent,
                         '#userName',
@@ -94,7 +95,8 @@ layui.use(['element', 'table', 'laydate', 'form', 'jquery'], function(){
                         'addUser');
                     break;case 'getCheckLength':var data = checkStatus.data;
                     layer.msg('选中了：'+ data.length + ' 个');
-                    break;case 'isAll':layer.msg(checkStatus.isAll ? '全选': '未全选');
+                    break;
+                case 'isAll':layer.msg(checkStatus.isAll ? '全选': '未全选');
                     break;//自定义头工具栏右侧图标 - 提示
                 case 'LAYTABLE_TIPS':
                     layer.alert('这是工具栏右侧自定义的一个图标按钮');

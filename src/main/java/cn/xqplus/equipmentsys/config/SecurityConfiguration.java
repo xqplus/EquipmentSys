@@ -64,6 +64,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         .hasAnyRole("ADMIN", "REPAIR")
                     .antMatchers("/equipmentSys/router/repairHistory")
                         .hasAnyRole("ADMIN", "USER", "REPAIR")
+                    .antMatchers("/equipmentSys/router/positionApply")
+                        .hasAnyRole("ADMIN", "USER", "REPAIR")
                     .and()
                 // 登录页定制
                 .formLogin()

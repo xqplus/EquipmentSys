@@ -48,6 +48,10 @@
                     <dd><a th:href="@{/equipmentSys/router/repairHistory}">维修历史记录</a></dd>
                 </dl>
             </li>
+            <li class="layui-nav-item margin-left-15">
+                <i class="layui-icon layui-icon-form icon-small"></i>
+                <a th:href="@{/equipmentSys/router/positionApply}">职位申请</a>
+            </li>
             <!-- 已登录显示用户 -->
             <li class="layui-nav-item nav-right-150" sec:authorize="isAuthenticated()">
                 <a href="">

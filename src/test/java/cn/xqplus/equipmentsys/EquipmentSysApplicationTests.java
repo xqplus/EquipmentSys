@@ -1,5 +1,6 @@
 package cn.xqplus.equipmentsys;
 
+import cn.xqplus.equipmentsys.mapper.IApplyMapper;
 import cn.xqplus.equipmentsys.model.User;
 import cn.xqplus.equipmentsys.utils.RedisUtils;
 import org.junit.jupiter.api.Test;
@@ -19,6 +20,9 @@ class EquipmentSysApplicationTests {
     @Autowired
     private RedisUtils redisUtils;
 
+    @Autowired
+    private IApplyMapper applyMapper;
+
     @Test
     void contextLoads() {
         // 当前时间戳
@@ -28,8 +32,9 @@ class EquipmentSysApplicationTests {
     @Test
     void currentUserTest() {
         // 当前登录用户
-        Object currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        System.out.println(currentUser);
+        System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+//        Object currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        System.out.println(currentUser);
     }
 
     @Test

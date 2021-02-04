@@ -109,4 +109,8 @@ public class UserController {
         }
     }
 
+    @GetMapping(value = "/getCurrentUserInfo", name = "当前登录用户信息")
+    public User getCurrentUserInfo() {
+        return userService.getCurrentUserInfo();
+    }
 }

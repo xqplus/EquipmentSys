@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.xqplus.equipmentsys.mapper.IApplyMapper">
+<!--    <select id="getDeptByRole"-->
+<!--            resultType="cn.xqplus.equipmentsys.form.UserForm">-->
+<!--        SELECT-->
+<!--        r.dept_number,-->
+<!--        d.dept_name-->
+<!--        FROM-->
+<!--        t_role_dept r-->
+<!--        LEFT JOIN-->
+<!--        t_department d-->
+<!--        ON-->
+<!--        r.dept_number = d.dept_number-->
+<!--        WHERE-->
+<!--        r.is_del = 0-->
+<!--        AND d.is_del = 0-->
+<!--        <if test="role != null and role != ''">-->
+<!--            AND r.role_type = #{role}-->
+<!--        </if>-->
+<!--    </select>-->
+
+    <select id="getList"
+            resultType="cn.xqplus.equipmentsys.form.ApplyForm">
+        SELECT
+            p.id,
+            p.apply_number,
+            p.apply_type,
+            p.apply_reason,
+            p.apply_state,
+            p.create_time,
+            p.update_time,
+            u.user_name,
+            r.role_name,
+            d.dept_name
+        FROM
+            t_position_apply p
+        LEFT JOIN
+            t_user u
+        ON
+            p.user_number = u.user_number
+        LEFT JOIN
+            t_department d
+        ON
+            p.dept_number = d.dept_number
+        LEFT JOIN
+            t_role r
+        ON
+            u.role_type = r.role_type
+        WHERE
+            p.is_del = 0
+        AND u.is_del = 0
+        AND d.is_del = 0
+        AND r.is_del = 0
+        <if test="name != null and name != ''">
+        AND u.user_name = #{name}
+        </if>
+<!--        <if test="q.deptNumber != null and q.deptNumber != ''">-->
+<!--            AND dept_number = #{q.deptNumber}-->
+<!--        </if>-->
+<!--        <if test="q.deptName != null and q.deptName != ''">-->
+<!--            AND dept_name LIKE CONCAT(CONCAT('%', #{q.deptName}), '%')-->
+<!--        </if>-->
+<!--        <if test="q.deptType != null and q.deptType != ''">-->
+<!--            AND dept_name LIKE CONCAT(#{q.deptType}, '%')-->
+<!--        </if>-->
+<!--        <if test="q.startTime != null and q.startTime != ''">-->
+<!--            AND create_time &gt;= #{q.startTime}-->
+<!--        </if>-->
+<!--        <if test="q.endTime != null and q.endTime != ''">-->
+<!--            AND create_time &lt;= #{q.endTime}-->
+<!--        </if>-->
+    </select>
+</mapper>
