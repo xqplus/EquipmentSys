@@ -13,6 +13,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.List;
@@ -92,6 +93,23 @@ public class ApplyServiceImpl implements IApplyService {
     public boolean save(Apply entity) {
         int insert = applyMapper.insert(entity);
         return (insert >= 1);
+    }
+
+    @Override
+    public boolean removeById(Serializable id) {
+        int deleteById = applyMapper.deleteById(id);
+        return (deleteById >= 1);
+    }
+
+    @Override
+    public boolean update(Apply entity, Wrapper<Apply> updateWrapper) {
+        int update = applyMapper.update(entity, updateWrapper);
+        return (update >= 1);
+    }
+
+    @Override
+    public Apply getOne(Wrapper<Apply> queryWrapper) {
+        return applyMapper.selectOne(queryWrapper);
     }
 
     @Override

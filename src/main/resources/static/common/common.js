@@ -491,11 +491,15 @@ function addFormDialog(layer, form, $, title, content, userNameSelector, pwdId1,
                 $('#equipTypeName').val(data.equipTypeName);
                 $('#equipTypeSummary').val(data.equipTypeSummary);
             }
-            if (type === 'addApply') {
+            if (type === 'addApply' || 'editApply') {
                 $('#userName').val(getCurrentUserInfo().userName);
                 roleDeptCascade(form, $, filter);
                 // 获取最新的申请编号
                 getNextApplyNumberByDept(form, $);
+            }
+            if (type === 'editApply') {
+                $('#applyNumber').val(data.applyNumber);
+                $('#applyReason').val(data.applyReason);
             }
             // 弹窗成功后监听表单dialogSave提交
             form.on('submit(dialogSave)', function (data) {

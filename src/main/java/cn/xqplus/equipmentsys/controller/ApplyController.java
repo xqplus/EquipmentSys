@@ -6,7 +6,9 @@ import cn.xqplus.equipmentsys.model.User;
 import cn.xqplus.equipmentsys.service.IApplyService;
 import cn.xqplus.equipmentsys.service.IUserService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.sun.istack.internal.NotNull;
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -64,4 +66,78 @@ public class ApplyController {
             }
         }
     }
+
+    @PostMapping(value = "update", name = "申请编辑")
+    public String update(ApplyForm applyForm) {
+        User currentUserInfo = userService.getCurrentUserInfo();
+        if (currentUserInfo.getRoleType().equals(applyForm.getApplyType())) {
+            return "conflict";
+        } else {
+            Apply apply = new Apply();
+            try {
+                BeanUtils.copyProperties(apply, applyForm);
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                e.printStackTrace();
+            }
+            boolean update = applyService.update(apply, new UpdateWrapper<Apply>()
+                    .eq("id", applyForm.getId()));
+            if (update) {
+                return "success";
+            } else {
+                return "error";
+            }
+        }
+    }
+
+    @PostMapping(value = "/delete", name = "申请删除")
+    public String delete(@NotNull int id) {
+        boolean b = applyService.removeById(id);
+        if (b) {
+            return "success";
+        } else {
+            return "error";
+        }
+    }
+
+    @GetMapping(value = "/pass", name = "申请通过审批")
+    public String pass(ApplyForm applyForm) {
+        // 更新申请信息
+        Apply apply = new Apply();
+        apply.setApplyState(1);
+        apply.setApproverName(applyForm.getApproverName());
+        apply.setApprovalOpinion(applyForm.getApprovalOpinion());
+        boolean updateApply = applyService.update(apply, new UpdateWrapper<Apply>()
+                .eq("id", applyForm.getId()));
+        // 更新用户信息
+        User user = new User();
+        // 获取意向部门编号
+        Apply apply1 = applyService.getOne(new QueryWrapper<Apply>()
+                .eq("id", applyForm.getId()));
+        user.setRoleType(applyForm.getApplyType());
+        user.setDeptNumber(apply1.getDeptNumber());
+        boolean updateUser = userService.updateUser(user, new UpdateWrapper<User>()
+                .eq("user_name", applyForm.getUserName()));
+        if (updateApply && updateUser) {
+            return "success";
+        } else {
+            return "error";
+        }
+    }
+
+    @GetMapping(value = "/reject", name = "审批驳回")
+    public String reject(ApplyForm applyForm) {
+        // 更新申请信息
+        Apply apply = new Apply();
+        apply.setApplyState(2);
+        apply.setApproverName(applyForm.getApproverName());
+        apply.setApprovalOpinion(applyForm.getApprovalOpinion());
+        boolean updateApply = applyService.update(apply, new UpdateWrapper<Apply>()
+                .eq("id", applyForm.getId()));
+        if (updateApply) {
+            return "success";
+        } else {
+            return "error";
+        }
+    }
+
 }

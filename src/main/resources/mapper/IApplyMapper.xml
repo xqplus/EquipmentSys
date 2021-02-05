@@ -28,6 +28,8 @@
             p.apply_type,
             p.apply_reason,
             p.apply_state,
+            p.approver_name,
+            p.approval_opinion,
             p.create_time,
             p.update_time,
             u.user_name,
@@ -70,5 +72,8 @@
 <!--        <if test="q.endTime != null and q.endTime != ''">-->
 <!--            AND create_time &lt;= #{q.endTime}-->
 <!--        </if>-->
+        ORDER BY
+            p.apply_state
+        ASC
     </select>
 </mapper>

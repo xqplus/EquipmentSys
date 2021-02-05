@@ -58,24 +58,25 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                     break;
             }
         });
-        // 监听行工具事件(编辑，报修，删除)
-        table.on('tool(equipmentData)', function(obj){
+        // 监听行工具事件(编辑，通过，驳回，删除)
+        table.on('tool(applyData)', function(obj){
             let data = obj.data; // 操作行数据
             if (obj.event === 'edit') {
                 addFormDialog(layer, form, $,
-                    '编辑设备信息', equipContent,
+                    '编辑职位申请', applyContent,
                     null,
                     null,
                     null,
-                    null,
-                    '/equipmentSys/equipment/update',
-                    'editEquip', data);
+                    'applyType',
+                    '/equipmentSys/apply/update',
+                    'editApply', data);
             } else if (obj.event === 'del') {
-                layer.confirm('确定删除设备 '+ data.equipTypeName + data.equipName +' 的信息？', {icon: 3, title: '警告'}, function (index) {
+                layer.confirm('当前申请编号：'+ data.applyNumber +'，申请人：'+ data.userName +'，申请职位：' + data.applyTypeName
+                    +'，申请状态：'+ data.applyStateName +'，确认删除？', {icon: 3, title: '警告'}, function (index) {
                     $.ajax({
                         async: false,
                         type: 'POST',
-                        url: '/equipmentSys/equipment/delete',
+                        url: '/equipmentSys/apply/delete',
                         data: {id: data.id},
                         success: function (data) {
                             layer.close(index);
@@ -91,28 +92,72 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                         }
                     });
                 });
-            } else if (obj.event === 'reportRepair') { // 报修
-                layer.confirm('当前设备：'+data.equipTypeName+data.equipName+'，设备编号：'+data.equipNumber+'，确认报修？', {icon: 3, title: '提示'}, function (index) {
-                    $.ajax({
-                        async: false,
-                        type: 'GET',
-                        url: '/equipmentSys/equipment/reportRepair', // 报修接口
-                        data: {id: data.id},
-                        success: function (data) {
-                            layer.close(index);
-                            if (data === 'success') {
-                                layer.msg('报修成功', {icon: 1});
-                                setTimeout(function () {
-                                    window.location.reload();
-                                }, 3000);
+            } else if (obj.event === 'pass') { // 审批通过
+                layer.confirm('当前申请编号：'+ data.applyNumber
+                    +'，申请人：'+ data.userName +'，申请职位：' + data.applyTypeName
+                    +'，申请理由：'+ data.applyReason +'，确认通过？', {icon: 3, title: '提示'}, function (index) {
+                    layer.prompt({
+                        formType: 2,
+                        maxlength: 200,
+                        value: '予以通过',
+                        title: '通过审批意见',
+                        area: ['500px', '300px'] //自定义文本域宽高
+                    }, function(value, index1, elem){
+                        data.approvalOpinion = value;
+                        data.approverName = getCurrentUserInfo().userName;
+                        $.ajax({
+                            async: false,
+                            type: 'GET',
+                            url: '/equipmentSys/apply/pass',
+                            data: data,
+                            success: function (data) {
+                                if (data === 'success') {
+                                    layer.msg('审批通过成功', {icon: 1});
+                                    setTimeout(function () {
+                                        window.location.reload();
+                                    }, 1500);
+                                }
+                                if (data === 'error') {
+                                    layer.msg('审批失败，请重试或联系管理员！', {icon: 2});
+                                }
                             }
-                            if (data === 'noProcess') {
-                                layer.msg('抱歉，当前设备状态不能报修', {icon: 2});
+                        });
+                        layer.close(index1);
+                        layer.close(index);
+                    });
+                });
+            } else if (obj.event === 'reject') { // 审批驳回
+                layer.confirm('当前申请编号：'+ data.applyNumber
+                    +'，申请人：'+ data.userName +'，申请职位：' + data.applyTypeName
+                    +'，申请理由：'+ data.applyReason +'，确认驳回？', {icon: 3, title: '警告'}, function (index) {
+                    layer.prompt({
+                        formType: 2,
+                        maxlength: 200,
+                        value: '予以驳回',
+                        title: '驳回审批意见',
+                        area: ['500px', '300px'] //自定义文本域宽高
+                    }, function(value, index1, elem){
+                        data.approvalOpinion = value;
+                        data.approverName = getCurrentUserInfo().userName;
+                        $.ajax({
+                            async: false,
+                            type: 'GET',
+                            url: '/equipmentSys/apply/reject',
+                            data: data,
+                            success: function (data) {
+                                if (data === 'success') {
+                                    layer.msg('审批驳回成功', {icon: 1});
+                                    setTimeout(function () {
+                                        window.location.reload();
+                                    }, 1500);
+                                }
+                                if (data === 'error') {
+                                    layer.msg('审批失败，请重试或联系管理员！', {icon: 2});
+                                }
                             }
-                            if (data === 'error') {
-                                layer.msg('报修失败，请重试或联系管理员！', {icon: 2});
-                            }
-                        }
+                        });
+                        layer.close(index1);
+                        layer.close(index);
                     });
                 });
             }
@@ -161,8 +206,10 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                     ,{field: 'applyReason', title: '申请理由'}
                     ,{field: 'applyStateName', title: '申请状态',templet: '#applyStateName'}
                     ,{field: 'createDate', title: '申请时间', sort: true}
+                    ,{field: 'approverName', title: '审批人'}
                     ,{field: 'updateDate', title: '审批时间', sort: true}
-                    ,{fixed: 'right', title:'操作', toolbar: '#rightToolBar', width: 120}]
+                    ,{field: 'approvalOpinion', title: '审批意见'}
+                    ,{fixed: 'right', title:'操作', toolbar: '#rightToolBar', width: 110}]
             ]
         });
     }

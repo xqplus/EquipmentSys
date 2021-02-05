@@ -52,8 +52,7 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public List<User> findByWrapper(QueryWrapper<User> wrapper) {
-        List<User> users = userMapper.selectList(wrapper);
-        return users;
+        return userMapper.selectList(wrapper);
     }
 
     @Override

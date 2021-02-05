@@ -1,8 +1,11 @@
 package cn.xqplus.equipmentsys;
 
 import cn.xqplus.equipmentsys.mapper.IApplyMapper;
+import cn.xqplus.equipmentsys.model.Apply;
 import cn.xqplus.equipmentsys.model.User;
+import cn.xqplus.equipmentsys.service.IApplyService;
 import cn.xqplus.equipmentsys.utils.RedisUtils;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,6 +25,8 @@ class EquipmentSysApplicationTests {
 
     @Autowired
     private IApplyMapper applyMapper;
+
+    private IApplyService applyService;
 
     @Test
     void contextLoads() {
@@ -45,5 +50,12 @@ class EquipmentSysApplicationTests {
         redisUtils.set("user", user);
         System.out.println(redisUtils.get("user"));
         //redisUtils.del();
+    }
+
+    @Test
+    void applyGetTest() {
+        Apply apply1 = applyService.getOne(new QueryWrapper<Apply>()
+                .eq("id", 2));
+        System.out.println(apply1);
     }
 }

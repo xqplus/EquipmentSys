@@ -60,6 +60,18 @@ public class Apply implements Serializable {
     private Integer applyState;
 
     /**
+     * 审批人
+     */
+    @TableField(value = "approver_name", jdbcType = JdbcType.VARCHAR)
+    private String approverName;
+
+    /**
+     * 审批意见
+     */
+    @TableField(value = "approval_opinion", jdbcType = JdbcType.VARCHAR)
+    private String approvalOpinion;
+
+    /**
      * 创建时间（申请时间）
      */
     @TableField(value = "create_time", jdbcType = JdbcType.DECIMAL, fill = FieldFill.INSERT)

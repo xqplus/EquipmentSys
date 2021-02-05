@@ -136,6 +136,8 @@
                 <a class="layui-btn layui-btn-xs" lay-event="edit" sec:authorize="!hasRole('ADMIN')">编辑</a>
                 <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="pass" sec:authorize="hasRole('ADMIN')">通过</a>
                 <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="reject" sec:authorize="hasRole('ADMIN')">驳回</a>
+            {{# } else { }}
+                <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del" sec:authorize="hasRole('ADMIN')">删除</a>
             {{# } }}
         </script>
         <!-- 根据申请状态显示颜色 -->
