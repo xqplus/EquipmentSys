@@ -31,31 +31,31 @@ class EquipmentSysApplicationTests {
     @Test
     void contextLoads() {
         // 当前时间戳
-        System.out.println(new Date().getTime());
+        //System.out.println(new Date().getTime());
     }
 
     @Test
     void currentUserTest() {
         // 当前登录用户
-        System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-//        Object currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        System.out.println(currentUser);
+        //System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        //Object currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        //System.out.println(currentUser);
     }
 
     @Test
     void redisTemplateTest() {
         // redis 存取
-        User user = new User();
-        user.setUserName("zhangsan");
-        redisUtils.set("user", user);
-        System.out.println(redisUtils.get("user"));
+        //User user = new User();
+        //user.setUserName("zhangsan");
+        //redisUtils.set("user", user);
+        //System.out.println(redisUtils.get("user"));
         //redisUtils.del();
     }
 
     @Test
     void applyGetTest() {
-        Apply apply1 = applyService.getOne(new QueryWrapper<Apply>()
-                .eq("id", 2));
-        System.out.println(apply1);
+        //Apply apply1 = applyService.getOne(new QueryWrapper<Apply>()
+        //        .eq("id", 2));
+        //System.out.println(apply1);
     }
 }

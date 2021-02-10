@@ -41,5 +41,11 @@ mybatis-plus:
   mapper-locations: classpath:mapper/*.xml
 # 配置日志
   configuration:
-    # 仅控制台输出的日志
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    # 打印到指定文件的日志
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+logging:
+  level:
+    cn.xqplus: DEBUG
+  file:
+    path: ./logs/
+    name: ./logs/core.log

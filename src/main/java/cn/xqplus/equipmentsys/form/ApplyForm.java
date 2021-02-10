@@ -56,4 +56,14 @@ public class ApplyForm extends Apply {
      * 结束时间（查询传参 时间戳）
      */
     private Long endTime;
+
+    /**
+     * 开始时间（查询传参 时间戳）
+     */
+    private Long startTime1;
+
+    /**
+     * 结束时间（查询传参 时间戳）
+     */
+    private Long endTime1;
 }

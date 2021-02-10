@@ -12,7 +12,17 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
     form.on('submit(search)', function (data) {
         // 时间转换 string -> long
         timeConverter(data);
+        if (data.field.approvalTime !== '') { // 选择时间才进行操作 否则时间转换出现NaN
+            let arr = data.field.approvalTime.split(' - '); // 得到时间数组
+            let startTime = new Date(arr[0]); // 转换为Date
+            let endTime = new Date(arr[1]);
+            startTime = startTime.getTime(); // 转换为时间戳
+            endTime = endTime.getTime();
+            data.field.startTime1 = startTime; // 设置提交数据的值
+            data.field.endTime1 = endTime;
+        }
         delete data.field.createTime; // 传入后台可能出现类型不匹配问题，删除
+        delete data.field.approvalTime;
         // search 后端数据渲染
         tableRender(data.field);
         toolProcess();
@@ -23,7 +33,13 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
         range: true,
         // eventElem: '#dateIcon',
         trigger: 'click'
-    })
+    });
+    laydate.render({
+        elem: '#approvalTime',
+        range: true,
+        // eventElem: '#dateIcon',
+        trigger: 'click'
+    });
     tableRender({});
     toolProcess();
 

@@ -1,9 +1,9 @@
 package cn.xqplus.equipmentsys.model;
 
 import com.baomidou.mybatisplus.annotation.*;
-import com.sun.istack.internal.NotNull;
 import org.apache.ibatis.type.JdbcType;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**

@@ -78,40 +78,59 @@
             <form class="layui-form">
                 <div class="layui-form-item">
                     <div class="layui-inline">
-                        <label class="layui-form-label">设备编号：</label>
+                        <label class="layui-form-label">申请编号：</label>
                         <div class="layui-input-inline">
-                            <input type="text" class="layui-input" name="equipNumber" autocomplete="off">
+                            <input type="text" class="layui-input" name="applyNumber" autocomplete="off">
                         </div>
                     </div>
                     <div class="layui-inline">
-                        <label class="layui-form-label">设备名称：</label>
+                        <label class="layui-form-label">申请人：</label>
                         <div class="layui-input-inline">
-                            <input type="text" class="layui-input" name="equipName" autocomplete="off">
+                            <input type="text" class="layui-input" name="userName" autocomplete="off">
                         </div>
                     </div>
                     <div class="layui-inline">
-                        <label class="layui-form-label">设备状态：</label>
+                        <label class="layui-form-label">申请职位：</label>
                         <div class="layui-input-inline">
-                            <select name="equipState" id="equipState">
+                            <select name="applyType" id="applyType">
                                 <option value=""></option>
-                                <option value="0">使用中</option>
-                                <option value="1">维修中</option>
-                                <option value="2">已报废</option>
+                                <option value="0">管理员</option>
+                                <option value="2">维修员</option>
                             </select>
                         </div>
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <div class="layui-inline">
-                        <label class="layui-form-label">创建时间：</label>
+                        <label class="layui-form-label">申请状态：</label>
+                        <div class="layui-input-inline">
+                            <select name="applyState" id="applyState">
+                                <option value=""></option>
+                                <option value="0">审批中</option>
+                                <option value="1">审批通过</option>
+                                <option value="2">审批驳回</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">申请时间：</label>
                         <div class="layui-input-inline">
                             <!--<i class="layui-icon layui-icon-logout icon-date" id="dateIcon"></i>-->
                             <input type="text" class="layui-icon layui-input" style="font-size: 14px; cursor: pointer" name="createTime" id="createTime" placeholder="&#xe637;">
                         </div>
                     </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">审批时间：</label>
+                        <div class="layui-input-inline">
+                            <!--<i class="layui-icon layui-icon-logout icon-date" id="dateIcon"></i>-->
+                            <input type="text" class="layui-icon layui-input" style="font-size: 14px; cursor: pointer" name="approvalTime" id="approvalTime" placeholder="&#xe637;">
+                        </div>
+                    </div>
                     <!-- 用于数据提交 -->
                     <input type="hidden" name="startTime">
                     <input type="hidden" name="endTime">
+                    <input type="hidden" name="startTime1">
+                    <input type="hidden" name="endTime1">
                 </div>
                 <div class="layui-form-item line-height-60" style="text-align: center">
                     <button type="button" class="layui-btn layui-btn-normal" lay-submit lay-filter="search">搜索</button>

@@ -57,21 +57,30 @@
         <if test="name != null and name != ''">
         AND u.user_name = #{name}
         </if>
-<!--        <if test="q.deptNumber != null and q.deptNumber != ''">-->
-<!--            AND dept_number = #{q.deptNumber}-->
-<!--        </if>-->
-<!--        <if test="q.deptName != null and q.deptName != ''">-->
-<!--            AND dept_name LIKE CONCAT(CONCAT('%', #{q.deptName}), '%')-->
-<!--        </if>-->
-<!--        <if test="q.deptType != null and q.deptType != ''">-->
-<!--            AND dept_name LIKE CONCAT(#{q.deptType}, '%')-->
-<!--        </if>-->
-<!--        <if test="q.startTime != null and q.startTime != ''">-->
-<!--            AND create_time &gt;= #{q.startTime}-->
-<!--        </if>-->
-<!--        <if test="q.endTime != null and q.endTime != ''">-->
-<!--            AND create_time &lt;= #{q.endTime}-->
-<!--        </if>-->
+        <if test="q.applyNumber != null and q.applyNumber != ''">
+            AND p.apply_number = #{q.applyNumber}
+        </if>
+        <if test="q.userName != null and q.userName != ''">
+            AND u.user_name LIKE CONCAT(CONCAT('%', #{q.userName}), '%')
+        </if>
+        <if test="q.applyType != null">
+            AND p.apply_type = #{q.applyType}
+        </if>
+        <if test="q.applyState != null">
+            AND p.apply_state = #{q.applyState}
+        </if>
+        <if test="q.startTime != null and q.startTime != ''">
+            AND p.create_time &gt;= #{q.startTime}
+        </if>
+        <if test="q.endTime != null and q.endTime != ''">
+            AND p.create_time &lt;= #{q.endTime}
+        </if>
+        <if test="q.startTime1 != null and q.startTime1 != ''">
+            AND p.update_time &gt;= #{q.startTime1}
+        </if>
+        <if test="q.endTime1 != null and q.endTime1 != ''">
+            AND p.update_time &lt;= #{q.endTime1}
+        </if>
         ORDER BY
             p.apply_state
         ASC

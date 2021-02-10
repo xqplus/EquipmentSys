@@ -32,9 +32,9 @@ public class ApplyController {
     @GetMapping(value = "/page", name = "申请信息page")
     public Object page(@RequestParam(defaultValue = "1") int page,
                        @RequestParam(defaultValue = "10") int limit, ApplyForm wrapper,
-                       String userName) {
+                       String name) {
         Page<ApplyForm> pages = new Page<>(page, limit);
-        return applyService.selectPage(pages, wrapper, userName);
+        return applyService.selectPage(pages, wrapper, name);
     }
 
     @GetMapping(value = "/getNextApplyNumberByDeptNumber", name = "通过部门编号获取最新的申请编号")
