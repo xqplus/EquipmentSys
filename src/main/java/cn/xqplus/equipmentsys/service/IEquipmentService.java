@@ -24,4 +24,11 @@ public interface IEquipmentService extends IService<Equipment> {
      */
     Equipment getNextEquipNumber();
 
+    /**
+     * 设备报修
+     * @param id
+     * @return
+     */
+    String reportRepair(int id);
+
 }

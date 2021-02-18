@@ -18,6 +18,9 @@
         <if test="role != null and role != ''">
         AND r.role_type = #{role}
         </if>
+        ORDER BY
+            r.dept_number
+        DESC
     </select>
 
     <select id="getList"

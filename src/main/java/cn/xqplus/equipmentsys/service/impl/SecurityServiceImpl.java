@@ -50,12 +50,10 @@ public class SecurityServiceImpl implements UserDetailsService {
                     authorities.add(new SimpleGrantedAuthority(role.getRoleAuth()));
                 }
             }
-            // 这里的User是spring security的用户认证类
-            org.springframework.security.core.userdetails
-                    .User securityUser = new org.springframework.security.core.userdetails
-                    .User(user.getUserName(), user.getPassword(), authorities);
 
-            return securityUser;
+            // 这里的User是spring security的用户认证类
+            return new org.springframework.security.core.userdetails
+            .User(user.getUserName(), user.getPassword(), authorities);
         }
     }
 }

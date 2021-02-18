@@ -43,6 +43,12 @@ public class PasswordVisibleImpl implements IPasswordVisibleService {
     }
 
     @Override
+    public boolean remove(Wrapper<PasswordVisible> queryWrapper) {
+        int delete = passwordVisibleMapper.delete(queryWrapper);
+        return (delete >= 1);
+    }
+
+    @Override
     public boolean saveBatch(Collection<PasswordVisible> entityList, int batchSize) {
         return false;
     }

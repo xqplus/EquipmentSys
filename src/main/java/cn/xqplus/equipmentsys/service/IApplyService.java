@@ -26,4 +26,18 @@ public interface IApplyService extends IService<Apply> {
      * @return String 最新的申请编号
      */
     String getNextApplyNumberByDeptNumber(String deptNumber);
+
+    /**
+     * 申请通过
+     * @param applyForm
+     * @return
+     */
+    boolean passApply(ApplyForm applyForm);
+
+    /**
+     * 申请驳回
+     * @param applyForm
+     * @return
+     */
+    boolean rejectApply(ApplyForm applyForm);
 }

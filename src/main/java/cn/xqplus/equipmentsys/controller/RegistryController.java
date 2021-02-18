@@ -9,7 +9,6 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -50,7 +49,7 @@ public class RegistryController {
             User updateUser = new User();
             // 密码加密BCryptPasswordEncoder
             updateUser.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-            boolean f = userService.updateUser(updateUser, new UpdateWrapper<User>()
+            boolean f = userService.update(updateUser, new UpdateWrapper<User>()
                     .eq("user_name", user.getUserName()));
             if (f) {
                 return "success";

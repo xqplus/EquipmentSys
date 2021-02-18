@@ -2,12 +2,15 @@ package cn.xqplus.equipmentsys.service.impl;
 
 import cn.xqplus.equipmentsys.form.RepairForm;
 import cn.xqplus.equipmentsys.mapper.IRepairMapper;
+import cn.xqplus.equipmentsys.model.Equipment;
 import cn.xqplus.equipmentsys.model.Repair;
 import cn.xqplus.equipmentsys.model.User;
+import cn.xqplus.equipmentsys.service.IEquipmentService;
 import cn.xqplus.equipmentsys.service.IRepairService;
 import cn.xqplus.equipmentsys.service.IUserService;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -33,6 +36,9 @@ public class RepairServiceImpl implements IRepairService {
 
     @Autowired
     private IUserService userService;
+
+    @Autowired
+    private IEquipmentService equipmentService;
 
     @Override
     public Page<RepairForm> selectPage(Page<RepairForm> page, RepairForm wrapper) {
@@ -104,6 +110,53 @@ public class RepairServiceImpl implements IRepairService {
             repair.setRepairNumber("00001");
         }
         return repair;
+    }
+
+    @Override
+    public boolean repair(int id) {
+        Repair repair = repairMapper.selectById(id);
+        Equipment equipment = new Equipment();
+        equipment.setEquipState(0);
+        // 更新设备状态
+        boolean equipUpdate = equipmentService.update(equipment, new UpdateWrapper<Equipment>()
+                .eq("equip_number", repair.getEquipNumber()));
+        Repair repair1 = new Repair();
+        repair1.setRepairerNumber(userService.getCurrentUserInfo().getUserNumber());
+        // 维修完成，维修状态
+        repair1.setRepairState(0);
+        // 更新维修信息
+        int repairUpdate = repairMapper.update(repair1, new UpdateWrapper<Repair>()
+                .eq("id", id));
+
+        return (equipUpdate && (repairUpdate >= 1));
+    }
+
+    @Override
+    public String scrap(int id) {
+        Repair repair = repairMapper.selectById(id);
+        Equipment equipment = equipmentService.getOne(new QueryWrapper<Equipment>()
+                .eq("equip_number", repair.getEquipNumber()));
+        // 只有维修中的设备才能报废
+        if (equipment.getEquipState() == 1) {
+            Equipment equipment1 = new Equipment();
+            equipment1.setEquipState(2);
+            boolean update = equipmentService.update(equipment1, new UpdateWrapper<Equipment>()
+                    .eq("equip_number", equipment.getEquipNumber()));
+            Repair repair1 = new Repair();
+            repair1.setRepairerNumber(userService.getCurrentUserInfo().getUserNumber());
+            // 报废处理
+            repair1.setRepairState(2);
+            int repairUpdate = repairMapper.update(repair1, new UpdateWrapper<Repair>()
+                    .eq("id", id));
+            if (update && (repairUpdate >= 1)) {
+                return "success";
+            } else {
+                return "error";
+            }
+        } else {
+            // 流程不正确 （使用中 -报修-> 维修中 -报废-> 已报废）
+            return "noProcess";
+        }
     }
 
     @Override

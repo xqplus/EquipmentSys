@@ -120,7 +120,7 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                                 layer.msg('维修成功', {icon: 1});
                                 setTimeout(function () {
                                     window.location.reload();
-                                }, 1000);
+                                }, 1500);
                             }
                             if (data === 'error') {
                                 layer.msg('维修失败，请重试或联系管理员！', {icon: 2});
@@ -141,7 +141,7 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                                 layer.msg('报废成功', {icon: 1});
                                 setTimeout(function () {
                                     window.location.reload();
-                                }, 1000);
+                                }, 1500);
                             }
                             if (data === 'noProcess') {
                                 layer.msg('抱歉，当前设备状态不能报废', {icon: 2});

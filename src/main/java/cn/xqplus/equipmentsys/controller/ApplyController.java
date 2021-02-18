@@ -21,7 +21,7 @@ import java.lang.reflect.InvocationTargetException;
 
 @RestController
 @RequestMapping(value = "/equipmentSys/apply", name = "申请信息相关")
-public class ApplyController {
+public class ApplyController extends BaseController {
 
     @Autowired
     private IUserService userService;
@@ -81,63 +81,26 @@ public class ApplyController {
             }
             boolean update = applyService.update(apply, new UpdateWrapper<Apply>()
                     .eq("id", applyForm.getId()));
-            if (update) {
-                return "success";
-            } else {
-                return "error";
-            }
+            return stringResult(update);
         }
     }
 
     @PostMapping(value = "/delete", name = "申请删除")
     public String delete(@NotNull int id) {
-        boolean b = applyService.removeById(id);
-        if (b) {
-            return "success";
-        } else {
-            return "error";
-        }
+        boolean removeById = applyService.removeById(id);
+        return stringResult(removeById);
     }
 
-    @GetMapping(value = "/pass", name = "申请通过审批")
+    @GetMapping(value = "/pass", name = "审批通过")
     public String pass(ApplyForm applyForm) {
-        // 更新申请信息
-        Apply apply = new Apply();
-        apply.setApplyState(1);
-        apply.setApproverName(applyForm.getApproverName());
-        apply.setApprovalOpinion(applyForm.getApprovalOpinion());
-        boolean updateApply = applyService.update(apply, new UpdateWrapper<Apply>()
-                .eq("id", applyForm.getId()));
-        // 更新用户信息
-        User user = new User();
-        // 获取意向部门编号
-        Apply apply1 = applyService.getOne(new QueryWrapper<Apply>()
-                .eq("id", applyForm.getId()));
-        user.setRoleType(applyForm.getApplyType());
-        user.setDeptNumber(apply1.getDeptNumber());
-        boolean updateUser = userService.updateUser(user, new UpdateWrapper<User>()
-                .eq("user_name", applyForm.getUserName()));
-        if (updateApply && updateUser) {
-            return "success";
-        } else {
-            return "error";
-        }
+        boolean pass = applyService.passApply(applyForm);
+        return stringResult(pass);
     }
 
     @GetMapping(value = "/reject", name = "审批驳回")
     public String reject(ApplyForm applyForm) {
-        // 更新申请信息
-        Apply apply = new Apply();
-        apply.setApplyState(2);
-        apply.setApproverName(applyForm.getApproverName());
-        apply.setApprovalOpinion(applyForm.getApprovalOpinion());
-        boolean updateApply = applyService.update(apply, new UpdateWrapper<Apply>()
-                .eq("id", applyForm.getId()));
-        if (updateApply) {
-            return "success";
-        } else {
-            return "error";
-        }
+        boolean rejectApply = applyService.rejectApply(applyForm);
+        return stringResult(rejectApply);
     }
 
 }

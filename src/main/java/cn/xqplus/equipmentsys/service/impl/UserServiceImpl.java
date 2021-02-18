@@ -1,9 +1,10 @@
 package cn.xqplus.equipmentsys.service.impl;
 
-import cn.xqplus.equipmentsys.ext.PageResult;
 import cn.xqplus.equipmentsys.mapper.IUserMapper;
 import cn.xqplus.equipmentsys.form.UserForm;
+import cn.xqplus.equipmentsys.model.PasswordVisible;
 import cn.xqplus.equipmentsys.model.User;
+import cn.xqplus.equipmentsys.service.IPasswordVisibleService;
 import cn.xqplus.equipmentsys.service.IUserService;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -20,7 +21,9 @@ import com.baomidou.mybatisplus.extension.kotlin.KtUpdateChainWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -39,15 +42,39 @@ public class UserServiceImpl implements IUserService {
     @Autowired
     private IUserMapper userMapper;
 
+    @Autowired
+    private IPasswordVisibleService passwordVisibleService;
+
     @Override
     public boolean save(User entity) {
         return false;
     }
 
     @Override
-    public boolean saveUser(User entity) {
-        int insert = userMapper.insert(entity);
-        return (insert >= 1);
+    @Transactional // 事务
+    public boolean saveUser(User user) {
+        // 将没有加密的密码存在t_password_visible中
+        PasswordVisible passwordVisible = new PasswordVisible();
+        passwordVisible.setUserName(user.getUserName());
+        passwordVisible.setPasswordVisible(user.getPassword());
+        // 保存可见密码信息
+        boolean passwordVisibleSave = passwordVisibleService.save(passwordVisible);
+        // 查询部门人员根据用户编号排序
+        List<User> userListDesc = userMapper.selectList(new QueryWrapper<User>()
+                .eq("dept_number", user.getDeptNumber())
+                .orderByDesc("user_number"));
+        if (CollectionUtils.isNotEmpty(userListDesc)) {
+            // 设置用户编号
+            String userNum = String.valueOf(Integer.parseInt(userListDesc.get(0).getUserNumber()) + 1);
+            user.setUserNumber(userNum);
+        } else {
+            user.setUserNumber(user.getDeptNumber() + "001");
+        }
+        // 密码加密 加密方式为BCryptPasswordEncoder
+        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+        int userSave = userMapper.insert(user);
+
+        return (passwordVisibleSave && (userSave >= 1));
     }
 
     @Override
@@ -56,9 +83,22 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public boolean updateUser(User user, UpdateWrapper<User> wrapper) {
-        int n = userMapper.update(user, wrapper);
-        return (n >= 1);
+    @Transactional
+    public boolean updateUser(User user) {
+        // 查询原用户名
+        User priUser = userMapper.selectOne(new QueryWrapper<User>()
+                .eq("password", user.getPassword()));
+        PasswordVisible passwordVisible = new PasswordVisible();
+        passwordVisible.setUserName(user.getUserName());
+        // 更新密码可见信息（用户名）
+        boolean passwordVisibleUpdate = passwordVisibleService.updatePasswordVisible(passwordVisible, new UpdateWrapper<PasswordVisible>()
+                .eq("user_name", priUser.getUserName()));
+
+        // 更新用户表信息
+        int updateUser = userMapper.update(user, new UpdateWrapper<User>()
+                .eq("password", user.getPassword()));
+
+        return (passwordVisibleUpdate && (updateUser >= 1));
     }
 
     @Override
@@ -95,9 +135,22 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public boolean removeById(Serializable id) {
-        int i = userMapper.deleteById(id);
-        return (i >= 1);
+    @Transactional
+    public boolean removeById(Serializable id) throws RuntimeException {
+        // 删除密码可见信息
+        User user = userMapper.selectById(id);
+        boolean passwordVisibleDelete = passwordVisibleService.remove(new QueryWrapper<PasswordVisible>()
+                .eq("user_name", user.getUserName()));
+        // 删除用户信息
+        int userDelete = userMapper.deleteById(id);
+
+        return (passwordVisibleDelete && (userDelete >= 1));
+    }
+
+    @Override
+    public boolean update(User entity, Wrapper<User> updateWrapper) {
+        int update = userMapper.update(entity, updateWrapper);
+        return (update >= 1);
     }
 
     @Override
@@ -142,11 +195,6 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public boolean update(Wrapper<User> updateWrapper) {
-        return false;
-    }
-
-    @Override
-    public boolean update(User entity, Wrapper<User> updateWrapper) {
         return false;
     }
 

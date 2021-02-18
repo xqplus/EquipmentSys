@@ -29,4 +29,32 @@ public interface IDepartmentService extends IService<Department> {
      * @return
      */
     Page<DepartmentForm> selectPage(Page<DepartmentForm> page, DepartmentForm wrapper);
+
+    /**
+     * 通过角色获取下一个部门信息
+     * @param role
+     * @return
+     */
+    Object getNextDeptByRole(String role);
+
+    /**
+     * 部门新增
+     * @param departmentForm
+     * @return
+     */
+    boolean add(DepartmentForm departmentForm);
+
+    /**
+     * 部门编辑
+     * @param departmentForm
+     * @return
+     */
+    String updateDept(DepartmentForm departmentForm);
+
+    /**
+     * 根据 id 删除
+     * @param id
+     * @return
+     */
+    String deleteById(int id);
 }

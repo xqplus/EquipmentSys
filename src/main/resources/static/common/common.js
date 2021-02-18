@@ -452,7 +452,7 @@ function addFormDialog(layer, form, $, title, content, userNameSelector, pwdId1,
                 $('#password').val(data.password);
                 $('#trueName').val(data.trueName);
             }
-            if (type === 'addUser' || 'editUser') {
+            if (type === 'addUser' || type === 'editUser') {
                 // 输入用户名校验
                 userExistsCheck($, userNameSelector, true);
                 // 输入密码校验
@@ -460,7 +460,7 @@ function addFormDialog(layer, form, $, title, content, userNameSelector, pwdId1,
                 // 角色部门级联
                 roleDeptCascade(form, $, filter);
             }
-            if (type === 'addDept' || 'editDept') {
+            if (type === 'addDept' || type === 'editDept') {
                 // 部门信息级联
                 getNextDeptByRole(form, $);
             }
@@ -491,7 +491,7 @@ function addFormDialog(layer, form, $, title, content, userNameSelector, pwdId1,
                 $('#equipTypeName').val(data.equipTypeName);
                 $('#equipTypeSummary').val(data.equipTypeSummary);
             }
-            if (type === 'addApply' || 'editApply') {
+            if (type === 'addApply' || type === 'editApply') {
                 $('#userName').val(getCurrentUserInfo().userName);
                 roleDeptCascade(form, $, filter);
                 // 获取最新的申请编号
@@ -518,10 +518,10 @@ function addFormDialog(layer, form, $, title, content, userNameSelector, pwdId1,
                             if (type.substring(0,4) === 'edit') {
                                 layer.msg('更新成功',{icon: 1});
                             }
-                            // 新增成功后要刷新页面,延迟3s刷新保证提示显示完
+                            // 新增成功后要刷新页面,延迟1.5s刷新保证提示显示
                             setTimeout(function () {
                                 window.location.reload();
-                            }, 1000);
+                            }, 1500);
                         }
                         // 部门编辑变更时部门下有用户的情况
                         if (data === 'existsUser') {
@@ -543,7 +543,7 @@ function addFormDialog(layer, form, $, title, content, userNameSelector, pwdId1,
                             layer.msg('申请成功', {icon: 1});
                             setTimeout(function () {
                                 window.location.reload();
-                            }, 1000);
+                            }, 1500);
                         }
                         if (data === 'conflict') {
                             layer.msg('您已经是该职位，不可申请', {icon: 0});
@@ -551,6 +551,9 @@ function addFormDialog(layer, form, $, title, content, userNameSelector, pwdId1,
                         if (data === 'applyError') {
                             layer.msg('申请失败，请重试或联系管理员', {icon: 2, anim: 6});
                         }
+                    },
+                    error: function (e) {
+                        layer.msg("系统错误，请联系管理员", {icon: 2});
                     }
                 });
             });

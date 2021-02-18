@@ -1,13 +1,9 @@
 package cn.xqplus.equipmentsys.controller;
 
-import cn.xqplus.equipmentsys.form.EquipmentForm;
 import cn.xqplus.equipmentsys.form.EquipmentTypeForm;
-import cn.xqplus.equipmentsys.model.Equipment;
 import cn.xqplus.equipmentsys.model.EquipmentType;
 import cn.xqplus.equipmentsys.service.IEquipmentService;
 import cn.xqplus.equipmentsys.service.IEquipmentTypeService;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sun.istack.internal.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/equipmentSys/equipmentType", name = "设备类型信息相关")
-public class EquipmentTypeController {
+public class EquipmentTypeController extends BaseController {
 
     @Autowired
     private IEquipmentTypeService equipmentTypeService;
@@ -44,52 +40,16 @@ public class EquipmentTypeController {
     public String add(EquipmentType equipmentType) {
         // 保存设备类型信息
         boolean save = equipmentTypeService.save(equipmentType);
-        if (save) {
-            return "success";
-        } else {
-            return "error";
-        }
+        return stringResult(save);
     }
 
     @PostMapping(value = "/update", name = "设备类型信息变更")
     public String update(EquipmentType equipmentType) {
-        Equipment equipment = new Equipment();
-        equipment.setEquipTypeNumber(equipmentType.getEquipTypeNumber());
-        Equipment equipment1 = equipmentService.getOne(new QueryWrapper<>(equipment)
-                .last("LIMIT 1"));
-        if (null == equipment1) {
-            // 根据设备类型编号变更
-            boolean i = equipmentTypeService.update(equipmentType, new UpdateWrapper<EquipmentType>()
-                    .eq("equip_type_number", equipmentType.getEquipTypeNumber()));
-            if (i) {
-                return "success";
-            } else {
-                return "error";
-            }
-        } else {
-            // 类型下存在设备
-            return "existsEquip";
-        }
+        return equipmentTypeService.updateEquipType(equipmentType);
     }
 
     @PostMapping(value = "/delete", name = "设备类型信息删除")
     public String delete(@NotNull int id) {
-        // 判断类型下是否有设备
-        EquipmentType equipmentType = equipmentTypeService.getById(id);
-        Equipment equipment = new Equipment();
-        equipment.setEquipTypeNumber(equipmentType.getEquipTypeNumber());
-        Equipment one = equipmentService.getOne(new QueryWrapper<>(equipment)
-                .last("LIMIT 1"));
-        if (null == one) {
-            boolean i = equipmentTypeService.removeById(id);
-            if (i) {
-                return "success";
-            } else {
-                return "error";
-            }
-        } else {
-            // 类型下存在设备
-            return "existsEquip";
-        }
+        return equipmentTypeService.deleteEquipTypeById(id);
     }
 }

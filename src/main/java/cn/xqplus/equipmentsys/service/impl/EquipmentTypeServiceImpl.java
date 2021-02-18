@@ -4,8 +4,11 @@ import cn.xqplus.equipmentsys.form.EquipmentTypeForm;
 import cn.xqplus.equipmentsys.mapper.IEquipmentTypeMapper;
 import cn.xqplus.equipmentsys.model.Equipment;
 import cn.xqplus.equipmentsys.model.EquipmentType;
+import cn.xqplus.equipmentsys.service.IEquipmentService;
 import cn.xqplus.equipmentsys.service.IEquipmentTypeService;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -28,6 +31,9 @@ public class EquipmentTypeServiceImpl implements IEquipmentTypeService {
 
     @Autowired
     private IEquipmentTypeMapper equipmentTypeMapper;
+
+    @Autowired
+    private IEquipmentService equipmentService;
 
     @Override
     public Page<EquipmentTypeForm> selectPage(Page<EquipmentTypeForm> page, EquipmentTypeForm wrapper) {
@@ -62,6 +68,48 @@ public class EquipmentTypeServiceImpl implements IEquipmentTypeService {
             EquipmentType equipmentType = new EquipmentType();
             equipmentType.setEquipTypeNumber("001");
             return equipmentType;
+        }
+    }
+
+    @Override
+    public String updateEquipType(EquipmentType equipmentType) {
+        Equipment equipment = new Equipment();
+        equipment.setEquipTypeNumber(equipmentType.getEquipTypeNumber());
+        Equipment equipment1 = equipmentService.getOne(new QueryWrapper<>(equipment)
+                .last("LIMIT 1"));
+        if (null == equipment1) {
+            // 根据设备类型编号变更
+            int i = equipmentTypeMapper.update(equipmentType, new UpdateWrapper<EquipmentType>()
+                    .eq("equip_type_number", equipmentType.getEquipTypeNumber()));
+            if (i >= 1) {
+                return "success";
+            } else {
+                return "error";
+            }
+        } else {
+            // 类型下存在设备
+            return "existsEquip";
+        }
+    }
+
+    @Override
+    public String deleteEquipTypeById(int id) {
+        // 判断类型下是否有设备
+        EquipmentType equipmentType = equipmentTypeMapper.selectById(id);
+        Equipment equipment = new Equipment();
+        equipment.setEquipTypeNumber(equipmentType.getEquipTypeNumber());
+        Equipment one = equipmentService.getOne(new QueryWrapper<>(equipment)
+                .last("LIMIT 1"));
+        if (null == one) {
+            int i = equipmentTypeMapper.deleteById(id);
+            if (i >= 1) {
+                return "success";
+            } else {
+                return "error";
+            }
+        } else {
+            // 类型下存在设备
+            return "existsEquip";
         }
     }
 

@@ -32,4 +32,18 @@ public interface IRepairService extends IService<Repair> {
      * @return Page<RepairForm>
      */
     Page<RepairForm> selectHistoryPage(Page<RepairForm> page, RepairForm wrapper);
+
+    /**
+     * 设备维修
+     * @param id 维修id
+     * @return boolean
+     */
+    boolean repair(int id);
+
+    /**
+     * 设备报废
+     * @param id 维修id
+     * @return String
+     */
+    String scrap(int id);
 }

@@ -84,7 +84,6 @@ layui.use(['element', 'table', 'laydate', 'form', 'jquery'], function(){
             let checkStatus = table.checkStatus(obj.config.id); // 选中行信息
             switch(obj.event){
                 case 'add':
-                    console.log(table.cache.userData.length > 0);
                     addFormDialog(layer, form, $,
                         '新增用户信息', addUserContent,
                         '#userName',
@@ -127,7 +126,7 @@ layui.use(['element', 'table', 'laydate', 'form', 'jquery'], function(){
                             if (data === 'success') {
                                 layer.msg('删除成功', {icon: 1});
                                 setTimeout(function () {
-                                    window.location.reload();}, 3000);
+                                    window.location.reload();}, 1500);
                             }
                             if (data === 'error') {
                                 layer.msg('删除失败，请重试或联系管理员！', {icon: 2});

@@ -2,11 +2,7 @@ package cn.xqplus.equipmentsys.controller;
 
 import cn.xqplus.equipmentsys.form.EquipmentForm;
 import cn.xqplus.equipmentsys.model.Equipment;
-import cn.xqplus.equipmentsys.model.Repair;
-import cn.xqplus.equipmentsys.model.User;
 import cn.xqplus.equipmentsys.service.IEquipmentService;
-import cn.xqplus.equipmentsys.service.IRepairService;
-import cn.xqplus.equipmentsys.service.IUserService;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sun.istack.internal.NotNull;
@@ -19,16 +15,10 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/equipmentSys/equipment", name = "设备信息相关")
-public class EquipmentController {
+public class EquipmentController extends BaseController {
 
     @Autowired
     private IEquipmentService equipmentService;
-
-    @Autowired
-    private IRepairService repairService;
-
-    @Autowired
-    private IUserService userService;
 
     @GetMapping(value = "/page", name = "设备信息page")
     public Object page(@RequestParam(defaultValue = "1") int page,
@@ -47,11 +37,7 @@ public class EquipmentController {
     public String add(Equipment equipment) {
         // 保存设备信息
         boolean save = equipmentService.save(equipment);
-        if (save) {
-            return "success";
-        } else {
-            return "error";
-        }
+        return stringResult(save);
     }
 
     @PostMapping(value = "/update", name = "设备信息变更")
@@ -59,50 +45,19 @@ public class EquipmentController {
         // 根据设备编号变更
         boolean update = equipmentService.update(equipment, new UpdateWrapper<Equipment>()
                 .eq("equip_number", equipment.getEquipNumber()));
-        if (update) {
-            return "success";
-        } else {
-            return "error";
-        }
+        return stringResult(update);
     }
 
     @PostMapping(value = "/delete", name = "设备信息删除")
     public String delete(@NotNull int id) {
         // 根据主键id删除
-        boolean b = equipmentService.removeById(id);
-        if (b) {
-            return "success";
-        } else {
-            return "error";
-        }
+        boolean removeById = equipmentService.removeById(id);
+        return stringResult(removeById);
     }
 
     @GetMapping(value = "/reportRepair", name = "设备报修")
     public String reportRepair(@NotNull int id) {
-        Equipment equipment = equipmentService.getById(id);
-        // 只有使用中的设备才能报修
-        if (equipment.getEquipState() == 0) {
-            Equipment equipment1 = new Equipment();
-            equipment1.setEquipState(1);
-            // 改变设备状态
-            boolean id1 = equipmentService.update(equipment1, new UpdateWrapper<Equipment>()
-                    .eq("id", id));
-            // 创建维修信息
-            Repair repair = repairService.getNextRepairNumber();
-            repair.setEquipNumber(equipment.getEquipNumber());
-            // 获得当前登录用户
-            User currentUserInfo = userService.getCurrentUserInfo();
-            repair.setReporterNumber(currentUserInfo.getUserNumber());
-            boolean save = repairService.save(repair);
-            if (id1 && save) {
-                return "success";
-            } else {
-                return "error";
-            }
-        } else {
-            // 流程不正确 （使用中 -报修-> 维修中 -报废-> 已报废）
-            return "noProcess";
-        }
+        return equipmentService.reportRepair(id);
     }
 
 }

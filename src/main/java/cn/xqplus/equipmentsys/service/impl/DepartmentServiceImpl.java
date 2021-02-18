@@ -1,25 +1,28 @@
 package cn.xqplus.equipmentsys.service.impl;
 
-import cn.xqplus.equipmentsys.ext.PageResult;
 import cn.xqplus.equipmentsys.form.DepartmentForm;
 import cn.xqplus.equipmentsys.mapper.IDepartmentMapper;
 import cn.xqplus.equipmentsys.form.UserForm;
 import cn.xqplus.equipmentsys.model.Department;
+import cn.xqplus.equipmentsys.model.RoleDept;
+import cn.xqplus.equipmentsys.model.User;
 import cn.xqplus.equipmentsys.service.IDepartmentService;
+import cn.xqplus.equipmentsys.service.IRoleDeptService;
+import cn.xqplus.equipmentsys.service.IUserService;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -35,9 +38,124 @@ public class DepartmentServiceImpl implements IDepartmentService {
     @Autowired
     private IDepartmentMapper departmentMapper;
 
+    @Autowired
+    private IRoleDeptService roleDeptService;
+
+    @Autowired
+    private IUserService userService;
+
+    @Override
+    public Page<DepartmentForm> selectPage(Page<DepartmentForm> page, DepartmentForm wrapper) {
+        List<DepartmentForm> departmentForms = departmentMapper.getList(page, wrapper);
+        if (CollectionUtils.isNotEmpty(departmentForms)) {
+            for (DepartmentForm departmentForm : departmentForms) {
+                // 时间转换
+                departmentForm.setCreateDate(new SimpleDateFormat("yyyy-MM-dd").format(departmentForm.getCreateTime()));
+                departmentForm.setUpdateDate(new SimpleDateFormat("yyyy-MM-dd").format(departmentForm.getUpdateTime()));
+            }
+        }
+        // 设置返回状态码
+        page.setMaxLimit(0L);
+        // 设置msg
+        page.setCountId("success");
+        page.setRecords(departmentForms);
+        page.setTotal(departmentForms.size());
+        return page;
+    }
+
     @Override
     public List<UserForm> getDeptByRole(String role) {
         return departmentMapper.getDeptByRole(role);
+    }
+
+    @Override
+    public Object getNextDeptByRole(String role) {
+        List<UserForm> userForms = departmentMapper.getDeptByRole(role);
+        Department department = new Department();
+        if (userForms.size() > 0) {
+            UserForm first = userForms.get(0);
+            String deptNumber = String.valueOf(Integer.parseInt(first.getDeptNumber()) + 1);
+            String temp = String.valueOf(Integer.parseInt(first.getDeptName().substring(2, 3)) + 1);
+            // 设置新的部门信息
+            department.setDeptNumber(deptNumber);
+            department.setDeptName(first.getDeptName().substring(0,2) + temp + "部");
+        }
+        return department;
+    }
+
+    @Override
+    @Transactional
+    public boolean add(DepartmentForm departmentForm) {
+        // 保存角色部门关联信息
+        RoleDept roleDept = new RoleDept();
+        roleDept.setRoleType(departmentForm.getRoleType());
+        roleDept.setDeptNumber(departmentForm.getDeptNumber());
+        boolean roleDeptSave = roleDeptService.save(roleDept);
+        // 保存部门信息
+        Department department = new Department();
+        department.setDeptNumber(departmentForm.getDeptNumber());
+        department.setDeptName(departmentForm.getDeptName());
+        department.setDeptIntroduce(departmentForm.getDeptIntroduce());
+        int insert = departmentMapper.insert(department);
+
+        return (roleDeptSave && (insert >= 1));
+    }
+
+    @Override
+    @Transactional
+    public String updateDept(DepartmentForm departmentForm) throws RuntimeException {
+        // 查询原部门信息
+        Department dept = departmentMapper.selectById(departmentForm.getId());
+        List<User> users = userService.findByWrapper(new QueryWrapper<User>()
+                .eq("dept_number", dept.getDeptNumber()));
+        // 部门下有用户不能更改
+        if (users.size() > 0) {
+            return "existsUser";
+        } else {
+            RoleDept roleDept = new RoleDept();
+            roleDept.setRoleType(departmentForm.getRoleType());
+            roleDept.setDeptNumber(departmentForm.getDeptNumber());
+            // 更新角色部门关联信息
+            roleDeptService.update(roleDept, new UpdateWrapper<RoleDept>()
+                    .eq("dept_number", dept.getDeptNumber()));
+            Department department = new Department();
+            try {
+                BeanUtils.copyProperties(department, departmentForm);
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                e.printStackTrace();
+            }
+            // 更新部门信息
+            int update = departmentMapper.update(department, new UpdateWrapper<Department>()
+                    .eq("dept_number", dept.getDeptNumber()));
+            if (update >= 1) {
+                return "success";
+            } else {
+                return "error";
+            }
+        }
+    }
+
+    @Override
+    @Transactional
+    public String deleteById(int id) throws RuntimeException {
+        // 判断部门下是否有用户
+        Department department = departmentMapper.selectById(id);
+        List<User> users = userService.findByWrapper(new QueryWrapper<User>()
+                .eq("dept_number", department.getDeptNumber()));
+        if (users.size() > 0) {
+            return "existsUser";
+        } else {
+            // 删除相应角色部门关联信息（根据部门编号删除）
+            roleDeptService.remove(new QueryWrapper<RoleDept>()
+                    .eq("dept_number", department.getDeptNumber()));
+            // 删除部门信息
+            int deleteById = departmentMapper.deleteById(id);
+            if (deleteById >= 1) {
+                return "success";
+            } else {
+                return "error";
+            }
+        }
     }
 
     @Override
@@ -59,27 +177,8 @@ public class DepartmentServiceImpl implements IDepartmentService {
 
     @Override
     public boolean removeById(Serializable id) {
-        int i = departmentMapper.deleteById(id);
-        return (i >= 1);
-    }
-
-    @Override
-    public Page<DepartmentForm> selectPage(Page<DepartmentForm> page, DepartmentForm wrapper) {
-        List<DepartmentForm> departmentForms = departmentMapper.getList(page, wrapper);
-        if (CollectionUtils.isNotEmpty(departmentForms)) {
-            for (DepartmentForm departmentForm : departmentForms) {
-                // 时间转换
-                departmentForm.setCreateDate(new SimpleDateFormat("yyyy-MM-dd").format(departmentForm.getCreateTime()));
-                departmentForm.setUpdateDate(new SimpleDateFormat("yyyy-MM-dd").format(departmentForm.getUpdateTime()));
-            }
-        }
-        // 设置返回状态码
-        page.setMaxLimit(0L);
-        // 设置msg
-        page.setCountId("success");
-        page.setRecords(departmentForms);
-        page.setTotal(departmentForms.size());
-        return page;
+        int deleteById = departmentMapper.deleteById(id);
+        return (deleteById >= 1);
     }
 
     @Override

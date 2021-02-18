@@ -1,8 +1,6 @@
 package cn.xqplus.equipmentsys.service;
 
-import cn.xqplus.equipmentsys.form.EquipmentForm;
 import cn.xqplus.equipmentsys.form.EquipmentTypeForm;
-import cn.xqplus.equipmentsys.model.Equipment;
 import cn.xqplus.equipmentsys.model.EquipmentType;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -25,4 +23,18 @@ public interface IEquipmentTypeService extends IService<EquipmentType> {
      * @return equipTypeNumber
      */
     EquipmentType getNextEquipTypeNumber();
+
+    /**
+     * 设备类型变更
+     * @param equipmentType 新的设备类型信息
+     * @return String
+     */
+    String updateEquipType(EquipmentType equipmentType);
+
+    /**
+     * 设备类型删除
+     * @param id 设备类型id
+     * @return String
+     */
+    String deleteEquipTypeById(int id);
 }

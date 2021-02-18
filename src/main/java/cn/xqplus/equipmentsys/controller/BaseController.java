@@ -1,15 +1,17 @@
-package cn.xqplus.equipmentsys.ext;
+package cn.xqplus.equipmentsys.controller;
 
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
- * 返回数据封装类
+ * Json格式数据返回基类
  */
-@Deprecated
-public class Result {
+
+@ResponseBody
+public abstract class BaseController {
 
     /**
      * String数据返回封装方法
-     * @param flag boolean
+     * @param flag boolean 操作结果标志位
      * @return String
      */
     public static String stringResult(boolean flag) {

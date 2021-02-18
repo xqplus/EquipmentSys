@@ -3,15 +3,18 @@ package cn.xqplus.equipmentsys.service.impl;
 import cn.xqplus.equipmentsys.form.ApplyForm;
 import cn.xqplus.equipmentsys.mapper.IApplyMapper;
 import cn.xqplus.equipmentsys.model.Apply;
+import cn.xqplus.equipmentsys.model.User;
 import cn.xqplus.equipmentsys.service.IApplyService;
 import cn.xqplus.equipmentsys.service.IUserService;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -87,6 +90,42 @@ public class ApplyServiceImpl implements IApplyService {
         } else {
             return deptNumber + "0001";
         }
+    }
+
+    @Override
+    @Transactional
+    public boolean passApply(ApplyForm applyForm) throws RuntimeException {
+        // 更新申请信息
+        Apply apply = new Apply();
+        apply.setApplyState(1);
+        apply.setApproverName(applyForm.getApproverName());
+        apply.setApprovalOpinion(applyForm.getApprovalOpinion());
+        int updateApply = applyMapper.update(apply, new UpdateWrapper<Apply>()
+                .eq("id", applyForm.getId()));
+        // 更新用户信息
+        User user = new User();
+        // 获取意向部门编号
+        Apply apply1 = applyMapper.selectOne(new QueryWrapper<Apply>()
+                .eq("id", applyForm.getId()));
+        user.setRoleType(applyForm.getApplyType());
+        user.setDeptNumber(apply1.getDeptNumber());
+        boolean updateUser = userService.update(user, new UpdateWrapper<User>()
+                .eq("user_name", applyForm.getUserName()));
+
+        return (updateUser && (updateApply >= 1));
+    }
+
+    @Override
+    public boolean rejectApply(ApplyForm applyForm) {
+        // 更新申请信息
+        Apply apply = new Apply();
+        apply.setApplyState(2);
+        apply.setApproverName(applyForm.getApproverName());
+        apply.setApprovalOpinion(applyForm.getApprovalOpinion());
+        int updateApply = applyMapper.update(apply, new UpdateWrapper<Apply>()
+                .eq("id", applyForm.getId()));
+
+        return (updateApply >= 1);
     }
 
     @Override

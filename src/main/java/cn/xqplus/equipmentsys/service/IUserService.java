@@ -32,10 +32,10 @@ public interface IUserService extends IService<User> {
 
     /**
      * 修改用户
-     * @param user wrapper
+     * @param user 用户信息
      * @return boolean
      */
-    boolean updateUser(User user, UpdateWrapper<User> wrapper);
+    boolean updateUser(User user);
 
     /**
      * 获得User分页list
@@ -47,7 +47,6 @@ public interface IUserService extends IService<User> {
 
     /**
      * 获取当前登录用户
-     * @param userName
      * @return
      */
     User getCurrentUserInfo();

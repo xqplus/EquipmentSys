@@ -1,13 +1,9 @@
 package cn.xqplus.equipmentsys.controller;
 
 import cn.xqplus.equipmentsys.form.RepairForm;
-import cn.xqplus.equipmentsys.model.Equipment;
-import cn.xqplus.equipmentsys.model.Repair;
 import cn.xqplus.equipmentsys.service.IEquipmentService;
 import cn.xqplus.equipmentsys.service.IRepairService;
 import cn.xqplus.equipmentsys.service.IUserService;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sun.istack.internal.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/equipmentSys/repair", name = "维修信息相关")
-public class RepairController {
+public class RepairController extends BaseController {
 
     @Autowired
     private IEquipmentService equipmentService;
@@ -39,52 +35,13 @@ public class RepairController {
 
     @GetMapping(value = "/repair", name = "设备维修")
     public String repair(@NotNull int id) {
-        Repair repair = repairService.getById(id);
-        Equipment equipment = new Equipment();
-        equipment.setEquipState(0);
-        // 更新设备状态
-        boolean equipUpdate = equipmentService.update(equipment, new UpdateWrapper<Equipment>()
-                .eq("equip_number", repair.getEquipNumber()));
-        Repair repair1 = new Repair();
-        repair1.setRepairerNumber(userService.getCurrentUserInfo().getUserNumber());
-        // 维修完成，维修状态
-        repair1.setRepairState(0);
-        // 更新维修信息
-        boolean repairUpdate = repairService.update(repair1, new UpdateWrapper<Repair>()
-                .eq("id", id));
-        if (equipUpdate && repairUpdate) {
-            return "success";
-        } else {
-            return "error";
-        }
+        boolean repair = repairService.repair(id);
+        return stringResult(repair);
     }
 
     @GetMapping(value = "/scrap", name = "设备报废")
     public String scrap(@NotNull int id) {
-        Repair repair = repairService.getById(id);
-        Equipment equipment = equipmentService.getOne(new QueryWrapper<Equipment>()
-                .eq("equip_number", repair.getEquipNumber()));
-        // 只有维修中的设备才能报废
-        if (equipment.getEquipState() == 1) {
-            Equipment equipment1 = new Equipment();
-            equipment1.setEquipState(2);
-            boolean update = equipmentService.update(equipment1, new UpdateWrapper<Equipment>()
-                    .eq("equip_number", equipment.getEquipNumber()));
-            Repair repair1 = new Repair();
-            repair1.setRepairerNumber(userService.getCurrentUserInfo().getUserNumber());
-            // 报废处理
-            repair1.setRepairState(2);
-            boolean repairUpdate = repairService.update(repair1, new UpdateWrapper<Repair>()
-                    .eq("id", id));
-            if (update && repairUpdate) {
-                return "success";
-            } else {
-                return "error";
-            }
-        } else {
-            // 流程不正确 （使用中 -报修-> 维修中 -报废-> 已报废）
-            return "noProcess";
-        }
+        return repairService.scrap(id);
     }
 
     @GetMapping(value = "/historyPage", name = "维修历史记录page")
@@ -97,10 +54,6 @@ public class RepairController {
     @PostMapping(value = "/historyDel", name = "维修历史记录删除")
     public String historyDel(@NotNull int id) {
         boolean removeById = repairService.removeById(id);
-        if (removeById) {
-            return "success";
-        } else {
-            return "error";
-        }
+        return stringResult(removeById);
     }
 }

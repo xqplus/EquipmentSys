@@ -3,8 +3,13 @@ package cn.xqplus.equipmentsys.service.impl;
 import cn.xqplus.equipmentsys.form.EquipmentForm;
 import cn.xqplus.equipmentsys.mapper.IEquipmentMapper;
 import cn.xqplus.equipmentsys.model.Equipment;
+import cn.xqplus.equipmentsys.model.Repair;
+import cn.xqplus.equipmentsys.model.User;
 import cn.xqplus.equipmentsys.service.IEquipmentService;
+import cn.xqplus.equipmentsys.service.IRepairService;
+import cn.xqplus.equipmentsys.service.IUserService;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -27,6 +32,12 @@ public class EquipmentServiceImpl implements IEquipmentService {
 
     @Autowired
     private IEquipmentMapper equipmentMapper;
+
+    @Autowired
+    private IRepairService repairService;
+
+    @Autowired
+    private IUserService userService;
 
     @Override
     public Page<EquipmentForm> selectPage(Page<EquipmentForm> page, EquipmentForm wrapper) {
@@ -71,6 +82,34 @@ public class EquipmentServiceImpl implements IEquipmentService {
             Equipment equipment = new Equipment();
             equipment.setEquipNumber("0001");
             return equipment;
+        }
+    }
+
+    @Override
+    public String reportRepair(int id) {
+        Equipment equipment = equipmentMapper.selectById(id);
+        // 只有使用中的设备才能报修
+        if (equipment.getEquipState() == 0) {
+            Equipment equipment1 = new Equipment();
+            equipment1.setEquipState(1);
+            // 改变设备状态
+            int id1 = equipmentMapper.update(equipment1, new UpdateWrapper<Equipment>()
+                    .eq("id", id));
+            // 创建维修信息
+            Repair repair = repairService.getNextRepairNumber();
+            repair.setEquipNumber(equipment.getEquipNumber());
+            // 获得当前登录用户
+            User currentUserInfo = userService.getCurrentUserInfo();
+            repair.setReporterNumber(currentUserInfo.getUserNumber());
+            boolean save = repairService.save(repair);
+            if ((id1 >= 1) && save) {
+                return "success";
+            } else {
+                return "error";
+            }
+        } else {
+            // 流程不正确 （使用中 -报修-> 维修中 -报废-> 已报废）
+            return "noProcess";
         }
     }
 
