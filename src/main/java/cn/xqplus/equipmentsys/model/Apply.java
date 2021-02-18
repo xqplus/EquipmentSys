@@ -1,10 +1,10 @@
 package cn.xqplus.equipmentsys.model;
 
+import cn.xqplus.equipmentsys.Entity.LogicDeleteEntity;
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 import org.apache.ibatis.type.JdbcType;
 
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
@@ -13,7 +13,7 @@ import java.io.Serializable;
 
 @Data
 @TableName("t_position_apply")
-public class Apply implements Serializable {
+public class Apply extends LogicDeleteEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -82,13 +82,5 @@ public class Apply implements Serializable {
      */
     @TableField(value = "update_time", jdbcType = JdbcType.DECIMAL, fill = FieldFill.UPDATE)
     private Long updateTime;
-
-    /**
-     * 逻辑删除（0 存在 1 删除）
-     */
-    @TableField(value = "is_del", jdbcType = JdbcType.INTEGER)
-    @TableLogic
-    @NotNull
-    private Integer isDel = 0;
 
 }

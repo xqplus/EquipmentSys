@@ -1,10 +1,10 @@
 package cn.xqplus.equipmentsys.model;
 
+import cn.xqplus.equipmentsys.Entity.BusinessEntity;
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 import org.apache.ibatis.type.JdbcType;
 
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
@@ -13,7 +13,7 @@ import java.io.Serializable;
 
 @Data
 @TableName("t_department")
-public class Department implements Serializable {
+public class Department extends BusinessEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -40,25 +40,5 @@ public class Department implements Serializable {
      */
     @TableField(value = "dept_introduce", jdbcType = JdbcType.VARCHAR)
     private String deptIntroduce;
-
-    /**
-     * 创建时间
-     */
-    @TableField(value = "create_time", jdbcType = JdbcType.DECIMAL, fill = FieldFill.INSERT)
-    private Long createTime;
-
-    /**
-     * 更新时间
-     */
-    @TableField(value = "update_time", jdbcType = JdbcType.DECIMAL, fill = FieldFill.INSERT_UPDATE)
-    private Long updateTime;
-
-    /**
-     * 逻辑删除（0 存在 1 删除）
-     */
-    @TableField(value = "is_del", jdbcType = JdbcType.INTEGER)
-    @TableLogic
-    @NotNull
-    private Integer isDel = 0;
 
 }
