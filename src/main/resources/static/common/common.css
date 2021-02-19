@@ -4,13 +4,13 @@
 html,body {
     margin: 0;
     padding: 0;
-    background-color: #ffffff;
+    background-color: #c3c4c5;
     /*background-color: #40AFFE;*/
     /*background-image: url("/images/desktop2.png");*/
 }
 
 .container {
-    padding: 15px 100px 0 100px;
+    padding: 15px 50px 0 50px;
     margin: 0 auto;
     height: auto;
     /*border: 1px solid gray;*/
@@ -19,10 +19,10 @@ html,body {
 /* 导航栏底色填充 nav bgcolor fill */
 .bg-color-fill {
     position: absolute;
-    top: 15px;
+    top: 10px;
     width: 100%;
     height: 60px;
-    background-color: #1E9FFF;
+    background-color: #393D49;
 }
 
 .login-area {
@@ -173,3 +173,13 @@ html,body {
     transform: translate(-50%);
     background-image: url("/images/403.png");
 }
+
+/* 待办 公告栏 */
+.todo-33 {
+    width: 33.33%;
+    height: 200px;
+    float: left;
+    background-color: #40AFFE;
+}
+
+

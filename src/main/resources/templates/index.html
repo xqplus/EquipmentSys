@@ -12,64 +12,68 @@
 <body>
 <!-- 导航栏底色填充 nav bgcolor fill -->
 <div th:replace="common :: navcolor-fill"></div>
-<div class="container">
-    <!-- 导航条 nav -->
-    <div class="layui-col-md12">
-        <ul class="layui-nav layui-bg-blue" lay-filter="">
-            <li class="layui-nav-item margin-left-15 layui-this">
-                <i class="layui-icon layui-icon-home icon-small"></i>
-                <a th:href="@{/equipmentSys/router/index}">首&nbsp;&nbsp;页</a>
-            </li>
-            <li class="layui-nav-item margin-left-15" sec:authorize="hasRole('ADMIN')">
-                <i class="layui-icon layui-icon-username icon-small"></i>
-                <a th:href="@{/equipmentSys/router/userManagement}">用户管理</a>
-            </li>
-            <li class="layui-nav-item margin-left-15" sec:authorize="hasRole('ADMIN')">
-                <i class="layui-icon layui-icon-user icon-small"></i>
-                <a th:href="@{/equipmentSys/router/deptManagement}">部门管理</a>
-            </li>
-            <li class="layui-nav-item margin-left-15">
-                <i class="layui-icon layui-icon-engine icon-small"></i>
-                <a href="javascript:;">设备管理</a>
-                <dl class="layui-nav-child"> <!-- 二级菜单 -->
-                    <dd><a th:href="@{/equipmentSys/router/equipManagement}">设备管理</a></dd>
-                    <dd sec:authorize="hasRole('ADMIN')">
-                        <a th:href="@{/equipmentSys/router/equipTypeManagement}">设备类型管理</a>
-                    </dd>
-                </dl>
-            </li>
-            <li class="layui-nav-item margin-left-15">
-                <i class="layui-icon layui-icon-set icon-small"></i>
-                <a href="javascript:;">维修管理</a>
-                <dl class="layui-nav-child"> <!-- 二级菜单 -->
-                    <dd sec:authorize="hasRole('ADMIN') || hasRole('REPAIR')">
-                        <a th:href="@{/equipmentSys/router/repairManagement}">维修管理</a>
-                    </dd>
-                    <dd><a th:href="@{/equipmentSys/router/repairHistory}">维修历史记录</a></dd>
-                </dl>
-            </li>
-            <li class="layui-nav-item margin-left-15">
-                <i class="layui-icon layui-icon-form icon-small"></i>
-                <a th:href="@{/equipmentSys/router/positionApply}">职位申请</a>
-            </li>
-            <!-- 已登录显示用户 -->
-            <li class="layui-nav-item nav-right-150" sec:authorize="isAuthenticated()">
-                <a href="">
-                    当前用户：<span sec:authentication="name"></span>
-                </a>
-            </li>
-            <!-- 未登录显示登录 -->
-            <li class="layui-nav-item nav-right-150" sec:authorize="!isAuthenticated()">
-                <i class="layui-icon layui-icon-layer icon-small"></i>
-                <a th:href="@{/equipmentSys/router/login}">登录</a>
-            </li>
-            <!-- 已登录显示注销 -->
-            <li class="layui-nav-item nav-right-50" sec:authorize="isAuthenticated()">
-                <i class="layui-icon layui-icon-logout icon-small"></i>
-                <a th:href="@{/logout}">注&nbsp;&nbsp;销</a>
-            </li>
-        </ul>
+<!-- 页头 导航条 nav -->
+<div class="layui-col-md12 margin-top-10">
+    <div style="padding: 0 50px">
+    <ul class="layui-nav" lay-filter="">
+        <li class="layui-nav-item margin-left-15 layui-this">
+            <i class="layui-icon layui-icon-home icon-small"></i>
+            <a th:href="@{/equipmentSys/router/index}">首&nbsp;&nbsp;页</a>
+        </li>
+        <li class="layui-nav-item margin-left-15" sec:authorize="hasRole('ADMIN')">
+            <i class="layui-icon layui-icon-username icon-small"></i>
+            <a th:href="@{/equipmentSys/router/userManagement}">用户管理</a>
+        </li>
+        <li class="layui-nav-item margin-left-15" sec:authorize="hasRole('ADMIN')">
+            <i class="layui-icon layui-icon-user icon-small"></i>
+            <a th:href="@{/equipmentSys/router/deptManagement}">部门管理</a>
+        </li>
+        <li class="layui-nav-item margin-left-15">
+            <i class="layui-icon layui-icon-engine icon-small"></i>
+            <a href="javascript:;">设备管理</a>
+            <dl class="layui-nav-child"> <!-- 二级菜单 -->
+                <dd><a th:href="@{/equipmentSys/router/equipManagement}">设备管理</a></dd>
+                <dd sec:authorize="hasRole('ADMIN')">
+                    <a th:href="@{/equipmentSys/router/equipTypeManagement}">设备类型管理</a>
+                </dd>
+            </dl>
+        </li>
+        <li class="layui-nav-item margin-left-15">
+            <i class="layui-icon layui-icon-set icon-small"></i>
+            <a href="javascript:;">维修管理</a>
+            <dl class="layui-nav-child"> <!-- 二级菜单 -->
+                <dd sec:authorize="hasRole('ADMIN') || hasRole('REPAIR')">
+                    <a th:href="@{/equipmentSys/router/repairManagement}">维修管理</a>
+                </dd>
+                <dd><a th:href="@{/equipmentSys/router/repairHistory}">维修历史记录</a></dd>
+            </dl>
+        </li>
+        <li class="layui-nav-item margin-left-15">
+            <i class="layui-icon layui-icon-form icon-small"></i>
+            <a th:href="@{/equipmentSys/router/positionApply}">职位申请
+                <span class="layui-badge">4</span>
+            </a>
+        </li>
+        <!-- 已登录显示用户 -->
+        <li class="layui-nav-item nav-right-150" sec:authorize="isAuthenticated()">
+            <a href="">
+                当前用户：<span sec:authentication="name"></span>
+            </a>
+        </li>
+        <!-- 未登录显示登录 -->
+        <li class="layui-nav-item nav-right-150" sec:authorize="!isAuthenticated()">
+            <i class="layui-icon layui-icon-layer icon-small"></i>
+            <a th:href="@{/equipmentSys/router/login}">登录</a>
+        </li>
+        <!-- 已登录显示注销 -->
+        <li class="layui-nav-item nav-right-50" sec:authorize="isAuthenticated()">
+            <i class="layui-icon layui-icon-logout icon-small"></i>
+            <a th:href="@{/logout}">注&nbsp;&nbsp;销</a>
+        </li>
+    </ul>
     </div>
+</div>
+<div class="container">
     <!-- 轮播图 carousel -->
     <div class="layui-col-md12 margin-top-10">
         <div class="layui-carousel" id="carousel1">
@@ -81,8 +85,14 @@
             </div>
         </div>
     </div>
-    <!-- 公告栏 TODO -->
+    <!-- 待办 公告栏 TODO -->
+    <div class="layui-col-md12 margin-top-10">
+        <div class="todo-33">
 
+        </div>
+        <div class="todo-33"></div>
+        <div class="todo-33"></div>
+    </div>
 </div>
 <!-- 页脚 footer -->
 <div class="layui-col-md12 margin-top-10">

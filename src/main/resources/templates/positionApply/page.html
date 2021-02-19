@@ -14,10 +14,10 @@
 <body>
 <!-- 导航栏底色填充 nav bgcolor fill -->
 <div th:replace="common :: navcolor-fill"></div>
-<div class="container">
-    <!-- 导航条 nav -->
-    <div class="layui-col-md12">
-        <ul class="layui-nav layui-bg-blue" lay-filter="">
+<!-- 页头 导航条 nav -->
+<div class="layui-col-md12 margin-top-10">
+    <div style="padding: 0 50px">
+        <ul class="layui-nav" lay-filter="">
             <li class="layui-nav-item margin-left-15">
                 <i class="layui-icon layui-icon-home icon-small"></i>
                 <a th:href="@{/equipmentSys/router/index}">首&nbsp;&nbsp;页</a>
@@ -52,7 +52,9 @@
             </li>
             <li class="layui-nav-item margin-left-15 layui-this">
                 <i class="layui-icon layui-icon-form icon-small"></i>
-                <a th:href="@{/equipmentSys/router/positionApply}">职位申请</a>
+                <a th:href="@{/equipmentSys/router/positionApply}">职位申请
+                    <span class="layui-badge">4</span>
+                </a>
             </li>
             <!-- 已登录显示用户 -->
             <li class="layui-nav-item nav-right-150" sec:authorize="isAuthenticated()">
@@ -72,6 +74,8 @@
             </li>
         </ul>
     </div>
+</div>
+<div class="container">
     <!-- 搜索框 search -->
     <div class="layui-col-md12 margin-top-10">
         <div class="search-panel border-radius-2">
