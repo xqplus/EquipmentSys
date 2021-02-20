@@ -5,9 +5,10 @@ import cn.xqplus.equipmentsys.model.Equipment;
 import cn.xqplus.equipmentsys.service.IEquipmentService;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.sun.istack.internal.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * 设备信息管理 接口

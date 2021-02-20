@@ -1,8 +1,6 @@
 package cn.xqplus.equipmentsys.controller;
 
-import cn.xqplus.equipmentsys.model.User;
 import cn.xqplus.equipmentsys.service.ITodoAndNoticeService;
-import cn.xqplus.equipmentsys.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

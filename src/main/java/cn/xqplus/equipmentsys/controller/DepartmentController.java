@@ -3,9 +3,10 @@ package cn.xqplus.equipmentsys.controller;
 import cn.xqplus.equipmentsys.form.DepartmentForm;
 import cn.xqplus.equipmentsys.service.IDepartmentService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.sun.istack.internal.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * 部门信息管理 接口
