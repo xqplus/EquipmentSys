@@ -685,3 +685,24 @@ function getCurrentUserInfo() {
     return currentUserInfo;
 }
 
+/**
+ * 设置页面导航栏徽章，即待处理事件数量
+ */
+function setBadge() {
+    $.ajax({
+       async: false,
+       type: 'GET',
+       url: '/equipmentSys/todoAndNotice/todo',
+       data: {},
+       success: function (data) {
+           if (data[0] > 0) { // 申请数
+               $('#applyNum').addClass("layui-badge").html(data[0]);
+           }
+           if (data[1] > 0) { // 维修数
+               $('#repairDot').addClass("layui-badge-dot");
+               $('#repairNum').addClass("layui-badge").html(data[1]);
+           }
+       }
+    });
+}
+

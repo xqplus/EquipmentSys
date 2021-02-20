@@ -26,6 +26,8 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
     })
     tableRender({});
     toolProcess();
+    // 设置待处理事件 徽章
+    setBadge();
 
     /**
      * 数据表格渲染

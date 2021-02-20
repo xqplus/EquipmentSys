@@ -183,6 +183,11 @@ public class RepairServiceImpl implements IRepairService {
     }
 
     @Override
+    public int count(Wrapper<Repair> queryWrapper) {
+        return repairMapper.selectCount(queryWrapper);
+    }
+
+    @Override
     public boolean saveBatch(Collection<Repair> entityList, int batchSize) {
         return false;
     }

@@ -147,6 +147,11 @@ public class ApplyServiceImpl implements IApplyService {
     }
 
     @Override
+    public int count(Wrapper<Apply> queryWrapper) {
+        return applyMapper.selectCount(queryWrapper);
+    }
+
+    @Override
     public Apply getOne(Wrapper<Apply> queryWrapper) {
         return applyMapper.selectOne(queryWrapper);
     }

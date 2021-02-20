@@ -46,3 +46,213 @@
 2021-02-18 09:53:55.116 DEBUG 14716 --- [http-nio-8090-exec-3] c.x.e.mapper.IUserMapper.getList         : ==>  Preparing: SELECT u.id, u.user_number, u.user_name, u.password, u.true_name, u.create_time, u.update_time, d.dept_name, r.role_name FROM t_user u LEFT JOIN t_department d ON u.dept_number = d.dept_number LEFT JOIN t_role r ON u.role_type = r.role_type WHERE u.is_del = 0 AND d.is_del = 0 AND r.is_del = 0 -- Integer类型roleType=0时 != ''校验为false 即mybatis判断roleType=0='',所以不加!=''校验 -- TODO
 2021-02-18 09:53:55.116 DEBUG 14716 --- [http-nio-8090-exec-3] c.x.e.mapper.IUserMapper.getList         : ==> Parameters: 
 2021-02-18 09:53:55.120 DEBUG 14716 --- [http-nio-8090-exec-3] c.x.e.mapper.IUserMapper.getList         : <==      Total: 10
+2021-02-18 10:52:31.707  INFO 14716 --- [SpringContextShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2021-02-18 10:52:31.767  INFO 14716 --- [SpringContextShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2021-02-18 10:52:31.767  INFO 14716 --- [SpringContextShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2021-02-18 10:52:41.710  INFO 15736 --- [restartedMain] c.x.e.EquipmentSysApplication            : Starting EquipmentSysApplication on DESKTOP-QLGS8VS with PID 15736 (E:\code\mycode\EquipmentSys\target\classes started by ASUS in E:\code\mycode\EquipmentSys)
+2021-02-18 10:52:41.710 DEBUG 15736 --- [restartedMain] c.x.e.EquipmentSysApplication            : Running with Spring Boot v2.3.7.RELEASE, Spring v5.2.12.RELEASE
+2021-02-18 10:52:41.710  INFO 15736 --- [restartedMain] c.x.e.EquipmentSysApplication            : No active profile set, falling back to default profiles: default
+2021-02-18 10:52:41.780  INFO 15736 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2021-02-18 10:52:41.780  INFO 15736 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2021-02-18 10:52:42.590  INFO 15736 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2021-02-18 10:52:42.590  INFO 15736 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2021-02-18 10:52:42.630  INFO 15736 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 20ms. Found 0 Redis repository interfaces.
+2021-02-18 10:52:43.329  INFO 15736 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8090 (http)
+2021-02-18 10:52:43.339  INFO 15736 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2021-02-18 10:52:43.339  INFO 15736 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.41]
+2021-02-18 10:52:43.339  INFO 15736 --- [restartedMain] o.a.catalina.core.AprLifecycleListener   : Loaded Apache Tomcat Native library [1.2.24] using APR version [1.7.0].
+2021-02-18 10:52:43.339  INFO 15736 --- [restartedMain] o.a.catalina.core.AprLifecycleListener   : APR capabilities: IPv6 [true], sendfile [true], accept filters [false], random [true].
+2021-02-18 10:52:43.339  INFO 15736 --- [restartedMain] o.a.catalina.core.AprLifecycleListener   : APR/OpenSSL configuration: useAprConnector [false], useOpenSSL [true]
+2021-02-18 10:52:43.349  INFO 15736 --- [restartedMain] o.a.catalina.core.AprLifecycleListener   : OpenSSL successfully initialized [OpenSSL 1.1.1g  21 Apr 2020]
+2021-02-18 10:52:43.479  INFO 15736 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2021-02-18 10:52:43.479  INFO 15736 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1699 ms
+2021-02-18 10:52:46.208  INFO 15736 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@33bb2a93, org.springframework.security.web.context.SecurityContextPersistenceFilter@12d4e84a, org.springframework.security.web.header.HeaderWriterFilter@634ff0b0, org.springframework.security.web.authentication.logout.LogoutFilter@6e21d295, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@2a8f83e1, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@6ff53d1f, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@7d77b66c, org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter@756d1151, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@1d9f2b47, org.springframework.security.web.session.SessionManagementFilter@4292bf35, org.springframework.security.web.access.ExceptionTranslationFilter@16c12c5b, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@304953d4]
+2021-02-18 10:52:46.338  INFO 15736 --- [restartedMain] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2021-02-18 10:52:46.438  INFO 15736 --- [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2021-02-18 10:52:46.687  INFO 15736 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2021-02-18 10:52:46.737  INFO 15736 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8090 (http) with context path ''
+2021-02-18 10:52:46.747  INFO 15736 --- [restartedMain] c.x.e.EquipmentSysApplication            : Started EquipmentSysApplication in 5.664 seconds (JVM running for 7.266)
+2021-02-18 10:52:59.618  INFO 15736 --- [http-nio-8090-exec-1] o.apache.tomcat.util.http.parser.Cookie  : A cookie header was received [1605791924,1605792017; JSESSIONID=F1637E2AF42CE568AF2F13273EDB6FFA] that contained an invalid cookie. That cookie will be ignored.
+ Note: further occurrences of this error will be logged at DEBUG level.
+2021-02-18 10:52:59.631  INFO 15736 --- [http-nio-8090-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2021-02-18 10:52:59.631  INFO 15736 --- [http-nio-8090-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2021-02-18 10:52:59.642  INFO 15736 --- [http-nio-8090-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 10 ms
+2021-02-18 10:53:04.839  INFO 15736 --- [http-nio-8090-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2021-02-18 10:53:05.011  INFO 15736 --- [http-nio-8090-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2021-02-18 10:53:05.018 DEBUG 15736 --- [http-nio-8090-exec-1] c.x.e.mapper.IUserMapper.selectOne       : ==>  Preparing: SELECT id,dept_number,user_number,user_name,password,true_name,role_type,create_time,update_time,is_del FROM t_user WHERE is_del=0 AND (user_name = ?)
+2021-02-18 10:53:05.037 DEBUG 15736 --- [http-nio-8090-exec-1] c.x.e.mapper.IUserMapper.selectOne       : ==> Parameters: admin(String)
+2021-02-18 10:53:05.054 DEBUG 15736 --- [http-nio-8090-exec-1] c.x.e.mapper.IUserMapper.selectOne       : <==      Total: 1
+2021-02-18 10:53:05.060 DEBUG 15736 --- [http-nio-8090-exec-1] c.x.e.mapper.IRoleMapper.selectList      : ==>  Preparing: SELECT id,role_type,role_auth,role_name,create_time,update_time,is_del FROM t_role WHERE is_del=0 AND (role_type = ?)
+2021-02-18 10:53:05.061 DEBUG 15736 --- [http-nio-8090-exec-1] c.x.e.mapper.IRoleMapper.selectList      : ==> Parameters: 0(Integer)
+2021-02-18 10:53:05.064 DEBUG 15736 --- [http-nio-8090-exec-1] c.x.e.mapper.IRoleMapper.selectList      : <==      Total: 1
+2021-02-18 10:53:05.433 DEBUG 15736 --- [http-nio-8090-exec-10] c.x.e.mapper.IUserMapper.getList         : ==>  Preparing: SELECT u.id, u.user_number, u.user_name, u.password, u.true_name, u.create_time, u.update_time, d.dept_name, r.role_name FROM t_user u LEFT JOIN t_department d ON u.dept_number = d.dept_number LEFT JOIN t_role r ON u.role_type = r.role_type WHERE u.is_del = 0 AND d.is_del = 0 AND r.is_del = 0 -- Integer类型roleType=0时 != ''校验为false 即mybatis判断roleType=0='',所以不加!=''校验 -- TODO
+2021-02-18 10:53:05.433 DEBUG 15736 --- [http-nio-8090-exec-10] c.x.e.mapper.IUserMapper.getList         : ==> Parameters: 
+2021-02-18 10:53:05.441 DEBUG 15736 --- [http-nio-8090-exec-10] c.x.e.mapper.IUserMapper.getList         : <==      Total: 10
+2021-02-18 10:53:07.775 DEBUG 15736 --- [http-nio-8090-exec-2] c.x.e.mapper.IUserMapper.selectOne       : ==>  Preparing: SELECT id,dept_number,user_number,user_name,password,true_name,role_type,create_time,update_time,is_del FROM t_user WHERE is_del=0 AND (user_name = ?)
+2021-02-18 10:53:07.776 DEBUG 15736 --- [http-nio-8090-exec-2] c.x.e.mapper.IUserMapper.selectOne       : ==> Parameters: admin(String)
+2021-02-18 10:53:07.778 DEBUG 15736 --- [http-nio-8090-exec-2] c.x.e.mapper.IUserMapper.selectOne       : <==      Total: 1
+2021-02-18 10:53:21.740 DEBUG 15736 --- [http-nio-8090-exec-4] c.x.e.mapper.IUserMapper.selectList      : ==>  Preparing: SELECT id,dept_number,user_number,user_name,password,true_name,role_type,create_time,update_time,is_del FROM t_user WHERE is_del=0 AND (user_name = ?)
+2021-02-18 10:53:21.741 DEBUG 15736 --- [http-nio-8090-exec-4] c.x.e.mapper.IUserMapper.selectList      : ==> Parameters: admin(String)
+2021-02-18 10:53:21.742 DEBUG 15736 --- [http-nio-8090-exec-4] c.x.e.mapper.IUserMapper.selectList      : <==      Total: 1
+2021-02-18 10:53:23.299 DEBUG 15736 --- [http-nio-8090-exec-3] c.x.e.mapper.IUserMapper.selectOne       : ==>  Preparing: SELECT id,dept_number,user_number,user_name,password,true_name,role_type,create_time,update_time,is_del FROM t_user WHERE is_del=0 AND (user_name = ?)
+2021-02-18 10:53:23.300 DEBUG 15736 --- [http-nio-8090-exec-3] c.x.e.mapper.IUserMapper.selectOne       : ==> Parameters: admin(String)
+2021-02-18 10:53:23.301 DEBUG 15736 --- [http-nio-8090-exec-3] c.x.e.mapper.IUserMapper.selectOne       : <==      Total: 1
+2021-02-18 10:53:34.986 DEBUG 15736 --- [http-nio-8090-exec-8] c.x.e.mapper.IUserMapper.selectList      : ==>  Preparing: SELECT id,dept_number,user_number,user_name,password,true_name,role_type,create_time,update_time,is_del FROM t_user WHERE is_del=0 AND (user_name = ?)
+2021-02-18 10:53:34.987 DEBUG 15736 --- [http-nio-8090-exec-8] c.x.e.mapper.IUserMapper.selectList      : ==> Parameters: x(String)
+2021-02-18 10:53:34.988 DEBUG 15736 --- [http-nio-8090-exec-8] c.x.e.mapper.IUserMapper.selectList      : <==      Total: 0
+2021-02-18 10:53:42.069 DEBUG 15736 --- [http-nio-8090-exec-5] c.x.e.mapper.IUserMapper.selectOne       : ==>  Preparing: SELECT id,dept_number,user_number,user_name,password,true_name,role_type,create_time,update_time,is_del FROM t_user WHERE is_del=0 AND (user_name = ?)
+2021-02-18 10:53:42.070 DEBUG 15736 --- [http-nio-8090-exec-5] c.x.e.mapper.IUserMapper.selectOne       : ==> Parameters: admin(String)
+2021-02-18 10:53:42.072 DEBUG 15736 --- [http-nio-8090-exec-5] c.x.e.mapper.IUserMapper.selectOne       : <==      Total: 1
+2021-02-18 10:53:44.732 DEBUG 15736 --- [http-nio-8090-exec-7] c.x.e.mapper.IUserMapper.selectList      : ==>  Preparing: SELECT id,dept_number,user_number,user_name,password,true_name,role_type,create_time,update_time,is_del FROM t_user WHERE is_del=0 AND (user_name = ?)
+2021-02-18 10:53:44.733 DEBUG 15736 --- [http-nio-8090-exec-7] c.x.e.mapper.IUserMapper.selectList      : ==> Parameters: x(String)
+2021-02-18 10:53:44.734 DEBUG 15736 --- [http-nio-8090-exec-7] c.x.e.mapper.IUserMapper.selectList      : <==      Total: 0
+2021-02-18 10:53:56.701 DEBUG 15736 --- [http-nio-8090-exec-6] c.x.e.m.IDepartmentMapper.getDeptByRole  : ==>  Preparing: SELECT r.dept_number, d.dept_name FROM t_role_dept r LEFT JOIN t_department d ON r.dept_number = d.dept_number WHERE r.is_del = 0 AND d.is_del = 0 AND r.role_type = ?
+2021-02-18 10:53:56.702 DEBUG 15736 --- [http-nio-8090-exec-6] c.x.e.m.IDepartmentMapper.getDeptByRole  : ==> Parameters: 1(String)
+2021-02-18 10:53:56.705 DEBUG 15736 --- [http-nio-8090-exec-6] c.x.e.m.IDepartmentMapper.getDeptByRole  : <==      Total: 2
+2021-02-18 10:54:00.351 DEBUG 15736 --- [http-nio-8090-exec-9] c.x.e.m.IPasswordVisibleMapper.insert    : ==>  Preparing: INSERT INTO t_password_visible ( user_name, password_visible, create_time, update_time, is_del ) VALUES ( ?, ?, ?, ?, ? )
+2021-02-18 10:54:00.352 DEBUG 15736 --- [http-nio-8090-exec-9] c.x.e.m.IPasswordVisibleMapper.insert    : ==> Parameters: x(String), 123456(String), 1613616840350(Long), 1613616840350(Long), 0(Integer)
+2021-02-18 10:54:00.358 DEBUG 15736 --- [http-nio-8090-exec-9] c.x.e.m.IPasswordVisibleMapper.insert    : <==    Updates: 1
+2021-02-18 10:54:00.362 DEBUG 15736 --- [http-nio-8090-exec-9] c.x.e.mapper.IUserMapper.selectList      : ==>  Preparing: SELECT id,dept_number,user_number,user_name,password,true_name,role_type,create_time,update_time,is_del FROM t_user WHERE is_del=0 AND (dept_number = ?) ORDER BY user_number DESC
+2021-02-18 10:54:00.363 DEBUG 15736 --- [http-nio-8090-exec-9] c.x.e.mapper.IUserMapper.selectList      : ==> Parameters: 2002(String)
+2021-02-18 10:54:00.364 DEBUG 15736 --- [http-nio-8090-exec-9] c.x.e.mapper.IUserMapper.selectList      : <==      Total: 0
+2021-02-18 10:54:00.465 DEBUG 15736 --- [http-nio-8090-exec-9] c.x.e.mapper.IUserMapper.insert          : ==>  Preparing: INSERT INTO t_user ( dept_number, user_number, user_name, password, true_name, role_type, create_time, update_time, is_del ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ? )
+2021-02-18 10:54:00.466 DEBUG 15736 --- [http-nio-8090-exec-9] c.x.e.mapper.IUserMapper.insert          : ==> Parameters: 2002(String), 2002001(String), x(String), $2a$10$ZuM/qdrnHaiGKJIIlzNjieUurEd32BED.4lBzvH8fCmJk0.UXySAe(String), x(String), 1(Integer), 1613616840465(Long), 1613616840465(Long), 0(Integer)
+2021-02-18 10:54:00.469 DEBUG 15736 --- [http-nio-8090-exec-9] c.x.e.mapper.IUserMapper.insert          : <==    Updates: 1
+2021-02-18 10:54:01.671 DEBUG 15736 --- [http-nio-8090-exec-9] c.x.e.mapper.IUserMapper.getList         : ==>  Preparing: SELECT u.id, u.user_number, u.user_name, u.password, u.true_name, u.create_time, u.update_time, d.dept_name, r.role_name FROM t_user u LEFT JOIN t_department d ON u.dept_number = d.dept_number LEFT JOIN t_role r ON u.role_type = r.role_type WHERE u.is_del = 0 AND d.is_del = 0 AND r.is_del = 0 -- Integer类型roleType=0时 != ''校验为false 即mybatis判断roleType=0='',所以不加!=''校验 -- TODO
+2021-02-18 10:54:01.672 DEBUG 15736 --- [http-nio-8090-exec-9] c.x.e.mapper.IUserMapper.getList         : ==> Parameters: 
+2021-02-18 10:54:01.677 DEBUG 15736 --- [http-nio-8090-exec-9] c.x.e.mapper.IUserMapper.getList         : <==      Total: 11
+2021-02-18 11:07:03.452 DEBUG 15736 --- [http-nio-8090-exec-7] c.x.e.mapper.IUserMapper.selectOne       : ==>  Preparing: SELECT id,dept_number,user_number,user_name,password,true_name,role_type,create_time,update_time,is_del FROM t_user WHERE is_del=0 AND (user_name = ?)
+2021-02-18 11:07:03.453 DEBUG 15736 --- [http-nio-8090-exec-7] c.x.e.mapper.IUserMapper.selectOne       : ==> Parameters: admin(String)
+2021-02-18 11:07:03.454 DEBUG 15736 --- [http-nio-8090-exec-7] c.x.e.mapper.IUserMapper.selectOne       : <==      Total: 1
+2021-02-18 11:07:13.316 DEBUG 15736 --- [http-nio-8090-exec-6] c.x.e.mapper.IUserMapper.selectList      : ==>  Preparing: SELECT id,dept_number,user_number,user_name,password,true_name,role_type,create_time,update_time,is_del FROM t_user WHERE is_del=0 AND (user_name = ?)
+2021-02-18 11:07:13.317 DEBUG 15736 --- [http-nio-8090-exec-6] c.x.e.mapper.IUserMapper.selectList      : ==> Parameters: admin(String)
+2021-02-18 11:07:13.319 DEBUG 15736 --- [http-nio-8090-exec-6] c.x.e.mapper.IUserMapper.selectList      : <==      Total: 1
+2021-02-18 11:07:16.645 DEBUG 15736 --- [http-nio-8090-exec-9] c.x.e.mapper.IUserMapper.selectOne       : ==>  Preparing: SELECT id,dept_number,user_number,user_name,password,true_name,role_type,create_time,update_time,is_del FROM t_user WHERE is_del=0 AND (user_name = ?)
+2021-02-18 11:07:16.645 DEBUG 15736 --- [http-nio-8090-exec-9] c.x.e.mapper.IUserMapper.selectOne       : ==> Parameters: admin(String)
+2021-02-18 11:07:16.647 DEBUG 15736 --- [http-nio-8090-exec-9] c.x.e.mapper.IUserMapper.selectOne       : <==      Total: 1
+2021-02-18 11:30:06.299  INFO 15736 --- [SpringContextShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2021-02-18 11:30:06.319  INFO 15736 --- [SpringContextShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2021-02-18 11:30:06.329  INFO 15736 --- [SpringContextShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2021-02-18 11:30:36.489  INFO 15484 --- [restartedMain] c.x.e.EquipmentSysApplication            : Starting EquipmentSysApplication on DESKTOP-QLGS8VS with PID 15484 (E:\code\mycode\EquipmentSys\target\classes started by ASUS in E:\code\mycode\EquipmentSys)
+2021-02-18 11:30:36.489 DEBUG 15484 --- [restartedMain] c.x.e.EquipmentSysApplication            : Running with Spring Boot v2.3.7.RELEASE, Spring v5.2.12.RELEASE
+2021-02-18 11:30:36.489  INFO 15484 --- [restartedMain] c.x.e.EquipmentSysApplication            : No active profile set, falling back to default profiles: default
+2021-02-18 11:30:36.559  INFO 15484 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2021-02-18 11:30:36.559  INFO 15484 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2021-02-18 11:30:37.378  INFO 15484 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2021-02-18 11:30:37.388  INFO 15484 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2021-02-18 11:30:37.418  INFO 15484 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 17ms. Found 0 Redis repository interfaces.
+2021-02-18 11:30:38.158  INFO 15484 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8090 (http)
+2021-02-18 11:30:38.168  INFO 15484 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2021-02-18 11:30:38.168  INFO 15484 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.41]
+2021-02-18 11:30:38.178  INFO 15484 --- [restartedMain] o.a.catalina.core.AprLifecycleListener   : Loaded Apache Tomcat Native library [1.2.24] using APR version [1.7.0].
+2021-02-18 11:30:38.178  INFO 15484 --- [restartedMain] o.a.catalina.core.AprLifecycleListener   : APR capabilities: IPv6 [true], sendfile [true], accept filters [false], random [true].
+2021-02-18 11:30:38.178  INFO 15484 --- [restartedMain] o.a.catalina.core.AprLifecycleListener   : APR/OpenSSL configuration: useAprConnector [false], useOpenSSL [true]
+2021-02-18 11:30:38.178  INFO 15484 --- [restartedMain] o.a.catalina.core.AprLifecycleListener   : OpenSSL successfully initialized [OpenSSL 1.1.1g  21 Apr 2020]
+2021-02-18 11:30:38.318  INFO 15484 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2021-02-18 11:30:38.318  INFO 15484 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1759 ms
+2021-02-18 11:30:40.806  INFO 15484 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@6ccda133, org.springframework.security.web.context.SecurityContextPersistenceFilter@422ff511, org.springframework.security.web.header.HeaderWriterFilter@1b61b26a, org.springframework.security.web.authentication.logout.LogoutFilter@44416d19, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@40504cac, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@3579eb94, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@d199a85, org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter@17317771, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@46c65d24, org.springframework.security.web.session.SessionManagementFilter@24b7538f, org.springframework.security.web.access.ExceptionTranslationFilter@90e30eb, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@856833f]
+2021-02-18 11:30:40.926  INFO 15484 --- [restartedMain] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2021-02-18 11:30:41.016  INFO 15484 --- [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2021-02-18 11:30:41.266  INFO 15484 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2021-02-18 11:30:41.306  INFO 15484 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8090 (http) with context path ''
+2021-02-18 11:30:41.326  INFO 15484 --- [restartedMain] c.x.e.EquipmentSysApplication            : Started EquipmentSysApplication in 5.577 seconds (JVM running for 7.139)
+2021-02-18 11:30:48.276  INFO 15484 --- [http-nio-8090-exec-1] o.apache.tomcat.util.http.parser.Cookie  : A cookie header was received [1605791924,1605792017; JSESSIONID=338F66437C18E3CF6E3CBD100491B39C] that contained an invalid cookie. That cookie will be ignored.
+ Note: further occurrences of this error will be logged at DEBUG level.
+2021-02-18 11:30:48.285  INFO 15484 --- [http-nio-8090-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2021-02-18 11:30:48.285  INFO 15484 --- [http-nio-8090-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2021-02-18 11:30:48.295  INFO 15484 --- [http-nio-8090-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 10 ms
+2021-02-18 11:30:49.079  INFO 15484 --- [http-nio-8090-exec-10] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2021-02-18 11:30:49.279  INFO 15484 --- [http-nio-8090-exec-10] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2021-02-18 11:30:49.289 DEBUG 15484 --- [http-nio-8090-exec-10] c.x.e.mapper.IUserMapper.getList         : ==>  Preparing: SELECT u.id, u.user_number, u.user_name, u.password, u.true_name, u.create_time, u.update_time, d.dept_name, r.role_name FROM t_user u LEFT JOIN t_department d ON u.dept_number = d.dept_number LEFT JOIN t_role r ON u.role_type = r.role_type WHERE u.is_del = 0 AND d.is_del = 0 AND r.is_del = 0 -- Integer类型roleType=0时 != ''校验为false 即mybatis判断roleType=0='',所以不加!=''校验 -- TODO
+2021-02-18 11:30:49.309 DEBUG 15484 --- [http-nio-8090-exec-10] c.x.e.mapper.IUserMapper.getList         : ==> Parameters: 
+2021-02-18 11:30:49.333 DEBUG 15484 --- [http-nio-8090-exec-10] c.x.e.mapper.IUserMapper.getList         : <==      Total: 11
+2021-02-18 11:30:55.355 DEBUG 15484 --- [http-nio-8090-exec-10] c.x.e.mapper.IUserMapper.getList         : ==>  Preparing: SELECT u.id, u.user_number, u.user_name, u.password, u.true_name, u.create_time, u.update_time, d.dept_name, r.role_name FROM t_user u LEFT JOIN t_department d ON u.dept_number = d.dept_number LEFT JOIN t_role r ON u.role_type = r.role_type WHERE u.is_del = 0 AND d.is_del = 0 AND r.is_del = 0 -- Integer类型roleType=0时 != ''校验为false 即mybatis判断roleType=0='',所以不加!=''校验 -- TODO
+2021-02-18 11:30:55.355 DEBUG 15484 --- [http-nio-8090-exec-10] c.x.e.mapper.IUserMapper.getList         : ==> Parameters: 
+2021-02-18 11:30:55.365 DEBUG 15484 --- [http-nio-8090-exec-10] c.x.e.mapper.IUserMapper.getList         : <==      Total: 11
+2021-02-18 11:31:05.627 DEBUG 15484 --- [http-nio-8090-exec-4] c.x.e.mapper.IUserMapper.selectOne       : ==>  Preparing: SELECT id,dept_number,user_number,user_name,password,true_name,role_type,create_time,update_time,is_del FROM t_user WHERE is_del=0 AND (user_name = ?)
+2021-02-18 11:31:05.628 DEBUG 15484 --- [http-nio-8090-exec-4] c.x.e.mapper.IUserMapper.selectOne       : ==> Parameters: admin(String)
+2021-02-18 11:31:05.629 DEBUG 15484 --- [http-nio-8090-exec-4] c.x.e.mapper.IUserMapper.selectOne       : <==      Total: 1
+2021-02-18 11:31:12.276 DEBUG 15484 --- [http-nio-8090-exec-3] c.x.e.mapper.IUserMapper.selectList      : ==>  Preparing: SELECT id,dept_number,user_number,user_name,password,true_name,role_type,create_time,update_time,is_del FROM t_user WHERE is_del=0 AND (user_name = ?)
+2021-02-18 11:31:12.276 DEBUG 15484 --- [http-nio-8090-exec-3] c.x.e.mapper.IUserMapper.selectList      : ==> Parameters: y(String)
+2021-02-18 11:31:12.277 DEBUG 15484 --- [http-nio-8090-exec-3] c.x.e.mapper.IUserMapper.selectList      : <==      Total: 0
+2021-02-18 11:31:33.607 DEBUG 15484 --- [http-nio-8090-exec-5] c.x.e.m.IDepartmentMapper.getDeptByRole  : ==>  Preparing: SELECT r.dept_number, d.dept_name FROM t_role_dept r LEFT JOIN t_department d ON r.dept_number = d.dept_number WHERE r.is_del = 0 AND d.is_del = 0 AND r.role_type = ?
+2021-02-18 11:31:33.608 DEBUG 15484 --- [http-nio-8090-exec-5] c.x.e.m.IDepartmentMapper.getDeptByRole  : ==> Parameters: 1(String)
+2021-02-18 11:31:33.611 DEBUG 15484 --- [http-nio-8090-exec-5] c.x.e.m.IDepartmentMapper.getDeptByRole  : <==      Total: 2
+2021-02-18 11:31:36.148 DEBUG 15484 --- [http-nio-8090-exec-6] c.x.e.mapper.IUserMapper.selectOne       : ==>  Preparing: SELECT id,dept_number,user_number,user_name,password,true_name,role_type,create_time,update_time,is_del FROM t_user WHERE is_del=0 AND (password = ?)
+2021-02-18 11:31:36.148 DEBUG 15484 --- [http-nio-8090-exec-6] c.x.e.mapper.IUserMapper.selectOne       : ==> Parameters: $2a$10$ZuM/qdrnHaiGKJIIlzNjieUurEd32BED.4lBzvH8fCmJk0.UXySAe(String)
+2021-02-18 11:31:36.150 DEBUG 15484 --- [http-nio-8090-exec-6] c.x.e.mapper.IUserMapper.selectOne       : <==      Total: 1
+2021-02-18 11:31:36.162 DEBUG 15484 --- [http-nio-8090-exec-6] c.x.e.m.IPasswordVisibleMapper.update    : ==>  Preparing: UPDATE t_password_visible SET user_name=?, update_time=? WHERE is_del=0 AND (user_name = ?)
+2021-02-18 11:31:36.164 DEBUG 15484 --- [http-nio-8090-exec-6] c.x.e.m.IPasswordVisibleMapper.update    : ==> Parameters: y(String), 1613619096162(Long), x(String)
+2021-02-18 11:31:36.169 DEBUG 15484 --- [http-nio-8090-exec-6] c.x.e.m.IPasswordVisibleMapper.update    : <==    Updates: 1
+2021-02-18 11:31:36.173 DEBUG 15484 --- [http-nio-8090-exec-6] c.x.e.mapper.IUserMapper.update          : ==>  Preparing: UPDATE t_user SET dept_number=?, user_name=?, password=?, true_name=?, role_type=?, update_time=? WHERE is_del=0 AND (password = ?)
+2021-02-18 11:31:36.173 DEBUG 15484 --- [http-nio-8090-exec-6] c.x.e.mapper.IUserMapper.update          : ==> Parameters: 2001(String), y(String), $2a$10$ZuM/qdrnHaiGKJIIlzNjieUurEd32BED.4lBzvH8fCmJk0.UXySAe(String), y(String), 1(Integer), 1613619096172(Long), $2a$10$ZuM/qdrnHaiGKJIIlzNjieUurEd32BED.4lBzvH8fCmJk0.UXySAe(String)
+2021-02-18 11:31:36.176 DEBUG 15484 --- [http-nio-8090-exec-6] c.x.e.mapper.IUserMapper.update          : <==    Updates: 1
+2021-02-18 11:31:37.374 DEBUG 15484 --- [http-nio-8090-exec-6] c.x.e.mapper.IUserMapper.getList         : ==>  Preparing: SELECT u.id, u.user_number, u.user_name, u.password, u.true_name, u.create_time, u.update_time, d.dept_name, r.role_name FROM t_user u LEFT JOIN t_department d ON u.dept_number = d.dept_number LEFT JOIN t_role r ON u.role_type = r.role_type WHERE u.is_del = 0 AND d.is_del = 0 AND r.is_del = 0 -- Integer类型roleType=0时 != ''校验为false 即mybatis判断roleType=0='',所以不加!=''校验 -- TODO
+2021-02-18 11:31:37.374 DEBUG 15484 --- [http-nio-8090-exec-6] c.x.e.mapper.IUserMapper.getList         : ==> Parameters: 
+2021-02-18 11:31:37.377 DEBUG 15484 --- [http-nio-8090-exec-6] c.x.e.mapper.IUserMapper.getList         : <==      Total: 11
+2021-02-18 11:36:10.570 DEBUG 15484 --- [http-nio-8090-exec-3] c.x.e.mapper.IUserMapper.selectOne       : ==>  Preparing: SELECT id,dept_number,user_number,user_name,password,true_name,role_type,create_time,update_time,is_del FROM t_user WHERE is_del=0 AND (user_name = ?)
+2021-02-18 11:36:10.570 DEBUG 15484 --- [http-nio-8090-exec-3] c.x.e.mapper.IUserMapper.selectOne       : ==> Parameters: admin(String)
+2021-02-18 11:36:10.572 DEBUG 15484 --- [http-nio-8090-exec-3] c.x.e.mapper.IUserMapper.selectOne       : <==      Total: 1
+2021-02-18 11:37:11.993 DEBUG 15484 --- [http-nio-8090-exec-7] c.x.e.mapper.IUserMapper.getList         : ==>  Preparing: SELECT u.id, u.user_number, u.user_name, u.password, u.true_name, u.create_time, u.update_time, d.dept_name, r.role_name FROM t_user u LEFT JOIN t_department d ON u.dept_number = d.dept_number LEFT JOIN t_role r ON u.role_type = r.role_type WHERE u.is_del = 0 AND d.is_del = 0 AND r.is_del = 0 -- Integer类型roleType=0时 != ''校验为false 即mybatis判断roleType=0='',所以不加!=''校验 -- TODO
+2021-02-18 11:37:11.994 DEBUG 15484 --- [http-nio-8090-exec-7] c.x.e.mapper.IUserMapper.getList         : ==> Parameters: 
+2021-02-18 11:37:11.999 DEBUG 15484 --- [http-nio-8090-exec-7] c.x.e.mapper.IUserMapper.getList         : <==      Total: 11
+2021-02-18 11:38:55.644 DEBUG 15484 --- [http-nio-8090-exec-9] c.x.e.mapper.IUserMapper.selectOne       : ==>  Preparing: SELECT id,dept_number,user_number,user_name,password,true_name,role_type,create_time,update_time,is_del FROM t_user WHERE is_del=0 AND (user_name = ?)
+2021-02-18 11:38:55.645 DEBUG 15484 --- [http-nio-8090-exec-9] c.x.e.mapper.IUserMapper.selectOne       : ==> Parameters: admin(String)
+2021-02-18 11:38:55.647 DEBUG 15484 --- [http-nio-8090-exec-9] c.x.e.mapper.IUserMapper.selectOne       : <==      Total: 1
+2021-02-18 11:38:55.871 DEBUG 15484 --- [http-nio-8090-exec-5] c.x.e.mapper.IUserMapper.getList         : ==>  Preparing: SELECT u.id, u.user_number, u.user_name, u.password, u.true_name, u.create_time, u.update_time, d.dept_name, r.role_name FROM t_user u LEFT JOIN t_department d ON u.dept_number = d.dept_number LEFT JOIN t_role r ON u.role_type = r.role_type WHERE u.is_del = 0 AND d.is_del = 0 AND r.is_del = 0 -- Integer类型roleType=0时 != ''校验为false 即mybatis判断roleType=0='',所以不加!=''校验 -- TODO
+2021-02-18 11:38:55.872 DEBUG 15484 --- [http-nio-8090-exec-5] c.x.e.mapper.IUserMapper.getList         : ==> Parameters: 
+2021-02-18 11:38:55.877 DEBUG 15484 --- [http-nio-8090-exec-5] c.x.e.mapper.IUserMapper.getList         : <==      Total: 11
+2021-02-18 11:40:44.795 DEBUG 15484 --- [http-nio-8090-exec-1] c.x.e.mapper.IUserMapper.selectOne       : ==>  Preparing: SELECT id,dept_number,user_number,user_name,password,true_name,role_type,create_time,update_time,is_del FROM t_user WHERE is_del=0 AND (user_name = ?)
+2021-02-18 11:40:44.795 DEBUG 15484 --- [http-nio-8090-exec-1] c.x.e.mapper.IUserMapper.selectOne       : ==> Parameters: admin(String)
+2021-02-18 11:40:44.796 DEBUG 15484 --- [http-nio-8090-exec-1] c.x.e.mapper.IUserMapper.selectOne       : <==      Total: 1
+2021-02-18 11:45:14.545 DEBUG 15484 --- [http-nio-8090-exec-3] c.x.e.mapper.IUserMapper.getList         : ==>  Preparing: SELECT u.id, u.user_number, u.user_name, u.password, u.true_name, u.create_time, u.update_time, d.dept_name, r.role_name FROM t_user u LEFT JOIN t_department d ON u.dept_number = d.dept_number LEFT JOIN t_role r ON u.role_type = r.role_type WHERE u.is_del = 0 AND d.is_del = 0 AND r.is_del = 0 -- Integer类型roleType=0时 != ''校验为false 即mybatis判断roleType=0='',所以不加!=''校验 -- TODO
+2021-02-18 11:45:14.546 DEBUG 15484 --- [http-nio-8090-exec-3] c.x.e.mapper.IUserMapper.getList         : ==> Parameters: 
+2021-02-18 11:45:14.550 DEBUG 15484 --- [http-nio-8090-exec-3] c.x.e.mapper.IUserMapper.getList         : <==      Total: 11
+2021-02-18 11:45:39.208 DEBUG 15484 --- [http-nio-8090-exec-3] c.x.e.mapper.IUserMapper.getList         : ==>  Preparing: SELECT u.id, u.user_number, u.user_name, u.password, u.true_name, u.create_time, u.update_time, d.dept_name, r.role_name FROM t_user u LEFT JOIN t_department d ON u.dept_number = d.dept_number LEFT JOIN t_role r ON u.role_type = r.role_type WHERE u.is_del = 0 AND d.is_del = 0 AND r.is_del = 0 -- Integer类型roleType=0时 != ''校验为false 即mybatis判断roleType=0='',所以不加!=''校验 -- TODO
+2021-02-18 11:45:39.209 DEBUG 15484 --- [http-nio-8090-exec-3] c.x.e.mapper.IUserMapper.getList         : ==> Parameters: 
+2021-02-18 11:45:39.213 DEBUG 15484 --- [http-nio-8090-exec-3] c.x.e.mapper.IUserMapper.getList         : <==      Total: 11
+2021-02-18 11:46:51.745 DEBUG 15484 --- [http-nio-8090-exec-9] c.x.e.mapper.IUserMapper.getList         : ==>  Preparing: SELECT u.id, u.user_number, u.user_name, u.password, u.true_name, u.create_time, u.update_time, d.dept_name, r.role_name FROM t_user u LEFT JOIN t_department d ON u.dept_number = d.dept_number LEFT JOIN t_role r ON u.role_type = r.role_type WHERE u.is_del = 0 AND d.is_del = 0 AND r.is_del = 0 -- Integer类型roleType=0时 != ''校验为false 即mybatis判断roleType=0='',所以不加!=''校验 -- TODO
+2021-02-18 11:46:51.746 DEBUG 15484 --- [http-nio-8090-exec-9] c.x.e.mapper.IUserMapper.getList         : ==> Parameters: 
+2021-02-18 11:46:51.749 DEBUG 15484 --- [http-nio-8090-exec-9] c.x.e.mapper.IUserMapper.getList         : <==      Total: 11
+2021-02-18 11:47:13.043 DEBUG 15484 --- [http-nio-8090-exec-3] c.x.e.mapper.IUserMapper.selectList      : ==>  Preparing: SELECT id,dept_number,user_number,user_name,password,true_name,role_type,create_time,update_time,is_del FROM t_user WHERE is_del=0 AND (user_name = ?)
+2021-02-18 11:47:13.049 DEBUG 15484 --- [http-nio-8090-exec-3] c.x.e.mapper.IUserMapper.selectList      : ==> Parameters: (String)
+2021-02-18 11:47:13.050 DEBUG 15484 --- [http-nio-8090-exec-3] c.x.e.mapper.IUserMapper.selectList      : <==      Total: 0
+2021-02-18 11:47:14.335 DEBUG 15484 --- [http-nio-8090-exec-1] c.x.e.mapper.IUserMapper.selectList      : ==>  Preparing: SELECT id,dept_number,user_number,user_name,password,true_name,role_type,create_time,update_time,is_del FROM t_user WHERE is_del=0 AND (user_name = ?)
+2021-02-18 11:47:14.336 DEBUG 15484 --- [http-nio-8090-exec-1] c.x.e.mapper.IUserMapper.selectList      : ==> Parameters: (String)
+2021-02-18 11:47:14.337 DEBUG 15484 --- [http-nio-8090-exec-1] c.x.e.mapper.IUserMapper.selectList      : <==      Total: 0
+2021-02-18 11:47:20.169 DEBUG 15484 --- [http-nio-8090-exec-1] c.x.e.mapper.IUserMapper.getList         : ==>  Preparing: SELECT u.id, u.user_number, u.user_name, u.password, u.true_name, u.create_time, u.update_time, d.dept_name, r.role_name FROM t_user u LEFT JOIN t_department d ON u.dept_number = d.dept_number LEFT JOIN t_role r ON u.role_type = r.role_type WHERE u.is_del = 0 AND d.is_del = 0 AND r.is_del = 0 -- Integer类型roleType=0时 != ''校验为false 即mybatis判断roleType=0='',所以不加!=''校验 -- TODO
+2021-02-18 11:47:20.170 DEBUG 15484 --- [http-nio-8090-exec-1] c.x.e.mapper.IUserMapper.getList         : ==> Parameters: 
+2021-02-18 11:47:20.173 DEBUG 15484 --- [http-nio-8090-exec-1] c.x.e.mapper.IUserMapper.getList         : <==      Total: 11
+2021-02-18 11:47:23.897 DEBUG 15484 --- [http-nio-8090-exec-8] c.x.e.mapper.IUserMapper.selectList      : ==>  Preparing: SELECT id,dept_number,user_number,user_name,password,true_name,role_type,create_time,update_time,is_del FROM t_user WHERE is_del=0 AND (user_name = ?)
+2021-02-18 11:47:23.897 DEBUG 15484 --- [http-nio-8090-exec-8] c.x.e.mapper.IUserMapper.selectList      : ==> Parameters: (String)
+2021-02-18 11:47:23.898 DEBUG 15484 --- [http-nio-8090-exec-8] c.x.e.mapper.IUserMapper.selectList      : <==      Total: 0
+2021-02-18 11:47:49.232 DEBUG 15484 --- [http-nio-8090-exec-7] c.x.e.mapper.IUserMapper.selectList      : ==>  Preparing: SELECT id,dept_number,user_number,user_name,password,true_name,role_type,create_time,update_time,is_del FROM t_user WHERE is_del=0 AND (user_name = ?)
+2021-02-18 11:47:49.232 DEBUG 15484 --- [http-nio-8090-exec-7] c.x.e.mapper.IUserMapper.selectList      : ==> Parameters: y(String)
+2021-02-18 11:47:49.233 DEBUG 15484 --- [http-nio-8090-exec-7] c.x.e.mapper.IUserMapper.selectList      : <==      Total: 1
+2021-02-18 11:48:07.465  INFO 15484 --- [SpringContextShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2021-02-18 11:48:07.485  INFO 15484 --- [SpringContextShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2021-02-18 11:48:07.495  INFO 15484 --- [SpringContextShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2021-02-18 11:48:12.415  INFO 14996 --- [restartedMain] c.x.e.EquipmentSysApplication            : Starting EquipmentSysApplication on DESKTOP-QLGS8VS with PID 14996 (E:\code\mycode\EquipmentSys\target\classes started by ASUS in E:\code\mycode\EquipmentSys)
+2021-02-18 11:48:12.415 DEBUG 14996 --- [restartedMain] c.x.e.EquipmentSysApplication            : Running with Spring Boot v2.3.7.RELEASE, Spring v5.2.12.RELEASE
+2021-02-18 11:48:12.415  INFO 14996 --- [restartedMain] c.x.e.EquipmentSysApplication            : No active profile set, falling back to default profiles: default
+2021-02-18 11:48:12.484  INFO 14996 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2021-02-18 11:48:12.484  INFO 14996 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2021-02-18 11:48:13.344  INFO 14996 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2021-02-18 11:48:13.354  INFO 14996 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2021-02-18 11:48:13.384  INFO 14996 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 20ms. Found 0 Redis repository interfaces.
+2021-02-18 11:48:14.064  INFO 14996 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8090 (http)
+2021-02-18 11:48:14.084  INFO 14996 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2021-02-18 11:48:14.084  INFO 14996 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.41]
+2021-02-18 11:48:14.084  INFO 14996 --- [restartedMain] o.a.catalina.core.AprLifecycleListener   : Loaded Apache Tomcat Native library [1.2.24] using APR version [1.7.0].
+2021-02-18 11:48:14.084  INFO 14996 --- [restartedMain] o.a.catalina.core.AprLifecycleListener   : APR capabilities: IPv6 [true], sendfile [true], accept filters [false], random [true].
+2021-02-18 11:48:14.084  INFO 14996 --- [restartedMain] o.a.catalina.core.AprLifecycleListener   : APR/OpenSSL configuration: useAprConnector [false], useOpenSSL [true]
+2021-02-18 11:48:14.084  INFO 14996 --- [restartedMain] o.a.catalina.core.AprLifecycleListener   : OpenSSL successfully initialized [OpenSSL 1.1.1g  21 Apr 2020]
+2021-02-18 11:48:14.244  INFO 14996 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2021-02-18 11:48:14.244  INFO 14996 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1760 ms
+2021-02-18 11:48:17.135  INFO 14996 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@75747543, org.springframework.security.web.context.SecurityContextPersistenceFilter@5f87c9c8, org.springframework.security.web.header.HeaderWriterFilter@5d550764, org.springframework.security.web.authentication.logout.LogoutFilter@6a5d5f1f, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@3f264b26, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@54febf9a, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@5fa54a2e, org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter@a9f21d1, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@5bce8530, org.springframework.security.web.session.SessionManagementFilter@49ef4c31, org.springframework.security.web.access.ExceptionTranslationFilter@7e76f2eb, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@52745d1f]
+2021-02-18 11:48:17.265  INFO 14996 --- [restartedMain] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2021-02-18 11:48:17.365  INFO 14996 --- [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2021-02-18 11:48:17.605  INFO 14996 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2021-02-18 11:48:17.664  INFO 14996 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8090 (http) with context path ''
+2021-02-18 11:48:17.675  INFO 14996 --- [restartedMain] c.x.e.EquipmentSysApplication            : Started EquipmentSysApplication in 5.966 seconds (JVM running for 7.734)
+2021-02-18 11:48:42.992  INFO 14996 --- [SpringContextShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'

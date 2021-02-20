@@ -34,7 +34,10 @@
                 <i class="layui-icon layui-icon-engine icon-small"></i>
                 <a href="javascript:;">设备管理</a>
                 <dl class="layui-nav-child"> <!-- 二级菜单 -->
-                    <dd><a th:href="@{/equipmentSys/router/equipManagement}">设备管理</a></dd>
+                    <dd><a th:href="@{/equipmentSys/router/equipManagement}">设备管理
+                            <span th:replace="index :: repairNum"></span>
+                        </a>
+                    </dd>
                     <dd sec:authorize="hasRole('ADMIN')">
                         <a th:href="@{/equipmentSys/router/equipTypeManagement}">设备类型管理</a>
                     </dd>
@@ -42,7 +45,9 @@
             </li>
             <li class="layui-nav-item margin-left-15">
                 <i class="layui-icon layui-icon-set icon-small"></i>
-                <a href="javascript:;">维修管理</a>
+                <a href="javascript:;">维修管理
+                    <span th:replace="index :: repairDot"></span>
+                </a>
                 <dl class="layui-nav-child"> <!-- 二级菜单 -->
                     <dd sec:authorize="hasRole('ADMIN') || hasRole('REPAIR')">
                         <a th:href="@{/equipmentSys/router/repairManagement}">维修管理</a>
@@ -53,7 +58,7 @@
             <li class="layui-nav-item margin-left-15">
                 <i class="layui-icon layui-icon-form icon-small"></i>
                 <a th:href="@{/equipmentSys/router/positionApply}">职位申请
-                    <span class="layui-badge">4</span>
+                    <span th:replace="index :: applyNum"></span>
                 </a>
             </li>
             <!-- 已登录显示用户 -->

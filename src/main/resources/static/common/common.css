@@ -175,11 +175,32 @@ html,body {
 }
 
 /* 待办 公告栏 */
-.todo-33 {
-    width: 33.33%;
+.todo {
+    width: 49%;
     height: 200px;
     float: left;
-    background-color: #40AFFE;
+    background-color: lightgray;
+    border-radius: 2px;
+    font-size: 16px;
+}
+
+.notice {
+    width: 49%;
+    height: 200px;
+    float: left;
+    margin-left: 2%;
+    background-color: lightgray;
+    border-radius: 2px;
+    font-size: 16px;
+}
+
+.todo-container {
+    padding: 35px;
+}
+
+.todo-container > li {
+    float: left;
+    margin-left: 25px;
 }
 
 
