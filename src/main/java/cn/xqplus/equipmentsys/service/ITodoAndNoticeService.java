@@ -15,4 +15,10 @@ public interface ITodoAndNoticeService extends IService<Object> {
      * @return List<Object>
      */
     List<Object> getTodoInfo();
+
+    /**
+     * 获取我的通知信息
+     * @return Integer
+     */
+    Integer getMyNotice();
 }

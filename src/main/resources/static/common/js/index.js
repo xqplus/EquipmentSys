@@ -14,4 +14,8 @@ layui.use(['element', 'carousel', 'jquery'], function(){
         height: '380px',
         anim: 'default', // fade updown
     });
+    // 点击我的通知表示已阅
+    $('#myNotice').click(function () {
+        $('#myNoticeDot').removeClass("layui-badge-dot");
+    });
 });

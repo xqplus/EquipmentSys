@@ -101,8 +101,8 @@
                     <li class="layui-this">我的待办
                         <span id="todo"></span>
                     </li>
-                    <li>我的通知
-                        <span class="layui-badge-dot"></span>
+                    <li id="myNotice">我的通知
+                        <span id="myNoticeDot" class="layui-badge-dot"></span>
                     </li>
                 </ul>
                 <div class="layui-tab-content">
@@ -123,15 +123,16 @@
                         </div>
                     </div>
                     <div class="layui-tab-item">
-                        我的通知
+                        <!-- 我的通知内容 -->
+                        <p id="myNoticeContent">暂无通知~</p>
                     </div>
                 </div>
             </div>
         </div>
         <div class="notice">
             <blockquote class="layui-elem-quote layui-quote-nm" style="font-weight: bold">公告</blockquote>
-            <div>
-                暂无公告
+            <div class="notice-content">
+                暂无公告~
             </div>
         </div>
     </div>
@@ -163,6 +164,21 @@
             }
         }
     });
+    // 我的通知内容
+    $.ajax({
+        async: false,
+        type: 'GET',
+        url: '/equipmentSys/todoAndNotice/myNotice',
+        data: {},
+        success: function (data) {
+            if (data === 1) {
+                $('#myNoticeContent').html("恭喜您，您的职位申请已通过");
+            }
+            if (data === 2) {
+                $('#myNoticeContent').html("非常抱歉，您的职位申请没有通过");
+            }
+        }
+    })
 </script>
 </body>
 </html>

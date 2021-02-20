@@ -19,12 +19,14 @@ public class TodoAndNoticeController {
     @Autowired
     private ITodoAndNoticeService todoAndNoticeService;
 
-    @Autowired
-    private IUserService userService;
-
     @GetMapping(value = "/todo", name = "待办")
     public Object todo() {
         return todoAndNoticeService.getTodoInfo();
+    }
+
+    @GetMapping(value = "/myNotice", name = "我的通知，待阅")
+    public Object myNotice() {
+        return todoAndNoticeService.getMyNotice();
     }
 
 }

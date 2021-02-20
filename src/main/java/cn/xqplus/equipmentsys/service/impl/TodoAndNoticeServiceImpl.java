@@ -63,6 +63,21 @@ public class TodoAndNoticeServiceImpl implements ITodoAndNoticeService {
     }
 
     @Override
+    public Integer getMyNotice() {
+        User currentUserInfo = userService.getCurrentUserInfo();
+        Apply apply = applyService.getOne(new QueryWrapper<Apply>()
+                .eq("user_number", currentUserInfo.getUserNumber())
+                .ne("apply_state", 0)
+                .orderByDesc("create_time")
+                .last("LIMIT 1"));
+        if (null == apply) {
+            return 0;
+        } else {
+            return apply.getApplyState();
+        }
+    }
+
+    @Override
     public boolean saveBatch(Collection<Object> entityList, int batchSize) {
         return false;
     }
