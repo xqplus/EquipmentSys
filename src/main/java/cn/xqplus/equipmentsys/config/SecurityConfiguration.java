@@ -1,5 +1,6 @@
 package cn.xqplus.equipmentsys.config;
 
+import cn.xqplus.equipmentsys.handler.SecurityLogoutSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
@@ -77,7 +78,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .rememberMe().rememberMeParameter("switch")
                 .and()
                 // 退出后显示页面
-                .logout().logoutSuccessUrl("/").permitAll();
+                .logout().logoutSuccessHandler(new SecurityLogoutSuccessHandler()).logoutSuccessUrl("/").permitAll();
         // 关闭防止csrf功能
         http.csrf().disable();
     }

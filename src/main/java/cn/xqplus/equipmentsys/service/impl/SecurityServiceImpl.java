@@ -6,6 +6,8 @@ import cn.xqplus.equipmentsys.model.Role;
 import cn.xqplus.equipmentsys.model.User;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
+import org.mybatis.logging.Logger;
+import org.mybatis.logging.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.GrantedAuthority;
@@ -32,6 +34,8 @@ public class SecurityServiceImpl implements UserDetailsService {
     @Autowired
     private IRoleMapper roleMapper;
 
+    private final Logger logger = LoggerFactory.getLogger(SecurityServiceImpl.class);
+
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         User user = userMapper.selectOne(new QueryWrapper<User>()
@@ -50,6 +54,7 @@ public class SecurityServiceImpl implements UserDetailsService {
                     authorities.add(new SimpleGrantedAuthority(role.getRoleAuth()));
                 }
             }
+            logger.debug(() -> userName + " 登入");
 
             // 这里的User是spring security的用户认证类
             return new org.springframework.security.core.userdetails
