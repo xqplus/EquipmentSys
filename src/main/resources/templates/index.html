@@ -102,7 +102,7 @@
                         <span id="todo"></span>
                     </li>
                     <li id="myNotice">我的通知
-                        <span id="myNoticeDot" class="layui-badge-dot"></span>
+                        <span id="myNoticeDot"></span>
                     </li>
                 </ul>
                 <div class="layui-tab-content">
@@ -172,9 +172,11 @@
         data: {},
         success: function (data) {
             if (data === 1) {
+                $('#myNoticeDot').addClass("layui-badge-dot");
                 $('#myNoticeContent').html("恭喜您，您的职位申请已通过");
             }
             if (data === 2) {
+                $('#myNoticeDot').addClass("layui-badge-dot");
                 $('#myNoticeContent').html("非常抱歉，您的职位申请没有通过");
             }
         }

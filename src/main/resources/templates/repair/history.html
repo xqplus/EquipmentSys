@@ -64,6 +64,9 @@
             <li class="layui-nav-item nav-right-150" sec:authorize="isAuthenticated()">
                 <a href="">
                     当前用户：<span sec:authentication="name"></span>
+                    <span sec:authorize="hasRole('ADMIN')">『管理员』</span>
+                    <span sec:authorize="hasRole('USER')">『普通用户』</span>
+                    <span sec:authorize="hasRole('REPAIR')">『维修员』</span>
                 </a>
             </li>
             <!-- 未登录显示登录 -->
