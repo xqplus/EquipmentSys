@@ -61,24 +61,11 @@
                 </a>
             </li>
             <!-- 已登录显示用户 -->
-            <li class="layui-nav-item nav-right-150" sec:authorize="isAuthenticated()">
-                <a href="">
-                    当前用户：<span sec:authentication="name"></span>
-                    <span sec:authorize="hasRole('ADMIN')">『管理员』</span>
-                    <span sec:authorize="hasRole('USER')">『普通用户』</span>
-                    <span sec:authorize="hasRole('REPAIR')">『维修员』</span>
-                </a>
-            </li>
+            <li th:replace="index :: currentUserInfo"></li>
             <!-- 未登录显示登录 -->
-            <li class="layui-nav-item nav-right-150" sec:authorize="!isAuthenticated()">
-                <i class="layui-icon layui-icon-layer icon-small"></i>
-                <a th:href="@{/equipmentSys/router/login}">登录</a>
-            </li>
+            <li th:replace="index :: loginShow"></li>
             <!-- 已登录显示注销 -->
-            <li class="layui-nav-item nav-right-50" sec:authorize="isAuthenticated()">
-                <i class="layui-icon layui-icon-logout icon-small"></i>
-                <a th:href="@{/logout}">注&nbsp;&nbsp;销</a>
-            </li>
+            <li th:replace="index :: logoutShow"></li>
         </ul>
     </div>
 </div>
