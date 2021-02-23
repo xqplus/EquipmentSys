@@ -706,3 +706,18 @@ function setBadge() {
     });
 }
 
+/**
+ * 鼠标悬停用户上展示用户详细信息 选择器固定 不可拓展
+ * @param $ layui jquery
+ */
+function userInfoShow($) {
+    // 鼠标悬停用户展示详细信息
+    $('#user')
+        .mouseover(function () {
+            $('#userInfo').css('display', 'block');
+        })
+        .mouseleave(function () {
+            $('#userInfo').css('display', 'none');
+        });
+}
+

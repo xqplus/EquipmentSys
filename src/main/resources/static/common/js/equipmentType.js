@@ -27,6 +27,8 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
     toolProcess();
     // 设置待处理事件 徽章
     setBadge();
+    // 鼠标悬停显示用户详情
+    userInfoShow($);
 
     /**
      * 数据表格渲染

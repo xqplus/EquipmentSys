@@ -18,4 +18,6 @@ layui.use(['element', 'carousel', 'jquery'], function(){
     $('#myNotice').click(function () {
         $('#myNoticeDot').removeClass("layui-badge-dot");
     });
+    // 鼠标悬停显示用户详情
+    userInfoShow($);
 });

@@ -60,8 +60,8 @@
                 </a>
             </li>
             <!-- 已登录显示用户 -->
-            <li th:fragment="currentUserInfo" class="layui-nav-item nav-right-150" sec:authorize="isAuthenticated()">
-                <a href="">
+            <li id="user" th:fragment="currentUserInfo" class="layui-nav-item nav-right-150" sec:authorize="isAuthenticated()">
+                <a>
                     当前用户：<span sec:authentication="name"></span>
                     <span sec:authorize="hasRole('ADMIN')">『管理员』</span>
                     <span sec:authorize="hasRole('USER')">『普通用户』</span>
@@ -80,6 +80,18 @@
             </li>
         </ul>
     </div>
+</div>
+<!-- 用户详细信息层 -->
+<div th:fragment="userInfo" id="userInfo" class="current-user-info" style="display: none">
+    <p style="line-height: 38px">
+        <span style="width: 50px">用户名：</span>
+        <span sec:authentication="name"></span>
+    </p>
+    <p style="line-height: 38px">
+        <span style="width: 50px">密&nbsp;&nbsp;&nbsp;码：</span>
+        <span sec:authentication="name"></span>
+    </p>
+    ......
 </div>
 <div class="container">
     <!-- 轮播图 carousel -->
@@ -142,6 +154,7 @@
     <div th:replace="common :: footer"></div>
 </div>
 <script th:src="@{/common/js/index.js}"></script>
+<script th:src="@{/common/common.js}"></script>
 <script th:inline="javascript" sec:authorize="isAuthenticated()">
     // 主页待办 在js文件中未登录发送请求会出错 放在这里判断未登录不发送请求
     $.ajax({

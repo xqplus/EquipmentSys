@@ -207,4 +207,18 @@ html,body {
     padding: 20px;
 }
 
+/* user-info */
+
+.current-user-info {
+    width: 185px;
+    height: auto;
+    position: absolute;
+    top: 70px;
+    right: 13%;
+    z-index: 999;
+    background-color: #C0C4D4;
+    padding: 10px 20px;
+    border-radius: 2px;
+}
+
 
