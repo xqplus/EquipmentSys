@@ -133,13 +133,28 @@
             </div>
         </script>
         <script type="text/html" id="rightToolBar">
-            <a class="layui-btn layui-btn-xs" lay-event="edit" sec:authorize="hasRole('ADMIN')">编辑</a>
+            <!-- 当设备状态为已报废不显示 -->
+            {{# if(d.equipState !== 2){ }}
+                <a class="layui-btn layui-btn-xs" lay-event="edit" sec:authorize="hasRole('ADMIN')">编辑</a>
+            {{# } }}
             <!-- 当设备状态为使用中才显示 -->
             {{# if(d.equipState === 0){ }}
                 <a class="layui-btn layui-btn-xs" lay-event="reportRepair">报修</a>
             {{# } }}
             {{# if(d.equipState === 2){ }}
                 <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" sec:authorize="hasRole('ADMIN')">删除</a>
+            {{# } }}
+        </script>
+        <!-- 根据设备状态显示颜色 -->
+        <script type="text/html" id="equipStateName">
+            {{# if (d.equipStateName === '使用中') { }}
+            <span style="color: green;">{{ d.equipStateName }}</span>
+            {{# } }}
+            {{# if (d.equipStateName === '维修中') { }}
+            <span style="color: orange;">{{ d.equipStateName }}</span>
+            {{# } }}
+            {{# if (d.equipStateName === '已报废') { }}
+            <span style="color: red;">{{ d.equipStateName }}</span>
             {{# } }}
         </script>
     </div>

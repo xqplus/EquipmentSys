@@ -159,8 +159,10 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                 ,{field: 'id', title: 'ID', sort: true, fixed: 'left', width: 80, hide: true} // 隐藏数据表id
                 ,{field: 'equipNumber', title: '设备编号', sort: true}
                 ,{field: 'equipTypeNumber', title: '设备类型编号', sort: true, hide: true} // 隐藏列
-                ,{field: 'equipTypeName', title: '设备类型名称'},{field: 'equipName', title: '设备名称'}
-                ,{field: 'equipSummary', title: '设备概述'},{field: 'equipStateName', title: '设备状态'}
+                ,{field: 'equipTypeName', title: '设备类型名称'}
+                ,{field: 'equipName', title: '设备名称'}
+                ,{field: 'equipSummary', title: '设备概述'}
+                ,{field: 'equipStateName', title: '设备状态', templet: '#equipStateName'}
                 ,{field: 'createDate', title: '创建时间', sort: true}
                 ,{field: 'updateDate', title: '修改时间', sort: true}
                 ,{fixed: 'right', title:'操作', toolbar: '#rightToolBar', width: 120}]
