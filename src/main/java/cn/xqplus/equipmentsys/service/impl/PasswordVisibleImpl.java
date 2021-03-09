@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -46,6 +47,17 @@ public class PasswordVisibleImpl implements IPasswordVisibleService {
     public boolean remove(Wrapper<PasswordVisible> queryWrapper) {
         int delete = passwordVisibleMapper.delete(queryWrapper);
         return (delete >= 1);
+    }
+
+    @Override
+    public List<PasswordVisible> list(Wrapper<PasswordVisible> queryWrapper) {
+        return passwordVisibleMapper.selectList(queryWrapper);
+    }
+
+    @Override
+    public boolean removeByIds(Collection<? extends Serializable> idList) {
+        int deleteBatchIds = passwordVisibleMapper.deleteBatchIds(idList);
+        return (deleteBatchIds >= 1);
     }
 
     @Override

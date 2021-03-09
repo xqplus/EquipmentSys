@@ -85,9 +85,11 @@ layui.use(['element', 'table', 'laydate', 'form', 'jquery'], function(){
     function toolProcess() {
         // 头工具栏事件
         table.on('toolbar(userData)', function(obj){
-            let checkStatus = table.checkStatus(obj.config.id); // 选中行信息
+            let checkStatus = table.checkStatus(obj.config.id)
+                ,data = checkStatus.data; // 选中行信息
+
             switch(obj.event){
-                case 'add':
+                case 'add': // 用户新增
                     addFormDialog(layer, form, $,
                         '新增用户信息', addUserContent,
                         '#userName',
@@ -96,14 +98,32 @@ layui.use(['element', 'table', 'laydate', 'form', 'jquery'], function(){
                         'roleType',
                         '/equipmentSys/user/add',
                         'addUser');
-                    break;case 'getCheckLength':var data = checkStatus.data;
-                    layer.msg('选中了：'+ data.length + ' 个');
                     break;
-                case 'isAll':layer.msg(checkStatus.isAll ? '全选': '未全选');
-                    break;//自定义头工具栏右侧图标 - 提示
-                case 'LAYTABLE_TIPS':
-                    layer.alert('这是工具栏右侧自定义的一个图标按钮');
-                    break;
+                case 'deleteBatch': // 批量删除
+                    let ids = [];
+                    $.each(data, function (i, val) {
+                        ids.push(val.id);
+                    });
+                    if (ids.length === 0) {
+                        layer.msg("请至少选择一行");
+                        return;
+                    }
+                    $.ajax({
+                        async: false,
+                        type: 'POST',
+                        url: '/equipmentSys/user/deleteBatch',
+                        data: {ids: ids},
+                        success: function (data) {
+                            if (data === 'success') {
+                                layer.msg('批量删除成功', {icon: 1});
+                                setTimeout(function () {
+                                    window.location.reload();}, 1500);
+                            }
+                            if (data === 'error') {
+                                layer.msg('批量删除失败，请重试或联系管理员！', {icon: 2});
+                            }
+                        }
+                    });
             }
         });
         // 监听行工具事件

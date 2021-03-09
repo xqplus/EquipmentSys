@@ -27,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -145,6 +146,27 @@ public class UserServiceImpl implements IUserService {
         int userDelete = userMapper.deleteById(id);
 
         return (passwordVisibleDelete && (userDelete >= 1));
+    }
+
+    @Override
+    @Transactional
+    public boolean deleteBatch(List<String> idList) throws RuntimeException {
+        // 批量删除密码可见信息
+        List<User> users = userMapper.selectBatchIds(idList);
+        List<String> nameList = new ArrayList<>();
+        List<String> pwdIdList = new ArrayList<>();
+        for (User u : users) {
+            nameList.add(u.getUserName());
+        }
+        List<PasswordVisible> pwds = passwordVisibleService.list(new QueryWrapper<PasswordVisible>()
+                .in("user_name", nameList));
+        for (PasswordVisible p : pwds) {
+            pwdIdList.add(String.valueOf(p.getId()));
+        }
+        passwordVisibleService.removeByIds(pwdIdList);
+        // 批量删除用户信息
+        int deleteBatchIds = userMapper.deleteBatchIds(idList);
+        return (deleteBatchIds >= 1);
     }
 
     @Override

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -52,6 +53,13 @@ public class UserController extends BaseController {
         /* 包含删除密码可见信息 */
         boolean removeById = userService.removeById(id);
         return stringResult(removeById);
+    }
+
+    @PostMapping(value = "/deleteBatch", name = "批量删除用户信息")
+    public String deleteBatch(@NotNull @RequestParam(value = "ids[]") String[] ids) {
+        /* 包含批量删除密码可见信息 */
+        boolean deleteBatch = userService.deleteBatch(Arrays.asList(ids));
+        return stringResult(deleteBatch);
     }
 
     @GetMapping(value = "/userCheck", name = "用户是否存在（用户名是否可用）")

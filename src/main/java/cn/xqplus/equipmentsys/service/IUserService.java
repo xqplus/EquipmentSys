@@ -50,4 +50,11 @@ public interface IUserService extends IService<User> {
      * @return
      */
     User getCurrentUserInfo();
+
+    /**
+     * 批量删除，包括批量删除密码可见信息
+     * @param idList 批量 id 列表
+     * @return boolean
+     */
+    boolean deleteBatch(List<String> idList);
 }
