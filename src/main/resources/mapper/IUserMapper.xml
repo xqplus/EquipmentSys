@@ -47,6 +47,12 @@
         <if test="q.endTime != null and q.endTime != ''">
             AND u.create_time <![CDATA[ <= ]]> #{q.endTime} -- 第二种转义
         </if>
+        <if test="ids != null and ids.size > 0">
+            AND u.id IN
+            <foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
 
         -- TODO
 

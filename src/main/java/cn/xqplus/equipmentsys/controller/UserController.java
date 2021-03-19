@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
 import java.util.Arrays;
 import java.util.List;
@@ -76,5 +77,11 @@ public class UserController extends BaseController {
     @GetMapping(value = "/getCurrentUserInfo", name = "当前登录用户信息")
     public User getCurrentUserInfo() {
         return userService.getCurrentUserInfo();
+    }
+
+    @GetMapping(value = "/exportExcel", name = "Excel 导出")
+    public void exportExcel(@RequestParam(value = "ids") String[] ids, HttpServletResponse response) {
+        // 导出
+        userService.exportExcel(Arrays.asList(ids), response);
     }
 }

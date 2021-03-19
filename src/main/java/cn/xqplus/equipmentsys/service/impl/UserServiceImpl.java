@@ -4,8 +4,10 @@ import cn.xqplus.equipmentsys.mapper.IUserMapper;
 import cn.xqplus.equipmentsys.form.UserForm;
 import cn.xqplus.equipmentsys.model.PasswordVisible;
 import cn.xqplus.equipmentsys.model.User;
+import cn.xqplus.equipmentsys.response.UserResp;
 import cn.xqplus.equipmentsys.service.IPasswordVisibleService;
 import cn.xqplus.equipmentsys.service.IUserService;
+import cn.xqplus.equipmentsys.utils.ExcelUtils;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
@@ -19,18 +21,18 @@ import com.baomidou.mybatisplus.extension.conditions.update.UpdateChainWrapper;
 import com.baomidou.mybatisplus.extension.kotlin.KtQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.kotlin.KtUpdateChainWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 
 /**
@@ -104,7 +106,7 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public Page<UserForm> selectPage(Page<UserForm> page, UserForm wrapper) {
-        List<UserForm> userForms = userMapper.getList(page, wrapper);
+        List<UserForm> userForms = userMapper.getList(page, wrapper, null);
         if (CollectionUtils.isNotEmpty(userForms)) {
             for (UserForm userForm : userForms) {
                 // 时间转换
@@ -173,6 +175,30 @@ public class UserServiceImpl implements IUserService {
     public boolean update(User entity, Wrapper<User> updateWrapper) {
         int update = userMapper.update(entity, updateWrapper);
         return (update >= 1);
+    }
+
+    @Override
+    public void exportExcel(List<String> ids, HttpServletResponse response) {
+        List<UserForm> list = userMapper.getList(null, new UserForm(), ids);
+        List<UserResp> exportList = new ArrayList<>();
+
+        for (UserForm u : list) {
+            // 设置 yyyy-MM-dd 日期格式
+            u.setCreateDate(new SimpleDateFormat("yyyy-MM-dd").format(u.getCreateTime()));
+            u.setUpdateDate(new SimpleDateFormat("yyyy-MM-dd").format(u.getUpdateTime()));
+
+            UserResp userResp = new UserResp();
+            try {
+                BeanUtils.copyProperties(userResp, u);
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                e.printStackTrace();
+            }
+            exportList.add(userResp);
+        }
+        ExcelUtils.exportExcel(exportList, "设备管理系统用户信息", "用户信息",
+                UserResp.class, "设备管理系统用户信息-" + new SimpleDateFormat("yyyy-MM-dd")
+                        .format(new Date().getTime()), response);
+
     }
 
     @Override

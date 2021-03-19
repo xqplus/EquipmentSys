@@ -86,9 +86,11 @@ layui.use(['element', 'table', 'laydate', 'form', 'jquery'], function(){
         // 头工具栏事件
         table.on('toolbar(userData)', function(obj){
             let checkStatus = table.checkStatus(obj.config.id)
-                ,data = checkStatus.data; // 选中行信息
+                ,data = checkStatus.data // 选中行信息
+                ,ids = [];
 
             switch(obj.event){
+
                 case 'add': // 用户新增
                     addFormDialog(layer, form, $,
                         '新增用户信息', addUserContent,
@@ -99,8 +101,8 @@ layui.use(['element', 'table', 'laydate', 'form', 'jquery'], function(){
                         '/equipmentSys/user/add',
                         'addUser');
                     break;
+
                 case 'deleteBatch': // 批量删除
-                    let ids = [];
                     $.each(data, function (i, val) {
                         ids.push(val.id);
                     });
@@ -108,22 +110,34 @@ layui.use(['element', 'table', 'laydate', 'form', 'jquery'], function(){
                         layer.msg("请至少选择一行");
                         return;
                     }
-                    $.ajax({
-                        async: false,
-                        type: 'POST',
-                        url: '/equipmentSys/user/deleteBatch',
-                        data: {ids: ids},
-                        success: function (data) {
-                            if (data === 'success') {
-                                layer.msg('批量删除成功', {icon: 1});
-                                setTimeout(function () {
-                                    window.location.reload();}, 1500);
-                            }
-                            if (data === 'error') {
-                                layer.msg('批量删除失败，请重试或联系管理员！', {icon: 2});
-                            }
-                        }
+                    layer.confirm('确定删除选中的用户信息？', {icon: 3, title: '提示'}, function (index) {
+                        myAjax('POST'
+                            , '/equipmentSys/user/deleteBatch'
+                            , {ids: ids}, '批量删除成功'
+                            , '批量删除失败，请重试或联系管理员'
+                            , true
+                        );
+                        //layer.close(index);
                     });
+                    break;
+
+                case 'exportExcel': // 导出列表Excel, 导出不需要刷新页面
+                    $.each(data, function (i, val) {
+                        ids.push(val.id);
+                    });
+                    if (ids.length === 0) {
+                        // 在没有选定数据行的时候导出全部数据
+                        exportExcel("是否导出全部用户信息？",
+                            "/equipmentSys/user/exportExcel", ids);
+                        return;
+                    }
+                    // 选定行时导出选中的数据
+                    exportExcel("是否导出选中用户信息？",
+                        "/equipmentSys/user/exportExcel", ids);
+                    break;
+
+                case 'importBatch': // 批量导入
+                    break;
             }
         });
         // 监听行工具事件

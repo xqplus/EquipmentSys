@@ -24,8 +24,9 @@ public interface IUserMapper extends BaseMapper<User> {
      * 获得User分页list
      * @param page
      * @param wrapper
-     * @return
+     * @param ids id 集合
+     * @return List<UserForm>
      */
-    List<UserForm> getList(Page<UserForm> page, @Param("q") UserForm wrapper);
+    List<UserForm> getList(Page<UserForm> page, @Param("q") UserForm wrapper, @Param("ids") List<String> ids);
 
 }

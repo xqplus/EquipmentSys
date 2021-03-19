@@ -721,3 +721,49 @@ function userInfoShow($) {
         });
 }
 
+/**
+ * ajax 定制化封装方法
+ * @param type 请求类型 'POST'
+ * @param url 请求地址 'xxx/xxx'
+ * @param requestData 请求参数 '{}'
+ * @param successInfo 成功回调信息，根据场景不同自定义 'success message'
+ * @param errorInfo 失败回调信息，根据场景不同自定义 'error message'
+ * @param isReload 回调成功后是否需要刷新 true | false
+ */
+function myAjax(type, url, requestData, successInfo, errorInfo, isReload) {
+    $.ajax({
+        async: false,
+        type: type,
+        url: url,
+        data: requestData,
+        success: function (data) {
+            if (data === 'success') {
+                layer.msg(successInfo, {icon: 1});
+                if (isReload) {
+                    setTimeout(function () {
+                        window.location.reload();}, 1500);
+                }
+            }
+            if (data === 'error') {
+                layer.msg(errorInfo, {icon: 2});
+            }
+        }
+    });
+}
+
+/**
+ * 定制化excel导出基础方法
+ * @param confirmMsg 询问内容
+ * @param url 导出接口地址
+ * @param param 传入参数
+ */
+function exportExcel(confirmMsg, url, param) {
+    if(!$.isArray(param)) {
+        param = [param];
+    }
+    layer.confirm(confirmMsg, {icon: 3, title: '提示'}, function (index) {
+        window.open(url + "?ids=" + param);
+        layer.close(index);
+    });
+}
+

@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 
@@ -57,4 +58,11 @@ public interface IUserService extends IService<User> {
      * @return boolean
      */
     boolean deleteBatch(List<String> idList);
+
+    /**
+     * Excel 导出
+     * @param ids id 集合
+     * @param response HttpServletResponse
+     */
+    void exportExcel(List<String> ids, HttpServletResponse response);
 }
