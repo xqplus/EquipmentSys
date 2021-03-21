@@ -80,7 +80,9 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
     function toolProcess() {
         // 头工具栏事件(新增)
         table.on('toolbar(deptData)', function(obj){
-            let checkStatus = table.checkStatus(obj.config.id); // 选中行信息
+            let checkStatus = table.checkStatus(obj.config.id) // 选中行信息
+                ,data = checkStatus.data
+                ,ids = [];
             switch(obj.event){
                 case 'add':
                     addFormDialog(layer, form, $,
@@ -92,16 +94,44 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                         '/equipmentSys/department/add',
                         'addDept');
                     break;
-                case 'getCheckLength':
-                    var data = checkStatus.data;
-                    layer.msg('选中了：'+ data.length + ' 个');
+
+                case 'deleteBatch': // 批量删除
+                    /*
+                    $.each(data, function (i, val) {
+                        ids.push(val.id);
+                    });
+                    if (ids.length === 0) {
+                        layer.msg("请至少选择一行");
+                        return;
+                    }
+                    layer.confirm('确定删除选中的部门信息？', {icon: 3, title: '提示'}, function (index) {
+                        myAjax('POST'
+                            , '/equipmentSys/department/deleteBatch'
+                            , {ids: ids}, '批量删除成功'
+                            , '批量删除失败，请重试或联系管理员'
+                            , true
+                        );
+                        //layer.close(index);
+                    });
+                    */
                     break;
-                case 'isAll':
-                    layer.msg(checkStatus.isAll ? '全选': '未全选');
+
+                case 'exportExcel': // 导出列表Excel, 导出不需要刷新页面
+                    $.each(data, function (i, val) {
+                        ids.push(val.id);
+                    });
+                    if (ids.length === 0) {
+                        // 在没有选定数据行的时候导出全部数据
+                        exportExcel("是否导出全部部门信息？",
+                            "/equipmentSys/department/exportExcel", ids);
+                        return;
+                    }
+                    // 选定行时导出选中的数据
+                    exportExcel("是否导出选中部门信息？",
+                        "/equipmentSys/department/exportExcel", ids);
                     break;
-                //自定义头工具栏右侧图标 - 提示
-                case 'LAYTABLE_TIPS':
-                    layer.alert('这是工具栏右侧自定义的一个图标按钮');
+
+                case 'importBatch': // 批量导入
                     break;
             }
         });

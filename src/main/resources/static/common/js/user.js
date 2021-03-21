@@ -40,17 +40,25 @@ layui.use(['element', 'table', 'laydate', 'form', 'jquery'], function(){
         // 后端数据渲染
         table.render({
             elem: '#userData'
+            ,id: 'userData'
             ,url:'/equipmentSys/user/page'
             ,method: 'GET'
             ,async: false
             ,where: where
             ,height: 370
             ,parseData: function(res){ //res 即为原始返回的数据
+                let result;
+                if(this.page.curr){
+                    result = res.data.slice(this.limit*(this.page.curr-1),this.limit*this.page.curr);
+                }
+                else{
+                    result=res.data.slice(0,this.limit);
+                }
                 return {
-                    "code": res.maxLimit, //解析接口状态
-                    "msg": res.countId, //解析提示文本
+                    "code": res.code,
+                    "msg": res.message, //解析提示文本
                     "count": res.total, //解析数据长度
-                    "data": res.records, //解析数据列表
+                    "data": result //解析数据列表
                 };
             }
             ,toolbar: '#topToolBar' //开启头部工具栏，并为其绑定左侧模板
@@ -90,7 +98,6 @@ layui.use(['element', 'table', 'laydate', 'form', 'jquery'], function(){
                 ,ids = [];
 
             switch(obj.event){
-
                 case 'add': // 用户新增
                     addFormDialog(layer, form, $,
                         '新增用户信息', addUserContent,

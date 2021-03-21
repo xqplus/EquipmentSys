@@ -26,6 +26,12 @@ public interface IDepartmentMapper extends BaseMapper<Department> {
      */
     List<UserForm> getDeptByRole(String role);
 
+    /**
+     * 根据条件获取部门列表
+     * @param page
+     * @param departmentForm
+     * @return
+     */
     List<DepartmentForm> getList(Page<DepartmentForm> page, @Param("q") DepartmentForm departmentForm);
 
 }

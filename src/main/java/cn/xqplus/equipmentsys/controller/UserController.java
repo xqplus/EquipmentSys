@@ -1,10 +1,12 @@
 package cn.xqplus.equipmentsys.controller;
 
+import cn.xqplus.equipmentsys.ext.PageResult;
 import cn.xqplus.equipmentsys.form.UserForm;
 import cn.xqplus.equipmentsys.model.User;
 import cn.xqplus.equipmentsys.service.IPasswordVisibleService;
 import cn.xqplus.equipmentsys.service.IUserService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +31,10 @@ public class UserController extends BaseController {
     private IPasswordVisibleService passwordVisibleService;
 
     @GetMapping(value = "/page", name = "用户信息page")
-    public Object list(@RequestParam(defaultValue = "1") int page,
+    public PageResult<UserForm> page(@RequestParam(defaultValue = "1") int page,
                        @RequestParam(defaultValue = "10") int limit, UserForm wrapper){
-        Page<UserForm> pages = new Page<>(page, limit);
-        return userService.selectPage(pages, wrapper);
+        IPage<UserForm> iPage = userService.selectPage(new Page<>(page, limit), wrapper);
+        return jr(iPage);
     }
 
     @PostMapping(value = "/add", name = "注册,用户信息新增")
@@ -79,9 +81,9 @@ public class UserController extends BaseController {
         return userService.getCurrentUserInfo();
     }
 
-    @GetMapping(value = "/exportExcel", name = "Excel 导出")
+    @GetMapping(value = "/exportExcel", name = "用户列表Excel导出")
     public void exportExcel(@RequestParam(value = "ids") String[] ids, HttpServletResponse response) {
         // 导出
-        userService.exportExcel(Arrays.asList(ids), response);
+        userService.exportUserExcel(Arrays.asList(ids), response);
     }
 }

@@ -1,5 +1,8 @@
 package cn.xqplus.equipmentsys.controller;
 
+import cn.xqplus.equipmentsys.ext.JsonResult;
+import cn.xqplus.equipmentsys.ext.PageResult;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -20,5 +23,41 @@ public abstract class BaseController {
         } else {
             return "error";
         }
+    }
+
+    protected <T> JsonResult<T> jr(){
+        return jr("0", "");
+    }
+
+    protected <T> JsonResult<T> jr(String message){
+        return jr("0", message);
+    }
+
+    protected <T> JsonResult<T> jr(T t){
+        return jr("0", "", t);
+    }
+
+    protected  <T> JsonResult<T> jr(String code, String message){
+        return new JsonResult<T>(code, message);
+    }
+
+    protected  <T> JsonResult<T> jr(String message, T t){
+        return jr("0", message, t);
+    }
+
+    protected  <T> JsonResult<T> jr(String code, String message, T t){
+        return new JsonResult<T>(code, message, t);
+    }
+
+    protected <T> PageResult<T> jr(IPage<T> page){
+        return jr("0", "", page);
+    }
+
+    protected <T> PageResult<T> jr(String message, IPage<T> page){
+        return jr("0", message, page);
+    }
+
+    protected <T> PageResult<T> jr(String code, String message, IPage<T> page){
+        return new PageResult<T>(code, message, page);
     }
 }

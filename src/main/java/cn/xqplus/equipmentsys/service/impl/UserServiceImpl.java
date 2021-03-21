@@ -105,22 +105,18 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public Page<UserForm> selectPage(Page<UserForm> page, UserForm wrapper) {
-        List<UserForm> userForms = userMapper.getList(page, wrapper, null);
-        if (CollectionUtils.isNotEmpty(userForms)) {
-            for (UserForm userForm : userForms) {
+    public IPage<UserForm> selectPage(Page<UserForm> page, UserForm wrapper) {
+        IPage<UserForm> iPage = userMapper.getList(page, wrapper, null);
+        if (CollectionUtils.isNotEmpty(iPage.getRecords())) {
+            for (UserForm userForm : iPage.getRecords()) {
                 // 时间转换
                 userForm.setCreateDate(new SimpleDateFormat("yyyy-MM-dd").format(userForm.getCreateTime()));
                 userForm.setUpdateDate(new SimpleDateFormat("yyyy-MM-dd").format(userForm.getUpdateTime()));
             }
         }
-        // 设置返回状态码
-        page.setMaxLimit(0L);
-        // 设置msg
-        page.setCountId("success");
-        page.setRecords(userForms);
-        page.setTotal(userForms.size());
-        return page;
+        iPage.setTotal(iPage.getRecords().size());
+
+        return iPage;
     }
 
     @Override
@@ -178,11 +174,12 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public void exportExcel(List<String> ids, HttpServletResponse response) {
-        List<UserForm> list = userMapper.getList(null, new UserForm(), ids);
+    public void exportUserExcel(List<String> ids, HttpServletResponse response) {
+        // 获取用户列表集合
+        List<UserForm> userForms = userMapper.getList(null, new UserForm(), ids).getRecords();
         List<UserResp> exportList = new ArrayList<>();
 
-        for (UserForm u : list) {
+        for (UserForm u : userForms) {
             // 设置 yyyy-MM-dd 日期格式
             u.setCreateDate(new SimpleDateFormat("yyyy-MM-dd").format(u.getCreateTime()));
             u.setUpdateDate(new SimpleDateFormat("yyyy-MM-dd").format(u.getUpdateTime()));

@@ -6,9 +6,11 @@ import cn.xqplus.equipmentsys.form.UserForm;
 import cn.xqplus.equipmentsys.model.Department;
 import cn.xqplus.equipmentsys.model.RoleDept;
 import cn.xqplus.equipmentsys.model.User;
+import cn.xqplus.equipmentsys.response.UserResp;
 import cn.xqplus.equipmentsys.service.IDepartmentService;
 import cn.xqplus.equipmentsys.service.IRoleDeptService;
 import cn.xqplus.equipmentsys.service.IUserService;
+import cn.xqplus.equipmentsys.utils.ExcelUtils;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
@@ -21,12 +23,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 
 /**
@@ -180,6 +181,29 @@ public class DepartmentServiceImpl implements IDepartmentService {
     public boolean removeById(Serializable id) {
         int deleteById = departmentMapper.deleteById(id);
         return (deleteById >= 1);
+    }
+
+    @Override
+    public void exportDeptExcel(List<String> ids, HttpServletResponse response) {
+//        List<UserForm> list = userMapper.getList(null, new UserForm(), ids);
+//        List<UserResp> exportList = new ArrayList<>();
+//
+//        for (UserForm u : list) {
+//            // 设置 yyyy-MM-dd 日期格式
+//            u.setCreateDate(new SimpleDateFormat("yyyy-MM-dd").format(u.getCreateTime()));
+//            u.setUpdateDate(new SimpleDateFormat("yyyy-MM-dd").format(u.getUpdateTime()));
+//
+//            UserResp userResp = new UserResp();
+//            try {
+//                BeanUtils.copyProperties(userResp, u);
+//            } catch (IllegalAccessException | InvocationTargetException e) {
+//                e.printStackTrace();
+//            }
+//            exportList.add(userResp);
+//        }
+//        ExcelUtils.exportExcel(exportList, "设备管理系统用户信息", "用户信息",
+//                UserResp.class, "设备管理系统用户信息-" + new SimpleDateFormat("yyyy-MM-dd")
+//                        .format(new Date().getTime()), response);
     }
 
     @Override

@@ -4,6 +4,7 @@ import cn.xqplus.equipmentsys.ext.PageResult;
 import cn.xqplus.equipmentsys.form.UserForm;
 import cn.xqplus.equipmentsys.model.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -27,6 +28,6 @@ public interface IUserMapper extends BaseMapper<User> {
      * @param ids id 集合
      * @return List<UserForm>
      */
-    List<UserForm> getList(Page<UserForm> page, @Param("q") UserForm wrapper, @Param("ids") List<String> ids);
+    IPage<UserForm> getList(Page<UserForm> page, @Param("q") UserForm wrapper, @Param("ids") List<String> ids);
 
 }

@@ -6,7 +6,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
+import java.util.Arrays;
 
 /**
  * 部门信息管理 接口
@@ -52,5 +54,17 @@ public class DepartmentController extends BaseController {
     public String delete(@NotNull int id) {
         return departmentService.deleteById(id);
     }
+
+//    @PostMapping(value = "/deleteBatch", name = "批量删除部门信息")
+//    public String deleteBatch(@NotNull @RequestParam(value = "ids[]") String[] ids) {
+//        /* 包含批量删除密码可见信息 */
+//        boolean deleteBatch = userService.deleteBatch(Arrays.asList(ids));
+//        return stringResult(deleteBatch);
+//    }
+
+//    @GetMapping(value = "/exportExcel", name = "部门列表Excel导出")
+//    public void exportExcel(@RequestParam(value = "ids") String[] ids, HttpServletResponse response) {
+//        userService.exportExcel(Arrays.asList(ids), response);
+//    }
 
 }

@@ -133,9 +133,10 @@
         <table class="layui-hide" id="deptData" lay-filter="deptData"></table>
         <script type="text/html" id="topToolBar">
             <div class="layui-btn-container">
-                <button class="layui-btn layui-btn-sm layui-btn-warm" lay-event="add">新增部门（暂定）</button>
-                <button class="layui-btn layui-btn-sm layui-btn-warm" lay-event="getCheckLength">获取选中数目</button>
-                <button class="layui-btn layui-btn-sm layui-btn-warm" lay-event="isAll">验证是否全选</button>
+                <button class="layui-btn layui-btn-sm layui-btn-warm" lay-event="add">新增部门</button>
+                <button class="layui-btn layui-btn-sm layui-btn-warm layui-disabled" lay-event="deleteBatch">批量删除</button>
+                <button class="layui-btn layui-btn-sm layui-btn-warm" lay-event="exportExcel">导出列表Excel</button>
+                <button class="layui-btn layui-btn-sm layui-btn-warm layui-disabled" lay-event="importBatch">批量导入</button>
             </div>
         </script>
         <script type="text/html" id="rightToolBar">

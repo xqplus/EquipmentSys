@@ -4,6 +4,7 @@ import cn.xqplus.equipmentsys.form.UserForm;
 import cn.xqplus.equipmentsys.model.User;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -44,7 +45,7 @@ public interface IUserService extends IService<User> {
      * @param wrapper
      * @return
      */
-    Page<UserForm> selectPage(Page<UserForm> page, UserForm wrapper);
+    IPage<UserForm> selectPage(Page<UserForm> page, UserForm wrapper);
 
     /**
      * 获取当前登录用户
@@ -64,5 +65,5 @@ public interface IUserService extends IService<User> {
      * @param ids id 集合
      * @param response HttpServletResponse
      */
-    void exportExcel(List<String> ids, HttpServletResponse response);
+    void exportUserExcel(List<String> ids, HttpServletResponse response);
 }

@@ -7,6 +7,7 @@ import cn.xqplus.equipmentsys.model.Department;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -57,4 +58,11 @@ public interface IDepartmentService extends IService<Department> {
      * @return
      */
     String deleteById(int id);
+
+    /**
+     * 部门列表Excel导出
+     * @param ids 筛选列id
+     * @param response HttpServletResponse
+     */
+    void exportDeptExcel(List<String> ids, HttpServletResponse response);
 }
