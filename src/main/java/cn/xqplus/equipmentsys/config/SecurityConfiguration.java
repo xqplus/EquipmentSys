@@ -78,7 +78,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .rememberMe().rememberMeParameter("switch")
                 .and()
                 // 退出后显示页面
-                .logout().logoutSuccessHandler(new SecurityLogoutSuccessHandler()).logoutSuccessUrl("/").permitAll();
+                .logout().logoutSuccessHandler(new SecurityLogoutSuccessHandler()).permitAll();
         // 关闭防止csrf功能
         http.csrf().disable();
     }

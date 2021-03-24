@@ -1,9 +1,11 @@
 package cn.xqplus.equipmentsys.controller;
 
+import cn.xqplus.equipmentsys.ext.PageResult;
 import cn.xqplus.equipmentsys.form.RepairForm;
 import cn.xqplus.equipmentsys.service.IEquipmentService;
 import cn.xqplus.equipmentsys.service.IRepairService;
 import cn.xqplus.equipmentsys.service.IUserService;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -28,10 +30,10 @@ public class RepairController extends BaseController {
     private IUserService userService;
 
     @GetMapping(value = "/page", name = "维修信息page")
-    public Object page(@RequestParam(defaultValue = "1") int page,
-                       @RequestParam(defaultValue = "10") int limit, RepairForm wrapper){
-        Page<RepairForm> pages = new Page<>(page, limit);
-        return repairService.selectPage(pages, wrapper);
+    public PageResult<RepairForm> page(@RequestParam(defaultValue = "1") int page,
+                           @RequestParam(defaultValue = "10") int limit, RepairForm wrapper){
+        IPage<RepairForm> iPage = repairService.selectPage(new Page<>(page, limit), wrapper);
+        return jr(iPage);
     }
 
     @GetMapping(value = "/repair", name = "设备维修")
@@ -46,10 +48,10 @@ public class RepairController extends BaseController {
     }
 
     @GetMapping(value = "/historyPage", name = "维修历史记录page")
-    public Object historyPage(@RequestParam(defaultValue = "1") int page,
+    public PageResult<RepairForm> historyPage(@RequestParam(defaultValue = "1") int page,
                               @RequestParam(defaultValue = "10") int limit, RepairForm wrapper) {
-        Page<RepairForm> historyPage = new Page<>(page, limit);
-        return repairService.selectHistoryPage(historyPage, wrapper);
+        IPage<RepairForm> iPage = repairService.selectHistoryPage(new Page<>(page, limit), wrapper);
+        return jr(iPage);
     }
 
     @PostMapping(value = "/historyDel", name = "维修历史记录删除")

@@ -12,6 +12,7 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,10 +42,11 @@ public class RepairServiceImpl implements IRepairService {
     private IEquipmentService equipmentService;
 
     @Override
-    public Page<RepairForm> selectPage(Page<RepairForm> page, RepairForm wrapper) {
-        List<RepairForm> list = repairMapper.getList(page, wrapper);
-        if (CollectionUtils.isNotEmpty(list)) {
-            for (RepairForm repairForm : list) {
+    public IPage<RepairForm> selectPage(Page<RepairForm> page, RepairForm wrapper) {
+
+        IPage<RepairForm> iPage = repairMapper.getList(page, wrapper);
+        if (CollectionUtils.isNotEmpty(iPage.getRecords())) {
+            for (RepairForm repairForm : iPage.getRecords()) {
                 // 时间转换
                 repairForm.setReportDate(new SimpleDateFormat("yyyy-MM-dd").format(repairForm.getReportTime()));
                 // 设备状态转换（String展示）
@@ -55,20 +57,17 @@ public class RepairServiceImpl implements IRepairService {
                 repairForm.setReporterName(repairForm.getUserName());
             }
         }
-        // 设置返回状态码
-        page.setMaxLimit(0L);
-        // 设置msg
-        page.setCountId("success");
-        page.setRecords(list);
-        page.setTotal(list.size());
-        return page;
+        page.setTotal(iPage.getRecords().size());
+
+        return iPage;
     }
 
     @Override
-    public Page<RepairForm> selectHistoryPage(Page<RepairForm> page, RepairForm wrapper) {
-        List<RepairForm> historyList = repairMapper.getHistoryList(page, wrapper);
-        if (CollectionUtils.isNotEmpty(historyList)) {
-            for (RepairForm repairForm : historyList) {
+    public IPage<RepairForm> selectHistoryPage(Page<RepairForm> page, RepairForm wrapper) {
+
+        IPage<RepairForm> iPage = repairMapper.getHistoryList(page, wrapper);
+        if (CollectionUtils.isNotEmpty(iPage.getRecords())) {
+            for (RepairForm repairForm : iPage.getRecords()) {
                 // 设置维修人
                 repairForm.setRepairerName(repairForm.getUserName());
                 // 设置报修人 TODO 循环里sql 数据量大时有效率问题
@@ -87,13 +86,9 @@ public class RepairServiceImpl implements IRepairService {
                 }
             }
         }
-        // 设置返回状态码
-        page.setMaxLimit(0L);
-        // 设置msg
-        page.setCountId("success");
-        page.setRecords(historyList);
-        page.setTotal(historyList.size());
-        return page;
+        iPage.setTotal(iPage.getRecords().size());
+
+        return iPage;
     }
 
     @Override

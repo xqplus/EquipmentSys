@@ -4,15 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <title>首页-设备管理系统</title>
+    <link th:fragment="favicon" rel="shortcut icon" th:href="@{/favicon.ico}">
     <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
     <link rel="stylesheet" th:href="@{/common/common.css}">
     <script rel="script" th:src="@{/layui/layui.js}"></script>
     <script rel="script" th:src="@{/jquery/jquery-3.5.1.js}"></script>
 </head>
 
+            <!-- 系统页面公共组件都在index中 -->
+
 <body>
 <!-- 导航栏底色填充 nav bgcolor fill -->
-<div th:replace="common :: navcolor-fill"></div>
+<div th:fragment="navcolor-fill" class="bg-color-fill"></div>
 <!-- 页头 导航条 nav -->
 <div class="layui-col-md12 margin-top-10">
     <div style="padding: 0 50px">
@@ -31,7 +34,7 @@
             </li>
             <li class="layui-nav-item margin-left-15">
                 <i class="layui-icon layui-icon-engine icon-small"></i>
-                <a th:href="@{javascript:;}">设备管理</a>
+                <a href="javascript:;">设备管理</a>
                 <dl class="layui-nav-child"> <!-- 二级菜单 -->
                     <dd><a th:href="@{/equipmentSys/router/equipManagement}">设备管理</a></dd>
                     <dd sec:authorize="hasRole('ADMIN')">
@@ -105,7 +108,7 @@
             </div>
         </div>
     </div>
-    <!-- 待办 公告栏 TODO -->
+    <!-- 待办 公告栏 -->
     <div class="layui-col-md12 margin-top-10">
         <div class="todo">
             <div class="layui-tab layui-tab-brief" style="margin-left: 20px" lay-filter="todo">
@@ -151,7 +154,12 @@
 </div>
 <!-- 页脚 footer -->
 <div class="layui-col-md12 margin-top-10">
-    <div th:replace="common :: footer"></div>
+    <div th:fragment="footer" class="layui-col-md12">
+        <div class="layui-footer footer border-radius-2">
+            <p>联系我们 1185079906</p>
+            <p>Copyright © 2020-2021 chenq 版权所有</p>
+        </div>
+    </div>
 </div>
 <script th:src="@{/common/js/index.js}"></script>
 <script th:src="@{/common/common.js}"></script>
@@ -160,7 +168,7 @@
     $.ajax({
         async: false,
         type: 'GET',
-        url: '/equipmentSys/todoAndNotice/todo',
+        url: '/jweb/equipmentSys/todoAndNotice/todo',
         data: {},
         success: function (data) {
             if ((data[0] + data[1]) > 0) {
@@ -181,7 +189,7 @@
     $.ajax({
         async: false,
         type: 'GET',
-        url: '/equipmentSys/todoAndNotice/myNotice',
+        url: '/jweb/equipmentSys/todoAndNotice/myNotice',
         data: {},
         success: function (data) {
             if (data === 1) {

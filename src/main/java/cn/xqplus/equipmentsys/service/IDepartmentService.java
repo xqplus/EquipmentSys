@@ -4,6 +4,7 @@ import cn.xqplus.equipmentsys.ext.PageResult;
 import cn.xqplus.equipmentsys.form.DepartmentForm;
 import cn.xqplus.equipmentsys.form.UserForm;
 import cn.xqplus.equipmentsys.model.Department;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -24,12 +25,12 @@ public interface IDepartmentService extends IService<Department> {
     List<UserForm> getDeptByRole(String role);
 
     /**
-     * 获得Department分页list
+     * Department分页
      * @param page
      * @param wrapper
      * @return
      */
-    Page<DepartmentForm> selectPage(Page<DepartmentForm> page, DepartmentForm wrapper);
+    IPage<DepartmentForm> selectPage(Page<DepartmentForm> page, DepartmentForm wrapper);
 
     /**
      * 通过角色获取下一个部门信息

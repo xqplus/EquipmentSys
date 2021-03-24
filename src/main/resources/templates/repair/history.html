@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>维修历史记录-设备管理系统</title>
+    <link th:replace="index :: favicon">
     <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
     <link rel="stylesheet" th:href="@{/common/common.css}">
     <script rel="script" th:src="@{/layui/layui.js}"></script>
@@ -13,7 +14,7 @@
 
 <body>
 <!-- 导航栏底色填充 nav bgcolor fill -->
-<div th:replace="common :: navcolor-fill"></div>
+<div th:replace="index :: navcolor-fill"></div>
 <!-- 页头 导航条 nav -->
 <div class="layui-col-md12 margin-top-10">
     <div style="padding: 0 50px">
@@ -78,19 +79,19 @@
         <div class="search-panel border-radius-2">
             <form class="layui-form">
                 <div class="layui-form-item">
-                    <div class="layui-inline">
+                    <div class="layui-col-md4">
                         <label class="layui-form-label">维修编号：</label>
                         <div class="layui-input-inline">
                             <input type="text" class="layui-input" name="repairNumber" autocomplete="off">
                         </div>
                     </div>
-                    <div class="layui-inline">
+                    <div class="layui-col-md4">
                         <label class="layui-form-label">设备名称：</label>
                         <div class="layui-input-inline">
                             <input type="text" class="layui-input" name="equipName" autocomplete="off">
                         </div>
                     </div>
-                    <div class="layui-inline">
+                    <div class="layui-col-md4">
                         <label class="layui-form-label">维修人：</label>
                         <div class="layui-input-inline">
                             <input type="text" class="layui-input" name="repairerName" autocomplete="off">
@@ -98,14 +99,14 @@
                     </div>
                 </div>
                 <div class="layui-form-item">
-                    <div class="layui-inline">
+                    <div class="layui-col-md4">
                         <label class="layui-form-label">报修时间：</label>
                         <div class="layui-input-inline">
                             <!--<i class="layui-icon layui-icon-logout icon-date" id="dateIcon"></i>-->
                             <input type="text" class="layui-icon layui-input" style="font-size: 14px; cursor: pointer" name="createTime" id="createTime" placeholder="&#xe637;">
                         </div>
                     </div>
-                    <div class="layui-inline">
+                    <div class="layui-col-md4">
                         <label class="layui-form-label">维修时间：</label>
                         <div class="layui-input-inline">
                             <!--<i class="layui-icon layui-icon-logout icon-date" id="dateIcon"></i>-->
@@ -142,7 +143,7 @@
     </div>
 </div>
 <!-- 页脚 footer -->
-<div th:replace="common :: footer"></div>
+<div th:replace="index :: footer"></div>
 <script th:src="@{/common/js/repairHistory.js}"></script>
 </body>
 </html>

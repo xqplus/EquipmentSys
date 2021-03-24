@@ -2,6 +2,7 @@ package cn.xqplus.equipmentsys.service;
 
 import cn.xqplus.equipmentsys.form.EquipmentTypeForm;
 import cn.xqplus.equipmentsys.model.EquipmentType;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -16,7 +17,7 @@ public interface IEquipmentTypeService extends IService<EquipmentType> {
      * @param wrapper 搜索查询条件
      * @return Page<EquipmentTypeForm>
      */
-    Page<EquipmentTypeForm> selectPage(Page<EquipmentTypeForm> page, EquipmentTypeForm wrapper);
+    IPage<EquipmentTypeForm> selectPage(Page<EquipmentTypeForm> page, EquipmentTypeForm wrapper);
 
     /**
      * 获取最新的设备类型编号下一个，用于新增

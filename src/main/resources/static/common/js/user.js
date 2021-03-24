@@ -31,6 +31,9 @@ layui.use(['element', 'table', 'laydate', 'form', 'jquery'], function(){
     setBadge();
     // 鼠标悬停显示用户详情
     userInfoShow($);
+    // $('#reset').click(function () {
+    //    table.search('userData');
+    // });
 
     /**
      * 数据表格渲染
@@ -41,7 +44,7 @@ layui.use(['element', 'table', 'laydate', 'form', 'jquery'], function(){
         table.render({
             elem: '#userData'
             ,id: 'userData'
-            ,url:'/equipmentSys/user/page'
+            ,url: getUrl('/equipmentSys/user/page')
             ,method: 'GET'
             ,async: false
             ,where: where
@@ -49,10 +52,10 @@ layui.use(['element', 'table', 'laydate', 'form', 'jquery'], function(){
             ,parseData: function(res){ //res 即为原始返回的数据
                 let result;
                 if(this.page.curr){
-                    result = res.data.slice(this.limit*(this.page.curr-1),this.limit*this.page.curr);
+                    result = res.data.slice(this.limit * (this.page.curr - 1), this.limit * this.page.curr);
                 }
                 else{
-                    result=res.data.slice(0,this.limit);
+                    result = res.data.slice(0, this.limit);
                 }
                 return {
                     "code": res.code,
@@ -105,7 +108,7 @@ layui.use(['element', 'table', 'laydate', 'form', 'jquery'], function(){
                         '#pwd',
                         '#pwd2',
                         'roleType',
-                        '/equipmentSys/user/add',
+                        getUrl('/equipmentSys/user/add'),
                         'addUser');
                     break;
 
@@ -119,7 +122,7 @@ layui.use(['element', 'table', 'laydate', 'form', 'jquery'], function(){
                     }
                     layer.confirm('确定删除选中的用户信息？', {icon: 3, title: '提示'}, function (index) {
                         myAjax('POST'
-                            , '/equipmentSys/user/deleteBatch'
+                            , getUrl('/equipmentSys/user/deleteBatch')
                             , {ids: ids}, '批量删除成功'
                             , '批量删除失败，请重试或联系管理员'
                             , true
@@ -135,12 +138,12 @@ layui.use(['element', 'table', 'laydate', 'form', 'jquery'], function(){
                     if (ids.length === 0) {
                         // 在没有选定数据行的时候导出全部数据
                         exportExcel("是否导出全部用户信息？",
-                            "/equipmentSys/user/exportExcel", ids);
+                            getUrl("/equipmentSys/user/exportExcel"), ids);
                         return;
                     }
                     // 选定行时导出选中的数据
                     exportExcel("是否导出选中用户信息？",
-                        "/equipmentSys/user/exportExcel", ids);
+                        getUrl("/equipmentSys/user/exportExcel"), ids);
                     break;
 
                 case 'importBatch': // 批量导入
@@ -157,14 +160,14 @@ layui.use(['element', 'table', 'laydate', 'form', 'jquery'], function(){
                     '#pwd',
                     '#pwd2',
                     'roleType',
-                    '/equipmentSys/user/update',
+                    getUrl('/equipmentSys/user/update'),
                     'editUser', data);
             } else if (obj.event === 'del') {
                 layer.confirm('确定删除用户 '+data.userName+' 的信息？', function (index) {
                     $.ajax({
                         async: false,
                         type: 'POST',
-                        url: '/equipmentSys/user/delete',
+                        url: getUrl('/equipmentSys/user/delete'),
                         data: {id: data.id},
                         success: function (data) {
                             layer.close(index);

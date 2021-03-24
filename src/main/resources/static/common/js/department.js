@@ -38,17 +38,24 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
         // 后端数据渲染
         table.render({
             elem: '#deptData'
-            ,url:'/equipmentSys/department/page'
+            ,url: getUrl('/equipmentSys/department/page')
             ,method: 'GET'
             ,async: false
             ,where: where // 携带参数
             ,height: 370
             ,parseData: function(res){ //res 即为原始返回的数据
+                let result;
+                if(this.page.curr){
+                    result = res.data.slice(this.limit * (this.page.curr - 1), this.limit * this.page.curr);
+                }
+                else{
+                    result = res.data.slice(0, this.limit);
+                }
                 return {
-                    "code": res.maxLimit, //解析接口状态
-                    "msg": res.countId, //解析提示文本
+                    "code": res.code,
+                    "msg": res.message, //解析提示文本
                     "count": res.total, //解析数据长度
-                    "data": res.records, //解析数据列表
+                    "data": result //解析数据列表
                 };
             }
             ,toolbar: '#topToolBar' //开启头部工具栏，并为其绑定左侧模板
@@ -91,7 +98,7 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                         null,
                         null,
                         'roleType',
-                        '/equipmentSys/department/add',
+                        getUrl('/equipmentSys/department/add'),
                         'addDept');
                     break;
 
@@ -123,12 +130,12 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                     if (ids.length === 0) {
                         // 在没有选定数据行的时候导出全部数据
                         exportExcel("是否导出全部部门信息？",
-                            "/equipmentSys/department/exportExcel", ids);
+                            getUrl("/equipmentSys/department/exportExcel"), ids);
                         return;
                     }
                     // 选定行时导出选中的数据
                     exportExcel("是否导出选中部门信息？",
-                        "/equipmentSys/department/exportExcel", ids);
+                        getUrl("/equipmentSys/department/exportExcel"), ids);
                     break;
 
                 case 'importBatch': // 批量导入
@@ -145,14 +152,14 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                     null,
                     null,
                     'roleType',
-                    '/equipmentSys/department/update',
+                    getUrl('/equipmentSys/department/update'),
                     'editDept', data);
             } else if (obj.event === 'del') {
                 layer.confirm('确定删除部门 '+data.deptName+' 的信息？', function (index) {
                     $.ajax({
                         async: false,
                         type: 'POST',
-                        url: '/equipmentSys/department/delete',
+                        url: getUrl('/equipmentSys/department/delete'),
                         data: {id: data.id},
                         success: function (data) {
                             layer.close(index);

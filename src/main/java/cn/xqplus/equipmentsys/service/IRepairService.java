@@ -2,6 +2,7 @@ package cn.xqplus.equipmentsys.service;
 
 import cn.xqplus.equipmentsys.form.RepairForm;
 import cn.xqplus.equipmentsys.model.Repair;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -23,7 +24,7 @@ public interface IRepairService extends IService<Repair> {
      * @param wrapper 查询条件
      * @return Page<RepairForm>
      */
-    Page<RepairForm> selectPage(Page<RepairForm> page, RepairForm wrapper);
+    IPage<RepairForm> selectPage(Page<RepairForm> page, RepairForm wrapper);
 
     /**
      * 获取history分页list
@@ -31,7 +32,7 @@ public interface IRepairService extends IService<Repair> {
      * @param wrapper 查询条件
      * @return Page<RepairForm>
      */
-    Page<RepairForm> selectHistoryPage(Page<RepairForm> page, RepairForm wrapper);
+    IPage<RepairForm> selectHistoryPage(Page<RepairForm> page, RepairForm wrapper);
 
     /**
      * 设备维修

@@ -3,6 +3,7 @@ package cn.xqplus.equipmentsys.mapper;
 import cn.xqplus.equipmentsys.form.ApplyForm;
 import cn.xqplus.equipmentsys.model.Apply;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -25,6 +26,6 @@ public interface IApplyMapper extends BaseMapper<Apply> {
      * @param name 当前用户
      * @return List<ApplyForm>
      */
-    List<ApplyForm> getList(Page<ApplyForm> page, @Param("q") ApplyForm wrapper, String name);
+    IPage<ApplyForm> getList(Page<ApplyForm> page, @Param("q") ApplyForm wrapper, String name);
 
 }

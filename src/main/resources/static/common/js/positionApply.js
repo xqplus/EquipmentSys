@@ -62,7 +62,7 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                         null,
                         null,
                         'applyType',
-                        '/equipmentSys/apply/add',
+                        getUrl('/equipmentSys/apply/add'),
                         'addApply');
                     break;
                 case 'getCheckLength':
@@ -88,7 +88,7 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                     null,
                     null,
                     'applyType',
-                    '/equipmentSys/apply/update',
+                    getUrl('/equipmentSys/apply/update'),
                     'editApply', data);
             } else if (obj.event === 'del') {
                 layer.confirm('当前申请编号：'+ data.applyNumber +'，申请人：'+ data.userName +'，申请职位：' + data.applyTypeName
@@ -96,7 +96,7 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                     $.ajax({
                         async: false,
                         type: 'POST',
-                        url: '/equipmentSys/apply/delete',
+                        url: getUrl('/equipmentSys/apply/delete'),
                         data: {id: data.id},
                         success: function (data) {
                             layer.close(index);
@@ -128,7 +128,7 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                         $.ajax({
                             async: false,
                             type: 'GET',
-                            url: '/equipmentSys/apply/pass',
+                            url: getUrl('/equipmentSys/apply/pass'),
                             data: data,
                             success: function (data) {
                                 if (data === 'success') {
@@ -162,7 +162,7 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                         $.ajax({
                             async: false,
                             type: 'GET',
-                            url: '/equipmentSys/apply/reject',
+                            url: getUrl('/equipmentSys/apply/reject'),
                             data: data,
                             success: function (data) {
                                 if (data === 'success') {
@@ -191,17 +191,24 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
         // 后端数据渲染
         table.render({
             elem: '#applyData'
-            ,url:'/equipmentSys/apply/page'
+            ,url: getUrl('/equipmentSys/apply/page')
             ,method: 'GET'
             ,async: false
             ,where: where // 携带参数
             ,height: 370
             ,parseData: function(res){ //res 即为原始返回的数据
+                let result;
+                if(this.page.curr){
+                    result = res.data.slice(this.limit * (this.page.curr - 1), this.limit * this.page.curr);
+                }
+                else{
+                    result = res.data.slice(0, this.limit);
+                }
                 return {
-                    "code": res.maxLimit, //解析接口状态
-                    "msg": res.countId, //解析提示文本
+                    "code": res.code,
+                    "msg": res.message, //解析提示文本
                     "count": res.total, //解析数据长度
-                    "data": res.records, //解析数据列表
+                    "data": result //解析数据列表
                 };
             }
             ,toolbar: '#topToolBar' //开启头部工具栏，并为其绑定左侧模板

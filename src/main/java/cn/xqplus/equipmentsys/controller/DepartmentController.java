@@ -1,7 +1,9 @@
 package cn.xqplus.equipmentsys.controller;
 
+import cn.xqplus.equipmentsys.ext.PageResult;
 import cn.xqplus.equipmentsys.form.DepartmentForm;
 import cn.xqplus.equipmentsys.service.IDepartmentService;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -33,10 +35,10 @@ public class DepartmentController extends BaseController {
     }
 
     @GetMapping(value = "/page", name = "部门信息page")
-    public Object list(@RequestParam(defaultValue = "1") int page,
-                       @RequestParam(defaultValue = "10") int limit, DepartmentForm wrapper){
-        Page<DepartmentForm> pages = new Page<>(page, limit);
-        return departmentService.selectPage(pages, wrapper);
+    public PageResult<DepartmentForm> page(@RequestParam(defaultValue = "1") int page,
+                           @RequestParam(defaultValue = "10") int limit, DepartmentForm wrapper){
+        IPage<DepartmentForm> iPage = departmentService.selectPage(new Page<>(page, limit), wrapper);
+        return jr(iPage);
     }
 
     @PostMapping(value = "/add", name = "新增")

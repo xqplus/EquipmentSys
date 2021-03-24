@@ -2,6 +2,7 @@ package cn.xqplus.equipmentsys.service;
 
 import cn.xqplus.equipmentsys.form.ApplyForm;
 import cn.xqplus.equipmentsys.model.Apply;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -18,7 +19,7 @@ public interface IApplyService extends IService<Apply> {
      * @param userName 用户查询条件
      * @return Page<ApplyForm>
      */
-    Page<ApplyForm> selectPage(Page<ApplyForm> page, ApplyForm wrapper, String userName);
+    IPage<ApplyForm> selectPage(Page<ApplyForm> page, ApplyForm wrapper, String userName);
 
     /**
      * 获取最新的申请编号

@@ -1,5 +1,6 @@
 package cn.xqplus.equipmentsys.controller;
 
+import cn.xqplus.equipmentsys.ext.PageResult;
 import cn.xqplus.equipmentsys.form.ApplyForm;
 import cn.xqplus.equipmentsys.model.Apply;
 import cn.xqplus.equipmentsys.model.User;
@@ -7,6 +8,7 @@ import cn.xqplus.equipmentsys.service.IApplyService;
 import cn.xqplus.equipmentsys.service.IUserService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,11 +32,11 @@ public class ApplyController extends BaseController {
     private IApplyService applyService;
 
     @GetMapping(value = "/page", name = "申请信息page")
-    public Object page(@RequestParam(defaultValue = "1") int page,
-                       @RequestParam(defaultValue = "10") int limit, ApplyForm wrapper,
-                       String name) {
-        Page<ApplyForm> pages = new Page<>(page, limit);
-        return applyService.selectPage(pages, wrapper, name);
+    public PageResult<ApplyForm> page(@RequestParam(defaultValue = "1") int page,
+                           @RequestParam(defaultValue = "10") int limit, ApplyForm wrapper,
+                           String name) {
+        IPage<ApplyForm> iPage = applyService.selectPage(new Page<>(page, limit), wrapper, name);
+        return jr(iPage);
     }
 
     @GetMapping(value = "/getNextApplyNumberByDeptNumber", name = "通过部门编号获取最新的申请编号")

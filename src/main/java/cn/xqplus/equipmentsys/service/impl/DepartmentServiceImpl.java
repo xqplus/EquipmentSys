@@ -15,6 +15,7 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.beanutils.BeanUtils;
@@ -47,22 +48,19 @@ public class DepartmentServiceImpl implements IDepartmentService {
     private IUserService userService;
 
     @Override
-    public Page<DepartmentForm> selectPage(Page<DepartmentForm> page, DepartmentForm wrapper) {
-        List<DepartmentForm> departmentForms = departmentMapper.getList(page, wrapper);
-        if (CollectionUtils.isNotEmpty(departmentForms)) {
-            for (DepartmentForm departmentForm : departmentForms) {
+    public IPage<DepartmentForm> selectPage(Page<DepartmentForm> page, DepartmentForm wrapper) {
+
+        IPage<DepartmentForm> iPage = departmentMapper.getList(page, wrapper);
+        if (CollectionUtils.isNotEmpty(iPage.getRecords())) {
+            for (DepartmentForm departmentForm : iPage.getRecords()) {
                 // 时间转换
                 departmentForm.setCreateDate(new SimpleDateFormat("yyyy-MM-dd").format(departmentForm.getCreateTime()));
                 departmentForm.setUpdateDate(new SimpleDateFormat("yyyy-MM-dd").format(departmentForm.getUpdateTime()));
             }
         }
-        // 设置返回状态码
-        page.setMaxLimit(0L);
-        // 设置msg
-        page.setCountId("success");
-        page.setRecords(departmentForms);
-        page.setTotal(departmentForms.size());
-        return page;
+        iPage.setTotal(iPage.getRecords().size());
+
+        return iPage;
     }
 
     @Override

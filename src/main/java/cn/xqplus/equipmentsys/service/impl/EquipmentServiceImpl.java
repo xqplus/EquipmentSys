@@ -11,6 +11,7 @@ import cn.xqplus.equipmentsys.service.IUserService;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,10 +41,11 @@ public class EquipmentServiceImpl implements IEquipmentService {
     private IUserService userService;
 
     @Override
-    public Page<EquipmentForm> selectPage(Page<EquipmentForm> page, EquipmentForm wrapper) {
-        List<EquipmentForm> equipmentForms = equipmentMapper.getList(page, wrapper);
-        if (CollectionUtils.isNotEmpty(equipmentForms)) {
-            for (EquipmentForm equipmentForm : equipmentForms) {
+    public IPage<EquipmentForm> selectPage(Page<EquipmentForm> page, EquipmentForm wrapper) {
+
+        IPage<EquipmentForm> iPage = equipmentMapper.getList(page, wrapper);
+        if (CollectionUtils.isNotEmpty(iPage.getRecords())) {
+            for (EquipmentForm equipmentForm : iPage.getRecords()) {
                 // 时间转换
                 equipmentForm.setCreateDate(new SimpleDateFormat("yyyy-MM-dd").format(equipmentForm.getCreateTime()));
                 equipmentForm.setUpdateDate(new SimpleDateFormat("yyyy-MM-dd").format(equipmentForm.getUpdateTime()));
@@ -59,13 +61,9 @@ public class EquipmentServiceImpl implements IEquipmentService {
                 }
             }
         }
-        // 设置返回状态码
-        page.setMaxLimit(0L);
-        // 设置msg
-        page.setCountId("success");
-        page.setRecords(equipmentForms);
-        page.setTotal(equipmentForms.size());
-        return page;
+        page.setTotal(iPage.getRecords().size());
+
+        return iPage;
     }
 
     @Override

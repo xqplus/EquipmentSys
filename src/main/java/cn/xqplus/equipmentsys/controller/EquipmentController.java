@@ -1,9 +1,11 @@
 package cn.xqplus.equipmentsys.controller;
 
+import cn.xqplus.equipmentsys.ext.PageResult;
 import cn.xqplus.equipmentsys.form.EquipmentForm;
 import cn.xqplus.equipmentsys.model.Equipment;
 import cn.xqplus.equipmentsys.service.IEquipmentService;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,10 +24,10 @@ public class EquipmentController extends BaseController {
     private IEquipmentService equipmentService;
 
     @GetMapping(value = "/page", name = "设备信息page")
-    public Object page(@RequestParam(defaultValue = "1") int page,
-                       @RequestParam(defaultValue = "10") int limit, EquipmentForm wrapper){
-        Page<EquipmentForm> pages = new Page<>(page, limit);
-        return equipmentService.selectPage(pages, wrapper);
+    public PageResult<EquipmentForm> page(@RequestParam(defaultValue = "1") int page,
+                                          @RequestParam(defaultValue = "10") int limit, EquipmentForm wrapper){
+        IPage<EquipmentForm> iPage = equipmentService.selectPage(new Page<>(page, limit), wrapper);
+        return jr(iPage);
     }
 
     @GetMapping(value = "/getNextEquipNumber", name = "获取最新设备编号下一个")

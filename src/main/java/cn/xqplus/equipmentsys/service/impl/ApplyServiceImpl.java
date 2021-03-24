@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,14 +38,14 @@ public class ApplyServiceImpl implements IApplyService {
     private IUserService userService;
 
     @Override
-    public Page<ApplyForm> selectPage(Page<ApplyForm> page, ApplyForm wrapper, String userName) {
+    public IPage<ApplyForm> selectPage(Page<ApplyForm> page, ApplyForm wrapper, String userName) {
         // 当前用户不是管理员时只能查看自己的申请信息
         if (userService.getCurrentUserInfo().getRoleType() != 0) {
             userName = userService.getCurrentUserInfo().getUserName();
         }
-        List<ApplyForm> applyForms = applyMapper.getList(page, wrapper, userName);
-        if (CollectionUtils.isNotEmpty(applyForms)) {
-            for (ApplyForm applyForm : applyForms) {
+        IPage<ApplyForm> iPage = applyMapper.getList(page, wrapper, userName);
+        if (CollectionUtils.isNotEmpty(iPage.getRecords())) {
+            for (ApplyForm applyForm : iPage.getRecords()) {
                 // 申请类型转换
                 if (applyForm.getApplyType() == 0) {
                     applyForm.setApplyTypeName("管理员");
@@ -71,13 +72,9 @@ public class ApplyServiceImpl implements IApplyService {
                 }
             }
         }
-        // 设置返回状态码
-        page.setMaxLimit(0L);
-        // 设置msg
-        page.setCountId("success");
-        page.setRecords(applyForms);
-        page.setTotal(applyForms.size());
-        return page;
+        page.setTotal(iPage.getRecords().size());
+
+        return iPage;
     }
 
     @Override

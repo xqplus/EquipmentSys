@@ -3,6 +3,7 @@ package cn.xqplus.equipmentsys.mapper;
 import cn.xqplus.equipmentsys.form.EquipmentForm;
 import cn.xqplus.equipmentsys.model.Equipment;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -24,7 +25,7 @@ public interface IEquipmentMapper extends BaseMapper<Equipment> {
      * @param wrapper 条件
      * @return List<EquipmentForm>
      */
-    List<EquipmentForm> getList(Page<EquipmentForm> page, @Param("q") EquipmentForm wrapper);
+    IPage<EquipmentForm> getList(Page<EquipmentForm> page, @Param("q") EquipmentForm wrapper);
 
     /**
      * 获取列表根据编号降序排列

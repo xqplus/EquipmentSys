@@ -46,7 +46,7 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                         null,
                         null,
                         null,
-                        '/equipmentSys/equipment/add',
+                        getUrl('/equipmentSys/equipment/add'),
                         'addEquip');
                     break;
                 case 'getCheckLength':
@@ -72,14 +72,14 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                     null,
                     null,
                     null,
-                    '/equipmentSys/equipment/update',
+                    getUrl('/equipmentSys/equipment/update'),
                     'editEquip', data);
             } else if (obj.event === 'del') {
                 layer.confirm('确定删除设备 '+ data.equipTypeName + data.equipName +' 的信息？', {icon: 3, title: '警告'}, function (index) {
                     $.ajax({
                         async: false,
                         type: 'POST',
-                        url: '/equipmentSys/equipment/delete',
+                        url: getUrl('/equipmentSys/equipment/delete'),
                         data: {id: data.id},
                         success: function (data) {
                             layer.close(index);
@@ -100,7 +100,7 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                     $.ajax({
                         async: false,
                         type: 'GET',
-                        url: '/equipmentSys/equipment/reportRepair', // 报修接口
+                        url: getUrl('/equipmentSys/equipment/reportRepair'), // 报修接口
                         data: {id: data.id},
                         success: function (data) {
                             layer.close(index);
@@ -130,17 +130,24 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
         // 后端数据渲染
         table.render({
             elem: '#equipmentData'
-            ,url:'/equipmentSys/equipment/page'
+            ,url: getUrl('/equipmentSys/equipment/page')
             ,method: 'GET'
             ,async: false
             ,where: where // 携带参数
             ,height: 370
             ,parseData: function(res){ //res 即为原始返回的数据
+                let result;
+                if(this.page.curr){
+                    result = res.data.slice(this.limit * (this.page.curr - 1), this.limit * this.page.curr);
+                }
+                else{
+                    result = res.data.slice(0, this.limit);
+                }
                 return {
-                    "code": res.maxLimit, //解析接口状态
-                    "msg": res.countId, //解析提示文本
+                    "code": res.code,
+                    "msg": res.message, //解析提示文本
                     "count": res.total, //解析数据长度
-                    "data": res.records, //解析数据列表
+                    "data": result //解析数据列表
                 };
             }
             ,toolbar: '#topToolBar' //开启头部工具栏，并为其绑定左侧模板
@@ -158,9 +165,9 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                 ,{type: 'numbers', title: '序号', fixed: 'left', sort: true, width: 80}
                 ,{field: 'id', title: 'ID', sort: true, fixed: 'left', width: 80, hide: true} // 隐藏数据表id
                 ,{field: 'equipNumber', title: '设备编号', sort: true}
+                ,{field: 'equipName', title: '设备名称'}
                 ,{field: 'equipTypeNumber', title: '设备类型编号', sort: true, hide: true} // 隐藏列
                 ,{field: 'equipTypeName', title: '设备类型名称'}
-                ,{field: 'equipName', title: '设备名称'}
                 ,{field: 'equipSummary', title: '设备概述'}
                 ,{field: 'equipStateName', title: '设备状态', templet: '#equipStateName'}
                 ,{field: 'createDate', title: '创建时间', sort: true}

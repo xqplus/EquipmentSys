@@ -29,11 +29,13 @@ html,body {
     padding: 30px 10px;
     border: 1px solid gray;
     text-align: center;
+    /*background-color: #93D1FF;*/
+    /*opacity: 0.5;*/
 }
 
 .login-area > span {
     font-size: 20px;
-    /*color: #fff9ec;*/
+    color: #fff9ec;
     /*font-weight: bold;*/
     line-height: 60px;
     text-align: center;
@@ -160,7 +162,7 @@ html,body {
     margin-left: 50%;
     margin-top: 100px;
     transform: translate(-50%);
-    background-image: url("/images/404-2.png");
+    background-image: url("/jweb/images/404-2.png");
 }
 
 /* 403 */
@@ -171,7 +173,7 @@ html,body {
     margin-left: 50%;
     margin-top: 100px;
     transform: translate(-50%);
-    background-image: url("/images/403.png");
+    background-image: url("/jweb/images/403.png");
 }
 
 /* 待办 公告栏 */

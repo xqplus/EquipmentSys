@@ -315,7 +315,7 @@ function userExistsCheck($, selector, boolean) {
         $.ajax({
             async: false,
             type: 'GET',
-            url: '/equipmentSys/user/userCheck',
+            url: getUrl('/equipmentSys/user/userCheck'),
             data: {
                 userName: $(selector).val(),
             },
@@ -358,13 +358,14 @@ function formSubmitEvent(form, filter, url, boolean) {
         $.ajax({
             async: false, // 异步提交
             type: 'POST',
-            url: url,
+            url: getUrl(url),
             data: data.field,
             // dataType: 'json',
             success: function (data) {
                 if (boolean) { // 注册
                     if (data === "success") {
                         layer.alert('注册成功，请返回登录~', {icon: 1});
+                        $("#userName").val("");
                     }
                     if (data === "error") {
                         layer.alert('注册失败，请重新注册或联系管理员！', {icon: 5});
@@ -402,7 +403,7 @@ function roleDeptCascade(form, $, filter) {
             $.ajax({
                 async: false, // 异步提交
                 type: 'GET',
-                url: '/equipmentSys/department/getDeptByRole',
+                url: getUrl('/equipmentSys/department/getDeptByRole'),
                 data: {
                     role: data.value
                 },
@@ -478,7 +479,7 @@ function addFormDialog(layer, form, $, title, content, userNameSelector, pwdId1,
             }
             if (type === 'editEquip') {
                 $('#equipNumber').val(data.equipNumber);
-                $('#equipTypeNumber').val(data.equipTypeNumber); // TODO 不可用（下拉框）
+                $('#equipTypeNumber').val(data.equipTypeNumber);
                 $('#equipName').val(data.equipName);
                 $('#equipSummary').val(data.equipSummary);
             }
@@ -577,7 +578,7 @@ function getNextDeptByRole(form, $) {
             $.ajax({
                 async: false, // 异步提交
                 type: 'GET',
-                url: '/equipmentSys/department/getNextDeptByRole',
+                url: getUrl('/equipmentSys/department/getNextDeptByRole'),
                 data: {
                     role: data.value
                 },
@@ -600,7 +601,7 @@ function getNextEquipNumber() {
     $.ajax({
         async: false, // 异步提交
         type: 'GET',
-        url: '/equipmentSys/equipment/getNextEquipNumber',
+        url: getUrl('/equipmentSys/equipment/getNextEquipNumber'),
         data: {
         },
         // dataType: 'json',
@@ -635,7 +636,7 @@ function getNextEquipTypeNumber() {
     $.ajax({
         async: false, // 异步提交
         type: 'GET',
-        url: '/equipmentSys/equipmentType/getNextEquipTypeNumber',
+        url: getUrl('/equipmentSys/equipmentType/getNextEquipTypeNumber'),
         data: {
         },
         // dataType: 'json',
@@ -655,7 +656,7 @@ function getNextApplyNumberByDept(form, $) {
             $.ajax({
                 async: false, // 异步提交
                 type: 'GET',
-                url: '/equipmentSys/apply/getNextApplyNumberByDeptNumber',
+                url: getUrl('/equipmentSys/apply/getNextApplyNumberByDeptNumber'),
                 data: {
                     deptNumber: data.value
                 },
@@ -677,7 +678,7 @@ function getCurrentUserInfo() {
     $.ajax({
         async: false,
         type: 'GET',
-        url: '/equipmentSys/user/getCurrentUserInfo',
+        url: getUrl('/equipmentSys/user/getCurrentUserInfo'),
         success: function (data) {
             currentUserInfo = data;
         }
@@ -692,7 +693,7 @@ function setBadge() {
     $.ajax({
        async: false,
        type: 'GET',
-       url: '/equipmentSys/todoAndNotice/todo',
+       url: getUrl('/equipmentSys/todoAndNotice/todo'),
        data: {},
        success: function (data) {
            if (data[0] > 0) { // 申请数
@@ -767,3 +768,28 @@ function exportExcel(confirmMsg, url, param) {
     });
 }
 
+/**
+ * 接口数据返回格式限定及分页处理
+ * @param res 返回数据
+ * @param _this this
+ */
+function parseRes(res, _this) {
+    let result;
+    if(_this.page.curr){
+        result = res.data.slice(_this.limit * (_this.page.curr - 1), _this.limit * _this.page.curr);
+    }
+    else{
+        result=res.data.slice(0, _this.limit);
+    }
+    return {
+        "code": res.code,
+        "msg": res.message, //解析提示文本
+        "count": res.total, //解析数据长度
+        "data": result //解析数据列表
+    };
+}
+
+function getUrl(url) {
+    if (url.substring(0, 5) === '/jweb') return ;
+    return '/jweb' + url;
+}

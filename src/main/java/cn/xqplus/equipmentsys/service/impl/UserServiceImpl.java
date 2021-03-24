@@ -176,7 +176,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     public void exportUserExcel(List<String> ids, HttpServletResponse response) {
         // 获取用户列表集合
-        List<UserForm> userForms = userMapper.getList(null, new UserForm(), ids).getRecords();
+        List<UserForm> userForms = userMapper.getList(new Page<>(), new UserForm(), ids).getRecords();
         List<UserResp> exportList = new ArrayList<>();
 
         for (UserForm u : userForms) {

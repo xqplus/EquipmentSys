@@ -5,6 +5,7 @@ import cn.xqplus.equipmentsys.form.RepairForm;
 import cn.xqplus.equipmentsys.model.Equipment;
 import cn.xqplus.equipmentsys.model.Repair;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -32,7 +33,7 @@ public interface IRepairMapper extends BaseMapper<Repair> {
      * @param wrapper 条件
      * @return List<RepairForm>
      */
-    List<RepairForm> getList(Page<RepairForm> page, @Param("q") RepairForm wrapper);
+    IPage<RepairForm> getList(Page<RepairForm> page, @Param("q") RepairForm wrapper);
 
     /**
      * 历史记录list
@@ -40,5 +41,5 @@ public interface IRepairMapper extends BaseMapper<Repair> {
      * @param wrapper 条件
      * @return List<RepairForm>
      */
-    List<RepairForm> getHistoryList(Page<RepairForm> page, @Param("q") RepairForm wrapper);
+    IPage<RepairForm> getHistoryList(Page<RepairForm> page, @Param("q") RepairForm wrapper);
 }
