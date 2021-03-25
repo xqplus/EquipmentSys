@@ -108,7 +108,10 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
     function toolProcess() {
         // 头工具栏事件(新增)
         table.on('toolbar(repairHistory)', function(obj){
-            let checkStatus = table.checkStatus(obj.config.id); // 选中行信息
+            let checkStatus = table.checkStatus(obj.config.id), // 选中行信息
+                data = checkStatus.data,
+                ids = [];
+
             switch(obj.event){
                 // case 'add':
                 //     addFormDialog(layer, form, $,
@@ -121,15 +124,26 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                 //         'addEquip');
                 //     break;
                 case 'getCheckLength':
-                    let data = checkStatus.data;
                     layer.msg('选中了：'+ data.length + ' 个');
                     break;
+
                 case 'isAll':
                     layer.msg(checkStatus.isAll ? '全选': '未全选');
                     break;
-                //自定义头工具栏右侧图标 - 提示
-                case 'LAYTABLE_TIPS':
-                    layer.alert('这是工具栏右侧自定义的一个图标按钮');
+
+                case 'exportExcel':
+                    $.each(data, function (i, val) {
+                        ids.push(val.id);
+                    });
+                    if (ids.length === 0) {
+                        // 在没有选定数据行的时候导出全部数据
+                        exportExcel("是否导出全部维修历史信息？",
+                            getUrl("/equipmentSys/repair/exportHistoryExcel"), ids);
+                        return;
+                    }
+                    // 选定行时导出选中的数据
+                    exportExcel("是否导出选中维修历史信息？",
+                        getUrl("/equipmentSys/repair/exportHistoryExcel"), ids);
                     break;
             }
         });

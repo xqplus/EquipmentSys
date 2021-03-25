@@ -10,7 +10,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * 维修信息 服务层
  */
 
-public interface IRepairService extends IService<Repair> {
+public interface IRepairService extends IService<Repair>, ICommonService {
 
     /**
      * 获取最新维修编号下一个，返回对象

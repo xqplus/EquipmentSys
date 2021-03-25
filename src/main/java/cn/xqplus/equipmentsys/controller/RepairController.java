@@ -10,7 +10,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
+import java.util.Arrays;
 
 /**
  * 维修信息管理 接口
@@ -58,5 +60,10 @@ public class RepairController extends BaseController {
     public String historyDel(@NotNull int id) {
         boolean removeById = repairService.removeById(id);
         return stringResult(removeById);
+    }
+
+    @GetMapping(value = "/exportHistoryExcel", name = "维修历史信息 Excel 导出")
+    public void exportHistoryExcel(@RequestParam(value = "ids") String[] ids, HttpServletResponse response) {
+        repairService.exportExcel(Arrays.asList(ids), response);
     }
 }
