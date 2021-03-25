@@ -15,7 +15,7 @@ import java.util.List;
  * 部门信息 服务层
  */
 
-public interface IDepartmentService extends IService<Department> {
+public interface IDepartmentService extends IService<Department>, ICommonService {
 
     /**
      * 根据角色id获取部门
@@ -60,10 +60,4 @@ public interface IDepartmentService extends IService<Department> {
      */
     String deleteById(int id);
 
-    /**
-     * 部门列表Excel导出
-     * @param ids 筛选列id
-     * @param response HttpServletResponse
-     */
-    void exportDeptExcel(List<String> ids, HttpServletResponse response);
 }

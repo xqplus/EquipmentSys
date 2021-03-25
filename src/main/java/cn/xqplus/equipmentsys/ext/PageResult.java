@@ -9,7 +9,7 @@ import java.util.List;
 
 
 /**
- * 返回数据封装类
+ * 分页数据封装类
  * @author chenq
  */
 public class PageResult<T> implements Serializable {

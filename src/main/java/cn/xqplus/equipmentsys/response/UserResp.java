@@ -7,7 +7,7 @@ import lombok.Setter;
 import java.io.Serializable;
 
 /**
- * Excel 导入导出实体类
+ * 用户信息 Excel 导入导出实体类
  */
 
 @Getter

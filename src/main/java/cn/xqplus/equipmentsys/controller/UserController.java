@@ -84,6 +84,6 @@ public class UserController extends BaseController {
     @GetMapping(value = "/exportExcel", name = "用户列表Excel导出")
     public void exportExcel(@RequestParam(value = "ids") String[] ids, HttpServletResponse response) {
         // 导出
-        userService.exportUserExcel(Arrays.asList(ids), response);
+        userService.exportExcel(Arrays.asList(ids), response);
     }
 }

@@ -37,9 +37,12 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
     function toolProcess() {
         // 头工具栏事件(新增)
         table.on('toolbar(equipmentData)', function(obj){
-            let checkStatus = table.checkStatus(obj.config.id); // 选中行信息
+            let checkStatus = table.checkStatus(obj.config.id) // 选中行信息
+                ,data = checkStatus.data
+                ,ids = [];
+
             switch(obj.event){
-                case 'add':
+                case 'add': // 新增
                     addFormDialog(layer, form, $,
                         '新增设备信息', equipContent,
                         null,
@@ -49,16 +52,47 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                         getUrl('/equipmentSys/equipment/add'),
                         'addEquip');
                     break;
-                case 'getCheckLength':
-                    var data = checkStatus.data;
-                    layer.msg('选中了：'+ data.length + ' 个');
+
+                case 'deleteBatch': // 批量删除
+                    $.each(data, function (i, val) {
+                        ids.push(val.id);
+                    });
+                    if (ids.length === 0) {
+                        layer.msg("请至少选择一行");
+                        return;
+                    }
+                    layer.confirm('确定删除选中的设备信息？', {icon: 3, title: '提示'}, function (index) {
+                        myAjax('POST'
+                            , getUrl('/equipmentSys/equipment/deleteBatch')
+                            , {ids: ids}, '批量删除成功'
+                            , '只能删除报废的设备，请重试'
+                            , true
+                        );
+                        //layer.close(index);
+                    });
                     break;
-                case 'isAll':
-                    layer.msg(checkStatus.isAll ? '全选': '未全选');
+
+                case 'exportExcel': // Excel 导出
+                    $.each(data, function (i, val) {
+                        ids.push(val.id);
+                    });
+                    if (ids.length === 0) {
+                        // 在没有选定数据行的时候导出全部数据
+                        exportExcel("是否导出全部设备信息？",
+                            getUrl("/equipmentSys/equipment/exportExcel"), ids);
+                        return;
+                    }
+                    // 选定行时导出选中的数据
+                    exportExcel("是否导出选中设备信息？",
+                        getUrl("/equipmentSys/equipment/exportExcel"), ids);
                     break;
-                //自定义头工具栏右侧图标 - 提示
-                case 'LAYTABLE_TIPS':
-                    layer.alert('这是工具栏右侧自定义的一个图标按钮');
+
+                case 'importBatch': // 批量导入
+
+                    break;
+
+                case 'exportTemplate': // 批量导入模板下载
+
                     break;
             }
         });
@@ -81,15 +115,14 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                         type: 'POST',
                         url: getUrl('/equipmentSys/equipment/delete'),
                         data: {id: data.id},
-                        success: function (data) {
+                        success: function (res) {
                             layer.close(index);
-                            if (data === 'success') {
+                            if (res.message === 'success') {
                                 layer.msg('删除成功', {icon: 1});
                                 setTimeout(function () {
                                     window.location.reload();
                                 }, 1500);
-                            }
-                            if (data === 'error') {
+                            } else {
                                 layer.msg('删除失败，请重试或联系管理员！', {icon: 2});
                             }
                         }

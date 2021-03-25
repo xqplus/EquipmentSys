@@ -5,23 +5,30 @@ import cn.xqplus.equipmentsys.mapper.IEquipmentMapper;
 import cn.xqplus.equipmentsys.model.Equipment;
 import cn.xqplus.equipmentsys.model.Repair;
 import cn.xqplus.equipmentsys.model.User;
+import cn.xqplus.equipmentsys.response.EquipmentResp;
+import cn.xqplus.equipmentsys.response.UserResp;
+import cn.xqplus.equipmentsys.service.ICommonService;
 import cn.xqplus.equipmentsys.service.IEquipmentService;
 import cn.xqplus.equipmentsys.service.IRepairService;
 import cn.xqplus.equipmentsys.service.IUserService;
+import cn.xqplus.equipmentsys.utils.ExcelUtils;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 
 /**
@@ -29,7 +36,8 @@ import java.util.function.Function;
  */
 
 @Service
-public class EquipmentServiceImpl implements IEquipmentService {
+public class EquipmentServiceImpl extends ServiceImpl<IEquipmentMapper, Equipment>
+        implements IEquipmentService {
 
     @Autowired
     private IEquipmentMapper equipmentMapper;
@@ -139,48 +147,40 @@ public class EquipmentServiceImpl implements IEquipmentService {
         return equipmentMapper.selectById(id);
     }
 
-    @Override
-    public boolean saveBatch(Collection<Equipment> entityList, int batchSize) {
-        return false;
-    }
 
     @Override
-    public boolean saveOrUpdateBatch(Collection<Equipment> entityList, int batchSize) {
-        return false;
+    public void exportExcel(List<String> ids, HttpServletResponse response) {
+        List<EquipmentForm> equipmentFormList = equipmentMapper
+                .getList(new Page<>(), new EquipmentForm())
+                .getRecords();
+        List<EquipmentResp> exportList = new ArrayList<>();
+
+        for (EquipmentForm ef : equipmentFormList) {
+            // 时间转换
+            ef.setCreateDate(new SimpleDateFormat("yyyy-MM-dd").format(ef.getCreateTime()));
+            ef.setUpdateDate(new SimpleDateFormat("yyyy-MM-dd").format(ef.getUpdateTime()));
+            // 设备状态转换
+            if (ef.getEquipState() == 0) {
+                ef.setEquipStateName("使用中");
+            }
+            if (ef.getEquipState() == 1) {
+                ef.setEquipStateName("维修中");
+            }
+            if (ef.getEquipState() == 2) {
+                ef.setEquipStateName("已报废");
+            }
+
+            EquipmentResp equipmentResp = new EquipmentResp();
+            try {
+                BeanUtils.copyProperties(equipmentResp, ef);
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                e.printStackTrace();
+            }
+            exportList.add(equipmentResp);
+        }
+        ExcelUtils.exportExcel(exportList, "设备管理系统设备信息", "设备信息",
+                EquipmentResp.class, "设备管理系统设备信息-" + new SimpleDateFormat("yyyy-MM-dd")
+                        .format(new Date().getTime()), response);
     }
 
-    @Override
-    public boolean updateBatchById(Collection<Equipment> entityList, int batchSize) {
-        return false;
-    }
-
-    @Override
-    public boolean saveOrUpdate(Equipment entity) {
-        return false;
-    }
-
-    @Override
-    public Equipment getOne(Wrapper<Equipment> queryWrapper, boolean throwEx) {
-        return null;
-    }
-
-    @Override
-    public Map<String, Object> getMap(Wrapper<Equipment> queryWrapper) {
-        return null;
-    }
-
-    @Override
-    public <V> V getObj(Wrapper<Equipment> queryWrapper, Function<? super Object, V> mapper) {
-        return null;
-    }
-
-    @Override
-    public BaseMapper<Equipment> getBaseMapper() {
-        return null;
-    }
-
-    @Override
-    public Class<Equipment> getEntityClass() {
-        return null;
-    }
 }

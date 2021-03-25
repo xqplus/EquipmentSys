@@ -1,5 +1,6 @@
 package cn.xqplus.equipmentsys.controller;
 
+import cn.xqplus.equipmentsys.ext.CommonConst;
 import cn.xqplus.equipmentsys.ext.JsonResult;
 import cn.xqplus.equipmentsys.ext.PageResult;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -19,9 +20,9 @@ public abstract class BaseController {
      */
     public static String stringResult(boolean flag) {
         if (flag) {
-            return "success";
+            return CommonConst.SUCCESS;
         } else {
-            return "error";
+            return CommonConst.ERROR;
         }
     }
 

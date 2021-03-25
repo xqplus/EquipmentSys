@@ -1,5 +1,6 @@
 package cn.xqplus.equipmentsys.controller;
 
+import cn.xqplus.equipmentsys.ext.JsonResult;
 import cn.xqplus.equipmentsys.ext.PageResult;
 import cn.xqplus.equipmentsys.form.EquipmentForm;
 import cn.xqplus.equipmentsys.model.Equipment;
@@ -10,7 +11,10 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * 设备信息管理 接口
@@ -61,6 +65,25 @@ public class EquipmentController extends BaseController {
     @GetMapping(value = "/reportRepair", name = "设备报修")
     public String reportRepair(@NotNull int id) {
         return equipmentService.reportRepair(id);
+    }
+
+    @PostMapping(value = "deleteBatch", name = "批量删除")
+    public String deleteBatch(@NotNull @RequestParam(value = "ids[]") String[] ids) {
+        // 批量删除设备信息 前提是该批量设备是已报废状态
+        List<Equipment> equipmentList = equipmentService.listByIds(Arrays.asList(ids));
+        for (Equipment e : equipmentList) {
+            if (e.getEquipState() != 2) {
+                return stringResult(false);
+            }
+        }
+        // 根据 ids 批量删除
+        boolean removeByIds = equipmentService.removeByIds(Arrays.asList(ids));
+        return stringResult(removeByIds);
+    }
+
+    @GetMapping(value = "exportExcel", name = "Excel 导出")
+    public void exportExcel(@RequestParam(value = "ids") String[] ids, HttpServletResponse response) {
+        equipmentService.exportExcel(Arrays.asList(ids), response);
     }
 
 }

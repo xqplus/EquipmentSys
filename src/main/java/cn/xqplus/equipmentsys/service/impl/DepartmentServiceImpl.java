@@ -6,7 +6,9 @@ import cn.xqplus.equipmentsys.form.UserForm;
 import cn.xqplus.equipmentsys.model.Department;
 import cn.xqplus.equipmentsys.model.RoleDept;
 import cn.xqplus.equipmentsys.model.User;
+import cn.xqplus.equipmentsys.response.DepartmentResp;
 import cn.xqplus.equipmentsys.response.UserResp;
+import cn.xqplus.equipmentsys.service.ICommonService;
 import cn.xqplus.equipmentsys.service.IDepartmentService;
 import cn.xqplus.equipmentsys.service.IRoleDeptService;
 import cn.xqplus.equipmentsys.service.IUserService;
@@ -181,27 +183,35 @@ public class DepartmentServiceImpl implements IDepartmentService {
         return (deleteById >= 1);
     }
 
+    /**
+     * Excel 导出
+     * @param ids id 集合
+     * @param response HttpServletResponse
+     */
     @Override
-    public void exportDeptExcel(List<String> ids, HttpServletResponse response) {
-//        List<UserForm> list = userMapper.getList(null, new UserForm(), ids);
-//        List<UserResp> exportList = new ArrayList<>();
-//
-//        for (UserForm u : list) {
-//            // 设置 yyyy-MM-dd 日期格式
-//            u.setCreateDate(new SimpleDateFormat("yyyy-MM-dd").format(u.getCreateTime()));
-//            u.setUpdateDate(new SimpleDateFormat("yyyy-MM-dd").format(u.getUpdateTime()));
-//
-//            UserResp userResp = new UserResp();
-//            try {
-//                BeanUtils.copyProperties(userResp, u);
-//            } catch (IllegalAccessException | InvocationTargetException e) {
-//                e.printStackTrace();
-//            }
-//            exportList.add(userResp);
-//        }
-//        ExcelUtils.exportExcel(exportList, "设备管理系统用户信息", "用户信息",
-//                UserResp.class, "设备管理系统用户信息-" + new SimpleDateFormat("yyyy-MM-dd")
-//                        .format(new Date().getTime()), response);
+    public void exportExcel(List<String> ids, HttpServletResponse response) {
+
+        List<DepartmentForm> departmentFormList = departmentMapper
+                .getList(new Page<>(), new DepartmentForm())
+                .getRecords();
+        List<DepartmentResp> exportList = new ArrayList<>();
+
+        for (DepartmentForm df : departmentFormList) {
+            // 时间转换
+            df.setCreateDate(new SimpleDateFormat("yyyy-MM-dd").format(df.getCreateTime()));
+            df.setUpdateDate(new SimpleDateFormat("yyyy-MM-dd").format(df.getUpdateTime()));
+
+            DepartmentResp resp = new DepartmentResp();
+            try {
+                BeanUtils.copyProperties(resp, df);
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                e.printStackTrace();
+            }
+            exportList.add(resp);
+        }
+        ExcelUtils.exportExcel(exportList, "设备管理系统部门信息", "部门信息",
+                DepartmentResp.class, "设备管理系统部门信息-" + new SimpleDateFormat("yyyy-MM-dd")
+                        .format(new Date().getTime()), response);
     }
 
     @Override

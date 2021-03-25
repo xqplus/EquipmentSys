@@ -10,7 +10,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * 设备信息 服务层
  */
 
-public interface IEquipmentService extends IService<Equipment> {
+public interface IEquipmentService extends IService<Equipment>, ICommonService {
 
     /**
      * @param page 分页辅助

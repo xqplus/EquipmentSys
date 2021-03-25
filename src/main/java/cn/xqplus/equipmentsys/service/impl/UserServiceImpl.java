@@ -5,6 +5,8 @@ import cn.xqplus.equipmentsys.form.UserForm;
 import cn.xqplus.equipmentsys.model.PasswordVisible;
 import cn.xqplus.equipmentsys.model.User;
 import cn.xqplus.equipmentsys.response.UserResp;
+import cn.xqplus.equipmentsys.service.ICommonService;
+import cn.xqplus.equipmentsys.service.IDepartmentService;
 import cn.xqplus.equipmentsys.service.IPasswordVisibleService;
 import cn.xqplus.equipmentsys.service.IUserService;
 import cn.xqplus.equipmentsys.utils.ExcelUtils;
@@ -21,6 +23,7 @@ import com.baomidou.mybatisplus.extension.conditions.update.UpdateChainWrapper;
 import com.baomidou.mybatisplus.extension.kotlin.KtQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.kotlin.KtUpdateChainWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -40,7 +43,8 @@ import java.util.function.Function;
  */
 
 @Service
-public class UserServiceImpl implements IUserService {
+public class UserServiceImpl extends ServiceImpl<IUserMapper, User>
+        implements IUserService {
 
     @Autowired
     private IUserMapper userMapper;
@@ -173,8 +177,13 @@ public class UserServiceImpl implements IUserService {
         return (update >= 1);
     }
 
+    /**
+     * Excel 导出
+     * @param ids id 集合
+     * @param response HttpServletResponse
+     */
     @Override
-    public void exportUserExcel(List<String> ids, HttpServletResponse response) {
+    public void exportExcel(List<String> ids, HttpServletResponse response) {
         // 获取用户列表集合
         List<UserForm> userForms = userMapper.getList(new Page<>(), new UserForm(), ids).getRecords();
         List<UserResp> exportList = new ArrayList<>();
@@ -195,7 +204,6 @@ public class UserServiceImpl implements IUserService {
         ExcelUtils.exportExcel(exportList, "设备管理系统用户信息", "用户信息",
                 UserResp.class, "设备管理系统用户信息-" + new SimpleDateFormat("yyyy-MM-dd")
                         .format(new Date().getTime()), response);
-
     }
 
     @Override
@@ -358,10 +366,6 @@ public class UserServiceImpl implements IUserService {
         return null;
     }
 
-    @Override
-    public BaseMapper<User> getBaseMapper() {
-        return null;
-    }
 
     @Override
     public Class<User> getEntityClass() {

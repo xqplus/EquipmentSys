@@ -16,7 +16,7 @@ import java.util.List;
  * 用户信息 服务层
  */
 
-public interface IUserService extends IService<User> {
+public interface IUserService extends IService<User>, ICommonService {
 
 
     /**
@@ -60,10 +60,4 @@ public interface IUserService extends IService<User> {
      */
     boolean deleteBatch(List<String> idList);
 
-    /**
-     * Excel 导出
-     * @param ids id 集合
-     * @param response HttpServletResponse
-     */
-    void exportUserExcel(List<String> ids, HttpServletResponse response);
 }

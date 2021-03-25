@@ -12,7 +12,7 @@ import java.io.IOException;
 
 /**
  * logout 成功后的处理（日志...）
- * 定义了成功后的转发地址，security配置中不需要再配置
+ * 定义了成功后的转发地址 {@code httpServletResponse.sendRedirect("/jweb");} ，security配置中不需要再配置
  */
 
 public class SecurityLogoutSuccessHandler implements LogoutSuccessHandler {

@@ -5,6 +5,11 @@ import lombok.Setter;
 
 import java.io.Serializable;
 
+
+/**
+ * JSON数据封装类
+ * @author chenq
+ */
 public class JsonResult<T> implements Serializable {
 
     private static final long serialVersionUID = -469360326755607592L;

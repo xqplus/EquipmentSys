@@ -64,9 +64,9 @@ public class DepartmentController extends BaseController {
 //        return stringResult(deleteBatch);
 //    }
 
-//    @GetMapping(value = "/exportExcel", name = "部门列表Excel导出")
-//    public void exportExcel(@RequestParam(value = "ids") String[] ids, HttpServletResponse response) {
-//        userService.exportExcel(Arrays.asList(ids), response);
-//    }
+    @GetMapping(value = "/exportExcel", name = "部门列表Excel导出")
+    public void exportExcel(@RequestParam(value = "ids") String[] ids, HttpServletResponse response) {
+        departmentService.exportExcel(Arrays.asList(ids), response);
+    }
 
 }
