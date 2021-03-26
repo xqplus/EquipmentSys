@@ -67,7 +67,7 @@ public class UserController extends BaseController {
 
     @GetMapping(value = "/userCheck", name = "用户是否存在（用户名是否可用）")
     public String userCheck(String userName) {
-        List<User> userList = userService.findByWrapper(new QueryWrapper<User>()
+        List<User> userList = userService.list(new QueryWrapper<User>()
                 .eq("user_name", userName));
         if (CollectionUtils.isNotEmpty(userList)) {
             return "exists";

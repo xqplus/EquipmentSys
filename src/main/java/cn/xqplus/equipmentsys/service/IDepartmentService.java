@@ -58,6 +58,6 @@ public interface IDepartmentService extends IService<Department>, ICommonService
      * @param id
      * @return
      */
-    String deleteById(int id);
+    String deleteDeptById(int id);
 
 }

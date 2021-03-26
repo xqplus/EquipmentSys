@@ -18,6 +18,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,8 @@ import java.util.function.Function;
  */
 
 @Service
-public class RepairServiceImpl implements IRepairService {
+public class RepairServiceImpl extends ServiceImpl<IRepairMapper, Repair>
+        implements IRepairService {
 
     @Autowired
     private IRepairMapper repairMapper;
@@ -156,79 +158,6 @@ public class RepairServiceImpl implements IRepairService {
             // 流程不正确 （使用中 -报修-> 维修中 -报废-> 已报废）
             return "noProcess";
         }
-    }
-
-    @Override
-    public Repair getById(Serializable id) {
-        return repairMapper.selectById(id);
-    }
-
-    @Override
-    public boolean save(Repair entity) {
-        int insert = repairMapper.insert(entity);
-        return (insert >= 1);
-    }
-
-    @Override
-    public boolean update(Repair entity, Wrapper<Repair> updateWrapper) {
-        int update = repairMapper.update(entity, updateWrapper);
-        return (update >= 1);
-    }
-
-    @Override
-    public boolean removeById(Serializable id) {
-        int deleteById = repairMapper.deleteById(id);
-        return (deleteById >= 1);
-    }
-
-    @Override
-    public int count(Wrapper<Repair> queryWrapper) {
-        return repairMapper.selectCount(queryWrapper);
-    }
-
-    @Override
-    public boolean saveBatch(Collection<Repair> entityList, int batchSize) {
-        return false;
-    }
-
-    @Override
-    public boolean saveOrUpdateBatch(Collection<Repair> entityList, int batchSize) {
-        return false;
-    }
-
-    @Override
-    public boolean updateBatchById(Collection<Repair> entityList, int batchSize) {
-        return false;
-    }
-
-    @Override
-    public boolean saveOrUpdate(Repair entity) {
-        return false;
-    }
-
-    @Override
-    public Repair getOne(Wrapper<Repair> queryWrapper, boolean throwEx) {
-        return null;
-    }
-
-    @Override
-    public Map<String, Object> getMap(Wrapper<Repair> queryWrapper) {
-        return null;
-    }
-
-    @Override
-    public <V> V getObj(Wrapper<Repair> queryWrapper, Function<? super Object, V> mapper) {
-        return null;
-    }
-
-    @Override
-    public BaseMapper<Repair> getBaseMapper() {
-        return null;
-    }
-
-    @Override
-    public Class<Repair> getEntityClass() {
-        return null;
     }
 
     @Override

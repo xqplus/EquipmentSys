@@ -13,6 +13,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +29,8 @@ import java.util.function.Function;
  */
 
 @Service
-public class EquipmentTypeServiceImpl implements IEquipmentTypeService {
+public class EquipmentTypeServiceImpl extends ServiceImpl<IEquipmentTypeMapper, EquipmentType>
+        implements IEquipmentTypeService {
 
     @Autowired
     private IEquipmentTypeMapper equipmentTypeMapper;
@@ -111,71 +113,4 @@ public class EquipmentTypeServiceImpl implements IEquipmentTypeService {
         }
     }
 
-    @Override
-    public boolean save(EquipmentType entity) {
-        int insert = equipmentTypeMapper.insert(entity);
-        return (insert >= 1);
-    }
-
-    @Override
-    public boolean update(EquipmentType entity, Wrapper<EquipmentType> updateWrapper) {
-        int update = equipmentTypeMapper.update(entity, updateWrapper);
-        return (update >= 1);
-    }
-
-    @Override
-    public boolean removeById(Serializable id) {
-        int i = equipmentTypeMapper.deleteById(id);
-        return (i >= 1);
-    }
-
-    @Override
-    public EquipmentType getById(Serializable id) {
-        return equipmentTypeMapper.selectById(id);
-    }
-
-    @Override
-    public boolean saveBatch(Collection<EquipmentType> entityList, int batchSize) {
-        return false;
-    }
-
-    @Override
-    public boolean saveOrUpdateBatch(Collection<EquipmentType> entityList, int batchSize) {
-        return false;
-    }
-
-    @Override
-    public boolean updateBatchById(Collection<EquipmentType> entityList, int batchSize) {
-        return false;
-    }
-
-    @Override
-    public boolean saveOrUpdate(EquipmentType entity) {
-        return false;
-    }
-
-    @Override
-    public EquipmentType getOne(Wrapper<EquipmentType> queryWrapper, boolean throwEx) {
-        return null;
-    }
-
-    @Override
-    public Map<String, Object> getMap(Wrapper<EquipmentType> queryWrapper) {
-        return null;
-    }
-
-    @Override
-    public <V> V getObj(Wrapper<EquipmentType> queryWrapper, Function<? super Object, V> mapper) {
-        return null;
-    }
-
-    @Override
-    public BaseMapper<EquipmentType> getBaseMapper() {
-        return null;
-    }
-
-    @Override
-    public Class<EquipmentType> getEntityClass() {
-        return null;
-    }
 }

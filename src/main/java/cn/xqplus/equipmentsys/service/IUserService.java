@@ -27,12 +27,6 @@ public interface IUserService extends IService<User>, ICommonService {
     boolean saveUser(User user);
 
     /**
-     * 根据wrapper条件查询用户
-     * @return User
-     */
-    List<User> findByWrapper(QueryWrapper<User> wrapper);
-
-    /**
      * 修改用户
      * @param user 用户信息
      * @return boolean

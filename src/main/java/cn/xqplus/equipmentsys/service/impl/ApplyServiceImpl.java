@@ -13,6 +13,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +30,8 @@ import java.util.function.Function;
  */
 
 @Service
-public class ApplyServiceImpl implements IApplyService {
+public class ApplyServiceImpl extends ServiceImpl<IApplyMapper, Apply>
+        implements IApplyService {
 
     @Autowired
     private IApplyMapper applyMapper;
@@ -125,76 +127,4 @@ public class ApplyServiceImpl implements IApplyService {
         return (updateApply >= 1);
     }
 
-    @Override
-    public boolean save(Apply entity) {
-        int insert = applyMapper.insert(entity);
-        return (insert >= 1);
-    }
-
-    @Override
-    public boolean removeById(Serializable id) {
-        int deleteById = applyMapper.deleteById(id);
-        return (deleteById >= 1);
-    }
-
-    @Override
-    public boolean update(Apply entity, Wrapper<Apply> updateWrapper) {
-        int update = applyMapper.update(entity, updateWrapper);
-        return (update >= 1);
-    }
-
-    @Override
-    public int count(Wrapper<Apply> queryWrapper) {
-        return applyMapper.selectCount(queryWrapper);
-    }
-
-    @Override
-    public Apply getOne(Wrapper<Apply> queryWrapper) {
-        return applyMapper.selectOne(queryWrapper);
-    }
-
-    @Override
-    public boolean saveBatch(Collection<Apply> entityList, int batchSize) {
-        return false;
-    }
-
-    @Override
-    public boolean saveOrUpdateBatch(Collection<Apply> entityList, int batchSize) {
-        return false;
-    }
-
-    @Override
-    public boolean updateBatchById(Collection<Apply> entityList, int batchSize) {
-        return false;
-    }
-
-    @Override
-    public boolean saveOrUpdate(Apply entity) {
-        return false;
-    }
-
-    @Override
-    public Apply getOne(Wrapper<Apply> queryWrapper, boolean throwEx) {
-        return null;
-    }
-
-    @Override
-    public Map<String, Object> getMap(Wrapper<Apply> queryWrapper) {
-        return null;
-    }
-
-    @Override
-    public <V> V getObj(Wrapper<Apply> queryWrapper, Function<? super Object, V> mapper) {
-        return null;
-    }
-
-    @Override
-    public BaseMapper<Apply> getBaseMapper() {
-        return null;
-    }
-
-    @Override
-    public Class<Apply> getEntityClass() {
-        return null;
-    }
 }

@@ -128,11 +128,15 @@
         <table class="layui-hide" id="equipmentData" lay-filter="equipmentData"></table>
         <script type="text/html" id="topToolBar">
             <div class="layui-btn-container">
-                <button class="layui-btn layui-btn-sm layui-btn-warm" sec:authorize="hasRole('ADMIN')" lay-event="add">新增设备</button>
-                <button class="layui-btn layui-btn-sm layui-btn-warm" sec:authorize="hasRole('ADMIN')" lay-event="deleteBatch">批量删除</button>
+                <button class="layui-btn layui-btn-sm layui-btn-warm" sec:authorize="hasRole('ADMIN')"
+                        lay-event="add">新增设备</button>
+                <button class="layui-btn layui-btn-sm layui-btn-warm" sec:authorize="hasRole('ADMIN')"
+                        lay-event="deleteBatch">批量删除</button>
                 <button class="layui-btn layui-btn-sm layui-btn-warm" lay-event="exportExcel">导出列表Excel</button>
-                <button class="layui-btn layui-btn-sm layui-btn-warm" sec:authorize="hasRole('ADMIN')" lay-event="importBatch">批量导入</button>
-                <button class="layui-btn layui-btn-sm layui-btn-warm" sec:authorize="hasRole('ADMIN')" lay-event="exportTemplate">批量导入模板下载</button>
+                <button class="layui-btn layui-btn-sm layui-btn-warm layui-disabled" sec:authorize="hasRole('ADMIN')"
+                        lay-event="importBatch">批量导入</button>
+                <button class="layui-btn layui-btn-sm layui-btn-warm layui-disabled" sec:authorize="hasRole('ADMIN')"
+                        lay-event="exportTemplate">批量导入模板下载</button>
             </div>
         </script>
         <script type="text/html" id="rightToolBar">

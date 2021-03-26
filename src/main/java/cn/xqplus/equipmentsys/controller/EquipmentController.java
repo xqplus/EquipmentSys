@@ -1,6 +1,5 @@
 package cn.xqplus.equipmentsys.controller;
 
-import cn.xqplus.equipmentsys.ext.JsonResult;
 import cn.xqplus.equipmentsys.ext.PageResult;
 import cn.xqplus.equipmentsys.form.EquipmentForm;
 import cn.xqplus.equipmentsys.model.Equipment;

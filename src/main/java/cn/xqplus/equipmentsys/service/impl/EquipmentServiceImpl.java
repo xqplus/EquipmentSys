@@ -120,35 +120,6 @@ public class EquipmentServiceImpl extends ServiceImpl<IEquipmentMapper, Equipmen
     }
 
     @Override
-    public boolean save(Equipment entity) {
-        int insert = equipmentMapper.insert(entity);
-        return (insert >= 1);
-    }
-
-    @Override
-    public boolean update(Equipment entity, Wrapper<Equipment> updateWrapper) {
-        int update = equipmentMapper.update(entity, updateWrapper);
-        return (update >= 1);
-    }
-
-    @Override
-    public boolean removeById(Serializable id) {
-        int i = equipmentMapper.deleteById(id);
-        return (i >= 1);
-    }
-
-    @Override
-    public Equipment getOne(Wrapper<Equipment> queryWrapper) {
-        return equipmentMapper.selectOne(queryWrapper);
-    }
-
-    @Override
-    public Equipment getById(Serializable id) {
-        return equipmentMapper.selectById(id);
-    }
-
-
-    @Override
     public void exportExcel(List<String> ids, HttpServletResponse response) {
         List<EquipmentForm> equipmentFormList = equipmentMapper
                 .getList(new Page<>(), new EquipmentForm())

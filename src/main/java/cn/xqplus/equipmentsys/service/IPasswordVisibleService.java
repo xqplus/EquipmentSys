@@ -10,11 +10,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 
 public interface IPasswordVisibleService extends IService<PasswordVisible> {
 
-    /**
-     * 修改可见密码
-     * @param passwordVisible
-     * @return boolean
-     */
-    boolean updatePasswordVisible(PasswordVisible passwordVisible, UpdateWrapper<PasswordVisible> wrapper);
+    //
 
 }

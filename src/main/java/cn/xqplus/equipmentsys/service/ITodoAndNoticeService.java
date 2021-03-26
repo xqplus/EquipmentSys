@@ -8,7 +8,7 @@ import java.util.List;
  * 待办、通知、公告信息服务层
  */
 
-public interface ITodoAndNoticeService extends IService<Object> {
+public interface ITodoAndNoticeService {
 
     /**
      * 获取待办信息数据

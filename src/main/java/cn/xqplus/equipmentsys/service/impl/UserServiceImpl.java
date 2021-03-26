@@ -53,62 +53,6 @@ public class UserServiceImpl extends ServiceImpl<IUserMapper, User>
     private IPasswordVisibleService passwordVisibleService;
 
     @Override
-    public boolean save(User entity) {
-        return false;
-    }
-
-    @Override
-    @Transactional // 事务
-    public boolean saveUser(User user) {
-        // 将没有加密的密码存在t_password_visible中
-        PasswordVisible passwordVisible = new PasswordVisible();
-        passwordVisible.setUserName(user.getUserName());
-        passwordVisible.setPasswordVisible(user.getPassword());
-        // 保存可见密码信息
-        boolean passwordVisibleSave = passwordVisibleService.save(passwordVisible);
-        // 查询部门人员根据用户编号排序
-        List<User> userListDesc = userMapper.selectList(new QueryWrapper<User>()
-                .eq("dept_number", user.getDeptNumber())
-                .orderByDesc("user_number"));
-        if (CollectionUtils.isNotEmpty(userListDesc)) {
-            // 设置用户编号
-            String userNum = String.valueOf(Integer.parseInt(userListDesc.get(0).getUserNumber()) + 1);
-            user.setUserNumber(userNum);
-        } else {
-            user.setUserNumber(user.getDeptNumber() + "001");
-        }
-        // 密码加密 加密方式为BCryptPasswordEncoder
-        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-        int userSave = userMapper.insert(user);
-
-        return (passwordVisibleSave && (userSave >= 1));
-    }
-
-    @Override
-    public List<User> findByWrapper(QueryWrapper<User> wrapper) {
-        return userMapper.selectList(wrapper);
-    }
-
-    @Override
-    @Transactional
-    public boolean updateUser(User user) {
-        // 查询原用户名
-        User priUser = userMapper.selectOne(new QueryWrapper<User>()
-                .eq("password", user.getPassword()));
-        PasswordVisible passwordVisible = new PasswordVisible();
-        passwordVisible.setUserName(user.getUserName());
-        // 更新密码可见信息（用户名）
-        boolean passwordVisibleUpdate = passwordVisibleService.updatePasswordVisible(passwordVisible, new UpdateWrapper<PasswordVisible>()
-                .eq("user_name", priUser.getUserName()));
-
-        // 更新用户表信息
-        int updateUser = userMapper.update(user, new UpdateWrapper<User>()
-                .eq("password", user.getPassword()));
-
-        return (passwordVisibleUpdate && (updateUser >= 1));
-    }
-
-    @Override
     public IPage<UserForm> selectPage(Page<UserForm> page, UserForm wrapper) {
         IPage<UserForm> iPage = userMapper.getList(page, wrapper, null);
         if (CollectionUtils.isNotEmpty(iPage.getRecords())) {
@@ -124,17 +68,68 @@ public class UserServiceImpl extends ServiceImpl<IUserMapper, User>
     }
 
     @Override
+    @Transactional
+    public boolean saveUser(User user) {
+
+        // 将没有加密的密码存在t_password_visible中
+        PasswordVisible passwordVisible = new PasswordVisible();
+        passwordVisible.setUserName(user.getUserName());
+        passwordVisible.setPasswordVisible(user.getPassword());
+
+        // 保存可见密码信息
+        boolean passwordVisibleSave = passwordVisibleService.save(passwordVisible);
+
+        // 查询部门人员根据用户编号排序
+        List<User> userListDesc = userMapper.selectList(new QueryWrapper<User>()
+                .eq("dept_number", user.getDeptNumber())
+                .orderByDesc("user_number"));
+        if (CollectionUtils.isNotEmpty(userListDesc)) {
+
+            // 设置用户编号
+            String userNum = String.valueOf(Integer.parseInt(userListDesc.get(0).getUserNumber()) + 1);
+            user.setUserNumber(userNum);
+        } else {
+            user.setUserNumber(user.getDeptNumber() + "001");
+        }
+        // 密码加密 加密方式为BCryptPasswordEncoder
+        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+        int userSave = userMapper.insert(user);
+
+        return (passwordVisibleSave && (userSave >= 1));
+    }
+
+    @Override
+    @Transactional
+    public boolean updateUser(User user) {
+
+        // 查询原用户名
+        User priUser = userMapper.selectOne(new QueryWrapper<User>()
+                .eq("password", user.getPassword()));
+        PasswordVisible passwordVisible = new PasswordVisible();
+        passwordVisible.setUserName(user.getUserName());
+
+        // 更新密码可见信息（用户名）
+        boolean passwordVisibleUpdate = passwordVisibleService.update(passwordVisible, new UpdateWrapper<PasswordVisible>()
+                .eq("user_name", priUser.getUserName()));
+
+        // 更新用户表信息
+        int updateUser = userMapper.update(user, new UpdateWrapper<User>()
+                .eq("password", user.getPassword()));
+
+        return (passwordVisibleUpdate && (updateUser >= 1));
+    }
+
+
+
+    @Override
     public User getCurrentUserInfo() {
+
         org.springframework.security.core.userdetails.User currentUser =
                 (org.springframework.security.core.userdetails.User)
                         SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return userMapper.selectOne(new QueryWrapper<User>()
                 .eq("user_name", currentUser.getUsername()));
-    }
 
-    @Override
-    public User getOne(Wrapper<User> queryWrapper) {
-        return userMapper.selectOne(queryWrapper);
     }
 
     @Override
@@ -153,10 +148,12 @@ public class UserServiceImpl extends ServiceImpl<IUserMapper, User>
     @Override
     @Transactional
     public boolean deleteBatch(List<String> idList) throws RuntimeException {
+
         // 批量删除密码可见信息
         List<User> users = userMapper.selectBatchIds(idList);
         List<String> nameList = new ArrayList<>();
         List<String> pwdIdList = new ArrayList<>();
+
         for (User u : users) {
             nameList.add(u.getUserName());
         }
@@ -166,22 +163,12 @@ public class UserServiceImpl extends ServiceImpl<IUserMapper, User>
             pwdIdList.add(String.valueOf(p.getId()));
         }
         passwordVisibleService.removeByIds(pwdIdList);
+
         // 批量删除用户信息
         int deleteBatchIds = userMapper.deleteBatchIds(idList);
         return (deleteBatchIds >= 1);
     }
 
-    @Override
-    public boolean update(User entity, Wrapper<User> updateWrapper) {
-        int update = userMapper.update(entity, updateWrapper);
-        return (update >= 1);
-    }
-
-    /**
-     * Excel 导出
-     * @param ids id 集合
-     * @param response HttpServletResponse
-     */
     @Override
     public void exportExcel(List<String> ids, HttpServletResponse response) {
         // 获取用户列表集合
@@ -206,204 +193,4 @@ public class UserServiceImpl extends ServiceImpl<IUserMapper, User>
                         .format(new Date().getTime()), response);
     }
 
-    @Override
-    public boolean saveBatch(Collection<User> entityList) {
-        return false;
-    }
-
-    @Override
-    public boolean saveBatch(Collection<User> entityList, int batchSize) {
-        return false;
-    }
-
-    @Override
-    public boolean saveOrUpdateBatch(Collection<User> entityList) {
-        return false;
-    }
-
-    @Override
-    public boolean saveOrUpdateBatch(Collection<User> entityList, int batchSize) {
-        return false;
-    }
-
-    @Override
-    public boolean removeByMap(Map<String, Object> columnMap) {
-        return false;
-    }
-
-    @Override
-    public boolean remove(Wrapper<User> queryWrapper) {
-        return false;
-    }
-
-    @Override
-    public boolean removeByIds(Collection<? extends Serializable> idList) {
-        return false;
-    }
-
-    @Override
-    public boolean updateById(User entity) {
-        return false;
-    }
-
-    @Override
-    public boolean update(Wrapper<User> updateWrapper) {
-        return false;
-    }
-
-    @Override
-    public boolean updateBatchById(Collection<User> entityList) {
-        return false;
-    }
-
-    @Override
-    public boolean updateBatchById(Collection<User> entityList, int batchSize) {
-        return false;
-    }
-
-    @Override
-    public boolean saveOrUpdate(User entity) {
-        return false;
-    }
-
-    @Override
-    public User getById(Serializable id) {
-        return null;
-    }
-
-    @Override
-    public List<User> listByIds(Collection<? extends Serializable> idList) {
-        return null;
-    }
-
-    @Override
-    public List<User> listByMap(Map<String, Object> columnMap) {
-        return null;
-    }
-
-    @Override
-    public User getOne(Wrapper<User> queryWrapper, boolean throwEx) {
-        return null;
-    }
-
-    @Override
-    public Map<String, Object> getMap(Wrapper<User> queryWrapper) {
-        return null;
-    }
-
-    @Override
-    public <V> V getObj(Wrapper<User> queryWrapper, Function<? super Object, V> mapper) {
-        return null;
-    }
-
-    @Override
-    public int count() {
-        return 0;
-    }
-
-    @Override
-    public int count(Wrapper<User> queryWrapper) {
-        return 0;
-    }
-
-    @Override
-    public List<User> list(Wrapper<User> queryWrapper) {
-        return null;
-    }
-
-    @Override
-    public List<User> list() {
-        return null;
-    }
-
-    @Override
-    public <E extends IPage<User>> E page(E page, Wrapper<User> queryWrapper) {
-        return null;
-    }
-
-    @Override
-    public <E extends IPage<User>> E page(E page) {
-        return null;
-    }
-
-    @Override
-    public List<Map<String, Object>> listMaps(Wrapper<User> queryWrapper) {
-        return null;
-    }
-
-    @Override
-    public List<Map<String, Object>> listMaps() {
-        return null;
-    }
-
-    @Override
-    public List<Object> listObjs() {
-        return null;
-    }
-
-    @Override
-    public <V> List<V> listObjs(Function<? super Object, V> mapper) {
-        return null;
-    }
-
-    @Override
-    public List<Object> listObjs(Wrapper<User> queryWrapper) {
-        return null;
-    }
-
-    @Override
-    public <V> List<V> listObjs(Wrapper<User> queryWrapper, Function<? super Object, V> mapper) {
-        return null;
-    }
-
-    @Override
-    public <E extends IPage<Map<String, Object>>> E pageMaps(E page, Wrapper<User> queryWrapper) {
-        return null;
-    }
-
-    @Override
-    public <E extends IPage<Map<String, Object>>> E pageMaps(E page) {
-        return null;
-    }
-
-
-    @Override
-    public Class<User> getEntityClass() {
-        return null;
-    }
-
-    @Override
-    public QueryChainWrapper<User> query() {
-        return null;
-    }
-
-    @Override
-    public LambdaQueryChainWrapper<User> lambdaQuery() {
-        return null;
-    }
-
-    @Override
-    public KtQueryChainWrapper<User> ktQuery() {
-        return null;
-    }
-
-    @Override
-    public KtUpdateChainWrapper<User> ktUpdate() {
-        return null;
-    }
-
-    @Override
-    public UpdateChainWrapper<User> update() {
-        return null;
-    }
-
-    @Override
-    public LambdaUpdateChainWrapper<User> lambdaUpdate() {
-        return null;
-    }
-
-    @Override
-    public boolean saveOrUpdate(User entity, Wrapper<User> updateWrapper) {
-        return false;
-    }
 }

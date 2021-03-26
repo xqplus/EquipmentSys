@@ -10,6 +10,7 @@ import cn.xqplus.equipmentsys.service.IUserService;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -77,48 +78,4 @@ public class TodoAndNoticeServiceImpl implements ITodoAndNoticeService {
         }
     }
 
-    @Override
-    public boolean saveBatch(Collection<Object> entityList, int batchSize) {
-        return false;
-    }
-
-    @Override
-    public boolean saveOrUpdateBatch(Collection<Object> entityList, int batchSize) {
-        return false;
-    }
-
-    @Override
-    public boolean updateBatchById(Collection<Object> entityList, int batchSize) {
-        return false;
-    }
-
-    @Override
-    public boolean saveOrUpdate(Object entity) {
-        return false;
-    }
-
-    @Override
-    public Object getOne(Wrapper<Object> queryWrapper, boolean throwEx) {
-        return null;
-    }
-
-    @Override
-    public Map<String, Object> getMap(Wrapper<Object> queryWrapper) {
-        return null;
-    }
-
-    @Override
-    public <V> V getObj(Wrapper<Object> queryWrapper, Function<? super Object, V> mapper) {
-        return null;
-    }
-
-    @Override
-    public BaseMapper<Object> getBaseMapper() {
-        return null;
-    }
-
-    @Override
-    public Class<Object> getEntityClass() {
-        return null;
-    }
 }

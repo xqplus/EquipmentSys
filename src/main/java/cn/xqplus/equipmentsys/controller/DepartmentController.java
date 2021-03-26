@@ -54,7 +54,7 @@ public class DepartmentController extends BaseController {
 
     @PostMapping(value = "/delete", name = "删除部门信息")
     public String delete(@NotNull int id) {
-        return departmentService.deleteById(id);
+        return departmentService.deleteDeptById(id);
     }
 
 //    @PostMapping(value = "/deleteBatch", name = "批量删除部门信息")

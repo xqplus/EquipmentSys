@@ -7,9 +7,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
- * Json格式数据返回基类
+ * API数据返回基类
  */
-
 @ResponseBody
 public abstract class BaseController {
 

@@ -32,7 +32,7 @@ public class RegistryController {
     @PostMapping(value = "/resetPasswordCheck", name = "重置密码校验")
     public String resetPasswordCheck(User user) {
         // 校验用户信息是否一致,校验传过来信息是否是该用户名的信息
-        List<User> users = userService.findByWrapper(new QueryWrapper<User>()
+        List<User> users = userService.list(new QueryWrapper<User>()
                 .eq("user_name", user.getUserName())
                 .eq("true_name", user.getTrueName())
                 .eq("role_type", user.getRoleType())
@@ -43,7 +43,7 @@ public class RegistryController {
             PasswordVisible passwordVisible = new PasswordVisible();
             passwordVisible.setPasswordVisible(user.getPassword());
             // 更新密码可见信息
-            passwordVisibleService.updatePasswordVisible(passwordVisible, new UpdateWrapper<PasswordVisible>()
+            passwordVisibleService.update(passwordVisible, new UpdateWrapper<PasswordVisible>()
                     .eq("user_name", user.getUserName()));
             // SQL优化
             User updateUser = new User();
