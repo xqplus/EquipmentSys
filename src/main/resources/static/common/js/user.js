@@ -8,13 +8,14 @@ layui.use(['element', 'table', 'laydate', 'form', 'jquery'], function(){
         ,table = layui.table // 数据表格
         ,laydate = layui.laydate // 日期选择
         ,form = layui.form // 表单
-        ,$ = layui.jquery;
+        ,$ = layui.jquery
+        ,tableName = 'userData';
     // 表单search监听
     form.on('submit(search)', function (data) {
         timeConverter(data);
         delete data.field.createTime; // 传入后台可能出现类型不匹配问题，删除
-        // search 后端数据渲染 TODO 表格数据重载
-        tableRender(data.field);
+        // 表格数据重载
+        tableReload(tableName, data.field);
         toolProcess();
     });
     // 日期选择组件渲染
@@ -31,9 +32,6 @@ layui.use(['element', 'table', 'laydate', 'form', 'jquery'], function(){
     setBadge();
     // 鼠标悬停显示用户详情
     userInfoShow($);
-    // $('#reset').click(function () {
-    //    table.search('userData');
-    // });
 
     /**
      * 数据表格渲染
@@ -102,14 +100,16 @@ layui.use(['element', 'table', 'laydate', 'form', 'jquery'], function(){
 
             switch(obj.event){
                 case 'add': // 用户新增
-                    addFormDialog(layer, form, $,
-                        '新增用户信息', addUserContent,
-                        '#userName',
-                        '#pwd',
-                        '#pwd2',
-                        'roleType',
-                        getUrl('/equipmentSys/user/add'),
-                        'addUser');
+                    addFormDialog(
+                        '新增用户信息'
+                        , addUserContent
+                        , '#userName'
+                        , '#pwd'
+                        , '#pwd2'
+                        , 'roleType'
+                        , getUrl('/equipmentSys/user/add')
+                        , 'addUser'
+                    );
                     break;
 
                 case 'deleteBatch': // 批量删除
@@ -123,11 +123,14 @@ layui.use(['element', 'table', 'laydate', 'form', 'jquery'], function(){
                     layer.confirm('确定删除选中的用户信息？', {icon: 3, title: '提示'}, function (index) {
                         myAjax('POST'
                             , getUrl('/equipmentSys/user/deleteBatch')
-                            , {ids: ids}, '批量删除成功'
+                            , {ids: ids}
+                            , '批量删除成功'
                             , '批量删除失败，请重试或联系管理员'
                             , true
+                            , tableName
+                            , {}
                         );
-                        //layer.close(index);
+                        layer.close(index);
                     });
                     break;
 
@@ -154,33 +157,46 @@ layui.use(['element', 'table', 'laydate', 'form', 'jquery'], function(){
         table.on('tool(userData)', function(obj){
             let data = obj.data; // 操作行数据
             if (obj.event === 'edit') {
-                addFormDialog(layer, form, $,
-                    '编辑用户信息', editUserContent,
-                    '#userName',
-                    '#pwd',
-                    '#pwd2',
-                    'roleType',
-                    getUrl('/equipmentSys/user/update'),
-                    'editUser', data);
+                addFormDialog(
+                    '编辑用户信息'
+                    , editUserContent
+                    , '#userName'
+                    , '#pwd'
+                    , '#pwd2'
+                    , 'roleType'
+                    , getUrl('/equipmentSys/user/update')
+                    , 'editUser'
+                    , data
+                );
             } else if (obj.event === 'del') {
-                layer.confirm('确定删除用户 '+data.userName+' 的信息？', function (index) {
-                    $.ajax({
-                        async: false,
-                        type: 'POST',
-                        url: getUrl('/equipmentSys/user/delete'),
-                        data: {id: data.id},
-                        success: function (data) {
-                            layer.close(index);
-                            if (data === 'success') {
-                                layer.msg('删除成功', {icon: 1});
-                                setTimeout(function () {
-                                    window.location.reload();}, 1500);
-                            }
-                            if (data === 'error') {
-                                layer.msg('删除失败，请重试或联系管理员！', {icon: 2});
-                            }
-                        }
-                    });
+                layer.confirm('确定删除用户 '+data.userName+' 的信息？', {icon: 3, title: '提示'}, function (index) {
+                    myAjax('POST'
+                        , getUrl('/equipmentSys/user/delete')
+                        , {id: data.id}
+                        , "删除成功"
+                        , "删除失败，请重试或联系管理员"
+                        , true
+                        , tableName
+                        , {}
+                    );
+                    layer.close(index);
+                    // $.ajax({
+                    //     async: false,
+                    //     type: 'POST',
+                    //     url: getUrl('/equipmentSys/user/delete'),
+                    //     data: {id: data.id},
+                    //     success: function (data) {
+                    //         layer.close(index);
+                    //         if (data === 'success') {
+                    //             layer.msg('删除成功', {icon: 1});
+                    //             setTimeout(function () {
+                    //                 window.location.reload();}, 1500);
+                    //         }
+                    //         if (data === 'error') {
+                    //             layer.msg('删除失败，请重试或联系管理员！', {icon: 2});
+                    //         }
+                    //     }
+                    // });
                 });
             }
         });

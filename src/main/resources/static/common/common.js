@@ -34,7 +34,7 @@ let addUserContent = '<form class="layui-form" id="dialogAddForm">\n' +
     '        <label class="layui-form-label input-required">职位：</label>\n' +
     '        <div class="layui-input-block">\n' +
     '            <select name="roleType" id="roleType" lay-verify="required" lay-filter="roleType">\n' +
-    '                <!-- TODO 管理员，维修员注册需申请流程 可暂存redis -->\n' +
+    '                <!-- 管理员，维修员注册需申请流程 可暂存redis -->\n' +
     '                <option value=""></option>\n' +
     '                <option value="0">管理员</option>\n' +
     '                <option value="1">普通用户</option>\n' +
@@ -88,7 +88,7 @@ let editUserContent = '<form class="layui-form" id="dialogAddForm">\n' +
     '        <label class="layui-form-label input-required">职位：</label>\n' +
     '        <div class="layui-input-block">\n' +
     '            <select name="roleType" id="roleType" lay-verify="required" lay-filter="roleType">\n' +
-    '                <!-- TODO 管理员，维修员注册需申请流程 可暂存redis -->\n' +
+    '                <!-- 管理员，维修员注册需申请流程 可暂存redis -->\n' +
     '                <option value=""></option>\n' +
     '                <option value="0">管理员</option>\n' +
     '                <option value="1">普通用户</option>\n' +
@@ -286,12 +286,11 @@ let applyContent = '<form class="layui-form" id="dialogAddForm">\n' +
 
 /**
  * 两次密码输入校验
- * @param $ layui jquery组件
  * @param pwdId1 input id1
  * @param pwdId2 input id2
  * @description 参数有先后顺序，再次输入密码框为后
  */
-function passwordsInputCheck($, pwdId1, pwdId2) {
+function passwordsInputCheck(pwdId1, pwdId2) {
     $(pwdId2).blur(function () {
         let pwd2 = $(pwdId2).val();
         let pwd = $(pwdId1).val();
@@ -305,12 +304,11 @@ function passwordsInputCheck($, pwdId1, pwdId2) {
 
 /**
  * 验证用户是否存在
- * @param $ layui jquery组件
  * @param selector 选择器
  * @param boolean 为true时做用户名可用验证，false做用户存在验证，分别用于注册和密码找回
  * @description success回调函数返回exists即存在，返回noExists即不存在
  */
-function userExistsCheck($, selector, boolean) {
+function userExistsCheck(selector, boolean) {
     $(selector).blur(function () {
         $.ajax({
             async: false,
@@ -323,14 +321,17 @@ function userExistsCheck($, selector, boolean) {
                 if (boolean) {
                     if (data === "exists") {
                         $(selector).val("");
-                        layer.msg('用户名不可用', {icon: 2});
+                        layer.msg('用户名不可用', {icon: 0, time: 1000});
                     }
                 } else {
                     if (data === "noExists") {
                         $(selector).val("");
-                        layer.msg('该用户不存在', {icon: 2});
+                        layer.msg('该用户不存在', {icon: 0, time: 1000});
                     }
                 }
+            },
+            error: function (e) {
+                layer.msg('系统错误，请联系管理员', {icon: 2, time: 1000});
             }
         });
     });
@@ -338,19 +339,18 @@ function userExistsCheck($, selector, boolean) {
 
 /**
  * 监听表单提交事件（ajax）
- * @param form layui form组件
  * @param filter 监听的事件
  * @param url ajax请求接口
  * @param boolean 为true时做注册回调，为false时做密码找回回调
  * @description 前提条件是经过表单验证，有密码输入框，id必须分别为pwd,pwd2，ajax请求类型限定POST
  */
-function formSubmitEvent(form, filter, url, boolean) {
-    form.on('submit('+filter+')', function (data) {
-        // 解决用户最后输入密码即提交无法校验两次密码输入的问题 TODO 复用
+function formSubmitEvent(filter, url, boolean) {
+    layui.form.on('submit('+filter+')', function (data) {
+        // 解决用户最后输入密码即提交无法校验两次密码输入的问题
         let pwd2 = data.field.password2;
         let pwd = data.field.password;
         if (pwd2 !== pwd) {
-            layer.msg('两次输入的密码不一致', {icon: 0});
+            layer.msg('两次输入的密码不一致', {icon: 0, time: 1000});
             $("#pwd").val("");
             $("#pwd2").val("");
         }
@@ -364,25 +364,28 @@ function formSubmitEvent(form, filter, url, boolean) {
             success: function (data) {
                 if (boolean) { // 注册
                     if (data === "success") {
-                        layer.alert('注册成功，请返回登录~', {icon: 1});
-                        $("#userName").val("");
+                        layer.msg('注册成功，请返回登录', {icon: 1, time: 1000});
+                        $('#userName').val("");
                     }
                     if (data === "error") {
-                        layer.alert('注册失败，请重新注册或联系管理员！', {icon: 5});
+                        layer.msg('注册失败，请重新注册或联系管理员', {icon: 5, time: 1000});
                     }
                 } else { // 密码找回
                     if (data === "success") {
-                        layer.alert('找回成功，请妥善保管您的密码~', {icon: 1});
+                        layer.msg('找回成功，请妥善保管您的密码', {icon: 1, time: 1000});
+                        $('#userName').val("");
                     }
                     if (data === "noMatch") {
-                        layer.alert('用户信息不匹配，请重试', {icon: 0});
-                        form.reset();
+                        layer.msg('用户信息不匹配，请重试', {icon: 5, time: 1000});
+
                     }
                     if (data === "error") {
-                        $(form).val("");
-                        layer.alert('找回失败，请重试或联系管理员！', {icon: 5});
+                        layer.msg('找回失败，请重试或联系管理员！', {icon: 5, time: 1000});
                     }
                 }
+            },
+            error: function () {
+                layer.msg('系统错误，请联系管理员', {icon: 2, time: 1000});
             }
         });
     });
@@ -390,13 +393,11 @@ function formSubmitEvent(form, filter, url, boolean) {
 
 /**
  * 角色部门级联（ajax）
- * @param form layui form组件
- * @param $ layui jquery组件
  * @param filter 监听的事件
  * @description 前提经过表单校验，部门id必须为deptNumber，ajax请求类型限定GET
  */
-function roleDeptCascade(form, $, filter) {
-    form.on('select('+filter+')', function (data) {
+function roleDeptCascade(filter) {
+    layui.form.on('select('+filter+')', function (data) {
         // 这行代码解决重复选择角色导致部门option重复append的问题，思路为每次选择角色将部门置空
         $('#deptNumber').html("<option value=\"\"></option>");
         if (data.value !== '') {
@@ -414,6 +415,9 @@ function roleDeptCascade(form, $, filter) {
                         $("#deptNumber").append(new Option(item.deptName, item.deptNumber));// 下拉菜单里添加元素
                     });
                     layui.form.render("select"); // layui select渲染
+                },
+                error: function () {
+                    layer.msg('系统错误，请联系管理员', {icon: 2, time: 1000});
                 }
             });
         }
@@ -422,9 +426,6 @@ function roleDeptCascade(form, $, filter) {
 
 /**
  * 定制化layui新增信息弹窗
- * @param layer layui layer组件
- * @param form layui form组件
- * @param $ layui jquery组件
  * @param title 弹窗标题
  * @param content 弹窗内容
  * @param userNameSelector 用户名校验selector
@@ -436,7 +437,7 @@ function roleDeptCascade(form, $, filter) {
  * @param data 数据参数
  * @description 提交事件名必须为'dialogSave'，取消id必须为'cancel'
  */
-function addFormDialog(layer, form, $, title, content, userNameSelector, pwdId1, pwdId2, filter, saveUrl, type ,data) {
+function addFormDialog(title, content, userNameSelector, pwdId1, pwdId2, filter, saveUrl, type ,data) {
     let currIndex = layer.open({
         title: [title, 'font-size: 18px; text-align: center; margin:10px 0;']
         // content不能使用$('#dialogAddForm')的形式，会出现关闭弹窗再打开不显示的问题
@@ -446,7 +447,7 @@ function addFormDialog(layer, form, $, title, content, userNameSelector, pwdId1,
         ,btn: false // 关闭弹窗自带按钮
         ,btnAlign: 'c' // 按钮居中对齐
         ,success: function (index) {
-            form.render('select'); // 渲染select 否则显示异常
+            layui.form.render('select'); // 渲染select 否则显示异常
             // 用户编辑时将行数据显示在表单上
             if (type === 'editUser') {
                 $('#userName').val(data.userName);
@@ -455,15 +456,15 @@ function addFormDialog(layer, form, $, title, content, userNameSelector, pwdId1,
             }
             if (type === 'addUser' || type === 'editUser') {
                 // 输入用户名校验
-                userExistsCheck($, userNameSelector, true);
+                userExistsCheck(userNameSelector, true);
                 // 输入密码校验
-                passwordsInputCheck($, pwdId1, pwdId2);
+                passwordsInputCheck(pwdId1, pwdId2);
                 // 角色部门级联
-                roleDeptCascade(form, $, filter);
+                roleDeptCascade(filter);
             }
             if (type === 'addDept' || type === 'editDept') {
                 // 部门信息级联
-                getNextDeptByRole(form, $);
+                getNextDeptByRole();
             }
             if (type === 'editDept') {
                 // 编辑时提交用于数据检索
@@ -494,16 +495,16 @@ function addFormDialog(layer, form, $, title, content, userNameSelector, pwdId1,
             }
             if (type === 'addApply' || type === 'editApply') {
                 $('#userName').val(getCurrentUserInfo().userName);
-                roleDeptCascade(form, $, filter);
+                roleDeptCascade(filter);
                 // 获取最新的申请编号
-                getNextApplyNumberByDept(form, $);
+                getNextApplyNumberByDept();
             }
             if (type === 'editApply') {
                 $('#applyNumber').val(data.applyNumber);
                 $('#applyReason').val(data.applyReason);
             }
             // 弹窗成功后监听表单dialogSave提交
-            form.on('submit(dialogSave)', function (data) {
+            layui.form.on('submit(dialogSave)', function (data) {
                 // TODO 未填写必填项不应该发送请求和关闭弹窗,此处不可用 msg冲突
                 $.ajax({
                     async: false,
@@ -514,15 +515,13 @@ function addFormDialog(layer, form, $, title, content, userNameSelector, pwdId1,
                         layer.close(currIndex);
                         if (data === 'success') {
                             if (type.substring(0,3) === 'add') {
-                                layer.msg('新增成功',{icon: 1});
+                                layer.msg('新增成功', {icon: 1, time: 1000});
                             }
                             if (type.substring(0,4) === 'edit') {
-                                layer.msg('更新成功',{icon: 1});
+                                layer.msg('更新成功', {icon: 1, time: 1000});
                             }
-                            // 新增成功后要刷新页面,延迟1.5s刷新保证提示显示
-                            setTimeout(function () {
-                                window.location.reload();
-                            }, 1500);
+                            // 重载
+                            tableReload('userData', {});
                         }
                         // 部门编辑变更时部门下有用户的情况
                         if (data === 'existsUser') {
@@ -534,27 +533,26 @@ function addFormDialog(layer, form, $, title, content, userNameSelector, pwdId1,
                         }
                         if (data === 'error') {
                             if (type.substring(0,3) === 'add') {
-                                layer.msg('新增失败，请重试或联系管理员',{icon: 2, anim: 6});
+                                layer.msg('新增失败，请重试或联系管理员',{icon: 5, time: 1000});
                             }
                             if (type.substring(0,4) === 'edit') {
-                                layer.msg('更新失败，请重试或联系管理员',{icon: 2, anim: 6});
+                                layer.msg('更新失败，请重试或联系管理员',{icon: 5, time: 1000});
                             }
                         }
                         if (data === 'applySuccess') {
-                            layer.msg('申请成功', {icon: 1});
-                            setTimeout(function () {
-                                window.location.reload();
-                            }, 1500);
+                            layer.msg('申请成功', {icon: 1, time: 1000});
+                            // 重载
+                            tableReload('userData', {});
                         }
                         if (data === 'conflict') {
-                            layer.msg('您已经是该职位，不可申请', {icon: 0});
+                            layer.msg('您已经是该职位，不可重复申请', {icon: 0, time: 1000});
                         }
                         if (data === 'applyError') {
-                            layer.msg('申请失败，请重试或联系管理员', {icon: 2, anim: 6});
+                            layer.msg('申请失败，请重试或联系管理员', {icon: 5, time: 1000});
                         }
                     },
-                    error: function (e) {
-                        layer.msg("系统错误，请联系管理员", {icon: 2});
+                    error: function () {
+                        layer.msg("系统错误，请联系管理员", {icon: 2, time: 1000});
                     }
                 });
             });
@@ -568,12 +566,10 @@ function addFormDialog(layer, form, $, title, content, userNameSelector, pwdId1,
 
 /**
  * 通过类型获取下一个部门信息，专用于部门模块
- * @param form layui form组件
- * @param $ layui jquery组件
  * @description 为避免与部门模块角色部门级联冲突，监听事件名限定为roleTypeDept
  */
-function getNextDeptByRole(form, $) {
-    form.on('select(roleTypeDept)', function (data) {
+function getNextDeptByRole() {
+    layui.form.on('select(roleTypeDept)', function (data) {
         if (data.value !== '') {
             $.ajax({
                 async: false, // 异步提交
@@ -587,6 +583,9 @@ function getNextDeptByRole(form, $) {
                     // 将对应信息显示在表单上
                     $('#deptNumber').val(data.deptNumber);
                     $('#deptName').val(data.deptName);
+                },
+                error: function () {
+                    layer.msg('系统错误，请联系管理员', {icon: 2, time: 1000});
                 }
             });
         }
@@ -608,6 +607,9 @@ function getNextEquipNumber() {
         success: function (data) {
             // 将对应信息显示在表单上
             $('#equipNumber').val(data.equipNumber);
+        },
+        error: function () {
+            layer.msg('系统错误，请联系管理员', {icon: 2, time: 1000});
         }
     });
 }
@@ -643,6 +645,9 @@ function getNextEquipTypeNumber() {
         success: function (data) {
             // 将对应信息显示在表单上
             $('#equipTypeNumber').val(data.equipTypeNumber);
+        },
+        error: function () {
+            layer.msg('系统错误，请联系管理员', {icon: 2, time: 1000});
         }
     });
 }
@@ -663,6 +668,9 @@ function getNextApplyNumberByDept(form, $) {
                 // dataType: 'json',
                 success: function (data) {
                     $('#applyNumber').val(data);
+                },
+                error: function () {
+                    layer.msg('系统错误，请联系管理员', {icon: 2, time: 1000});
                 }
             });
         }
@@ -681,6 +689,9 @@ function getCurrentUserInfo() {
         url: getUrl('/equipmentSys/user/getCurrentUserInfo'),
         success: function (data) {
             currentUserInfo = data;
+        },
+        error: function () {
+            layer.msg('系统错误，请联系管理员', {icon: 2, time: 1000});
         }
     });
     return currentUserInfo;
@@ -691,19 +702,22 @@ function getCurrentUserInfo() {
  */
 function setBadge() {
     $.ajax({
-       async: false,
-       type: 'GET',
-       url: getUrl('/equipmentSys/todoAndNotice/todo'),
-       data: {},
-       success: function (data) {
-           if (data[0] > 0) { // 申请数
-               $('#applyNum').addClass("layui-badge").html(data[0]);
-           }
-           if (data[1] > 0) { // 维修数
-               $('#repairDot').addClass("layui-badge-dot");
-               $('#repairNum').addClass("layui-badge").html(data[1]);
-           }
-       }
+        async: false,
+        type: 'GET',
+        url: getUrl('/equipmentSys/todoAndNotice/todo'),
+        data: {},
+        success: function (data) {
+            if (data[0] > 0) { // 申请数
+                $('#applyNum').addClass("layui-badge").html(data[0]);
+            }
+            if (data[1] > 0) { // 维修数
+                $('#repairDot').addClass("layui-badge-dot");
+                $('#repairNum').addClass("layui-badge").html(data[1]);
+            }
+        },
+        error: function () {
+            layer.msg('系统错误，请联系管理员', {icon: 2, time: 1000});
+        }
     });
 }
 
@@ -730,8 +744,10 @@ function userInfoShow($) {
  * @param successInfo 成功回调信息，根据场景不同自定义 'success message'
  * @param errorInfo 失败回调信息，根据场景不同自定义 'error message'
  * @param isReload 回调成功后是否需要刷新 true | false
+ * @param tableId 刷新的表格id
+ * @param where 刷新表格传参
  */
-function myAjax(type, url, requestData, successInfo, errorInfo, isReload) {
+function myAjax(type, url, requestData, successInfo, errorInfo, isReload, tableId, where) {
     $.ajax({
         async: false,
         type: type,
@@ -741,13 +757,15 @@ function myAjax(type, url, requestData, successInfo, errorInfo, isReload) {
             if (data === 'success') {
                 layer.msg(successInfo, {icon: 1});
                 if (isReload) {
-                    setTimeout(function () {
-                        window.location.reload();}, 1500);
+                    tableReload(tableId, where);
                 }
             }
             if (data === 'error') {
                 layer.msg(errorInfo, {icon: 2});
             }
+        },
+        error: function () {
+            layer.msg('系统错误，请联系管理员', {icon: 2, time: 1000});
         }
     });
 }
@@ -789,7 +807,27 @@ function parseRes(res, _this) {
     };
 }
 
+/**
+ * url封装
+ * @param url
+ * @returns {string}
+ */
 function getUrl(url) {
     if (url.substring(0, 5) === '/jweb') return ;
     return '/jweb' + url;
+}
+
+/**
+ * 定制化表格重载
+ * @param tableId 表格id 如'id'
+ * @param where 传参
+ */
+function tableReload(tableId, where) {
+    layui.table.reload(tableId, {
+        method: 'GET'
+        ,where: where
+        ,page: {
+            curr: 1
+        }
+    });
 }

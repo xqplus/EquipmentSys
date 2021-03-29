@@ -170,6 +170,7 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                                 layer.msg('删除成功', {icon: 1});
                                 setTimeout(function () {
                                     window.location.reload();
+                                    window.parent.location.reload()
                                 }, 1500);
                             }
                             if (data === 'error') {
