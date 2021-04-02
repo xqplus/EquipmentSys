@@ -8,7 +8,6 @@ layui.use(['element', 'table', 'laydate', 'form', 'jquery'], function(){
         ,table = layui.table // 数据表格
         ,laydate = layui.laydate // 日期选择
         ,form = layui.form // 表单
-        ,$ = layui.jquery
         ,tableName = 'userData';
     // 表单search监听
     form.on('submit(search)', function (data) {
@@ -16,7 +15,6 @@ layui.use(['element', 'table', 'laydate', 'form', 'jquery'], function(){
         delete data.field.createTime; // 传入后台可能出现类型不匹配问题，删除
         // 表格数据重载
         tableReload(tableName, data.field);
-        toolProcess();
     });
     // 日期选择组件渲染
     laydate.render({
@@ -26,34 +24,31 @@ layui.use(['element', 'table', 'laydate', 'form', 'jquery'], function(){
         trigger: 'click'
     })
     // 后端数据渲染
-    tableRender({});
+    tableRender();
     toolProcess();
     // 设置待处理事件 徽章
     setBadge();
     // 鼠标悬停显示用户详情
-    userInfoShow($);
+    userInfoShow();
 
     /**
      * 数据表格渲染
-     * @param where 参数
      */
-    function tableRender(where) {
+    function tableRender() {
         // 后端数据渲染
         table.render({
-            elem: '#userData'
-            ,id: 'userData'
+            elem: '#'+ tableName
             ,url: getUrl('/equipmentSys/user/page')
             ,method: 'GET'
             ,async: false
-            ,where: where
             ,height: 370
-            ,parseData: function(res){ //res 即为原始返回的数据
+            ,parseData: function (res) {
                 let result;
                 if(this.page.curr){
                     result = res.data.slice(this.limit * (this.page.curr - 1), this.limit * this.page.curr);
                 }
                 else{
-                    result = res.data.slice(0, this.limit);
+                    result=res.data.slice(0, this.limit);
                 }
                 return {
                     "code": res.code,
@@ -93,14 +88,14 @@ layui.use(['element', 'table', 'laydate', 'form', 'jquery'], function(){
      */
     function toolProcess() {
         // 头工具栏事件
-        table.on('toolbar(userData)', function(obj){
+        table.on('toolbar('+ tableName +')', function(obj){
             let checkStatus = table.checkStatus(obj.config.id)
                 ,data = checkStatus.data // 选中行信息
                 ,ids = [];
 
             switch(obj.event){
                 case 'add': // 用户新增
-                    addFormDialog(
+                    formDialog(
                         '新增用户信息'
                         , addUserContent
                         , '#userName'
@@ -109,6 +104,8 @@ layui.use(['element', 'table', 'laydate', 'form', 'jquery'], function(){
                         , 'roleType'
                         , getUrl('/equipmentSys/user/add')
                         , 'addUser'
+                        , null
+                        , tableName
                     );
                     break;
 
@@ -154,10 +151,10 @@ layui.use(['element', 'table', 'laydate', 'form', 'jquery'], function(){
             }
         });
         // 监听行工具事件
-        table.on('tool(userData)', function(obj){
+        table.on('tool('+ tableName +')', function(obj){
             let data = obj.data; // 操作行数据
             if (obj.event === 'edit') {
-                addFormDialog(
+                formDialog(
                     '编辑用户信息'
                     , editUserContent
                     , '#userName'
@@ -167,9 +164,10 @@ layui.use(['element', 'table', 'laydate', 'form', 'jquery'], function(){
                     , getUrl('/equipmentSys/user/update')
                     , 'editUser'
                     , data
+                    , tableName
                 );
             } else if (obj.event === 'del') {
-                layer.confirm('确定删除用户 '+data.userName+' 的信息？', {icon: 3, title: '提示'}, function (index) {
+                layer.confirm('确定删除用户 '+data.userName+' ？', {icon: 3, title: '提示'}, function (index) {
                     myAjax('POST'
                         , getUrl('/equipmentSys/user/delete')
                         , {id: data.id}
@@ -180,23 +178,6 @@ layui.use(['element', 'table', 'laydate', 'form', 'jquery'], function(){
                         , {}
                     );
                     layer.close(index);
-                    // $.ajax({
-                    //     async: false,
-                    //     type: 'POST',
-                    //     url: getUrl('/equipmentSys/user/delete'),
-                    //     data: {id: data.id},
-                    //     success: function (data) {
-                    //         layer.close(index);
-                    //         if (data === 'success') {
-                    //             layer.msg('删除成功', {icon: 1});
-                    //             setTimeout(function () {
-                    //                 window.location.reload();}, 1500);
-                    //         }
-                    //         if (data === 'error') {
-                    //             layer.msg('删除失败，请重试或联系管理员！', {icon: 2});
-                    //         }
-                    //     }
-                    // });
                 });
             }
         });

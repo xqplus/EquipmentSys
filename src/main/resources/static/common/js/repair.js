@@ -7,15 +7,15 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
         form = layui.form, // 表单相关
         table = layui.table, // 数据表格相关
         laydate = layui.laydate, // 日期选择框
-        $ = layui.jquery; // jquery
+        tableName = 'repairData';
+
     // 表单search监听
     form.on('submit(search)', function (data) {
         // 时间转换 string -> long
         timeConverter(data);
         delete data.field.createTime; // 传入后台可能出现类型不匹配问题，删除
-        // search 后端数据渲染
-        tableRender(data.field);
-        toolProcess();
+
+        tableReload(tableName, data.field);
     });
     // 日期选择组件渲染
     laydate.render({
@@ -24,25 +24,23 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
         // eventElem: '#dateIcon',
         trigger: 'click'
     })
-    tableRender({});
+    tableRender();
     toolProcess();
     // 设置待处理事件 徽章
     setBadge();
     // 鼠标悬停显示用户详情
-    userInfoShow($);
+    userInfoShow();
 
     /**
      * 数据表格渲染
-     * @param where 查询传参
      */
-    function tableRender(where) {
+    function tableRender() {
         // 后端数据渲染
         table.render({
-            elem: '#repairData'
-            ,url:getUrl('/equipmentSys/repair/page')
+            elem: '#'+ tableName
+            ,url: getUrl('/equipmentSys/repair/page')
             ,method: 'GET'
             ,async: false
-            ,where: where // 携带参数
             ,height: 370
             ,parseData: function(res){ //res 即为原始返回的数据
                 let result;
@@ -88,59 +86,50 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
      * 头工具栏和行工具栏事件
      */
     function toolProcess() {
-        // 头工具栏事件(新增)
-        table.on('toolbar(repairData)', function(obj){
-            let checkStatus = table.checkStatus(obj.config.id); // 选中行信息
+        table.on('toolbar('+ tableName +')', function(obj){
+            let checkStatus = table.checkStatus(obj.config.id) // 选中行信息
+                ,data = checkStatus.data;
+
             switch(obj.event){
                 case 'add':
-                    addFormDialog(layer, form, $,
-                        '新增设备信息', equipContent,
-                        null,
-                        null,
-                        null,
-                        null,
-                        getUrl('/equipmentSys/equipment/add'),
-                        'addEquip');
                     break;
+
                 case 'getCheckLength':
-                    let data = checkStatus.data;
                     layer.msg('选中了：'+ data.length + ' 个');
                     break;
+
                 case 'isAll':
                     layer.msg(checkStatus.isAll ? '全选': '未全选');
                     break;
-                //自定义头工具栏右侧图标 - 提示
+
                 case 'LAYTABLE_TIPS':
                     layer.alert('这是工具栏右侧自定义的一个图标按钮');
                     break;
             }
         });
         // 监听行工具事件(维修，报废)
-        table.on('tool(repairData)', function(obj){
+        table.on('tool('+ tableName +')', function(obj){
             let data = obj.data; // 操作行数据
+
             if (obj.event === 'repair') {
-                layer.confirm('当前设备：'+data.equipTypeName+data.equipName+'，维修编号：'+data.repairNumber+'，确认维修完成？', {icon: 3, title: '提示'}, function (index) {
-                    $.ajax({
-                        async: false,
-                        type: 'GET',
-                        url: getUrl('/equipmentSys/repair/repair'), // 维修接口
-                        data: {id: data.id},
-                        success: function (data) {
-                            layer.close(index);
-                            if (data === 'success') {
-                                layer.msg('维修成功', {icon: 1});
-                                setTimeout(function () {
-                                    window.location.reload();
-                                }, 1500);
-                            }
-                            if (data === 'error') {
-                                layer.msg('维修失败，请重试或联系管理员！', {icon: 2});
-                            }
-                        }
-                    });
+                layer.confirm('当前设备：'+data.equipTypeName+data.equipName+'，维修编号：'+data.repairNumber+'，确认维修完成？'
+                    , {icon: 3, title: '提示'}, function (index) {
+                    myAjax(
+                        'GET'
+                        , getUrl('/equipmentSys/repair/repair')
+                        , {id: data.id}
+                        , '维修成功'
+                        , '维修失败，请重试或联系管理员'
+                        , true
+                        , tableName
+                        , {}
+                    );
+                    layer.close(index);
                 });
+
             } else if (obj.event === 'scrap') {
-                layer.confirm('当前设备：'+data.equipTypeName+data.equipName+'，维修编号：'+data.repairNumber+'，确认报废？', {icon: 3, title: '警告'}, function (index) {
+                layer.confirm('当前设备：'+data.equipTypeName+data.equipName+'，维修编号：'+data.repairNumber+'，确认报废？'
+                    , {icon: 3, title: '提示'}, function (index) {
                     $.ajax({
                         async: false,
                         type: 'GET',
@@ -149,17 +138,18 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                         success: function (data) {
                             layer.close(index);
                             if (data === 'success') {
-                                layer.msg('报废成功', {icon: 1});
-                                setTimeout(function () {
-                                    window.location.reload();
-                                }, 1500);
+                                layer.msg('报废成功', {icon: 1, time: 1000});
+                                tableReload(tableName, {});
                             }
                             if (data === 'noProcess') {
-                                layer.msg('抱歉，当前设备状态不能报废', {icon: 2});
+                                layer.msg('抱歉，当前设备状态不能报废', {icon: 5, time: 1000});
                             }
                             if (data === 'error') {
-                                layer.msg('报修失败，请重试或联系管理员！', {icon: 2});
+                                layer.msg('报修失败，请重试或联系管理员', {icon: 5, time: 1000});
                             }
+                        },
+                        error: function () {
+                            layer.msg('系统错误，请联系管理员', {icon: 2, time: 1000});
                         }
                     });
                 });

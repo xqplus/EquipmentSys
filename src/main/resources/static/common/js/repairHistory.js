@@ -7,25 +7,15 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
         form = layui.form, // 表单相关
         table = layui.table, // 数据表格相关
         laydate = layui.laydate, // 日期选择框
-        $ = layui.jquery; // jquery
+        tableName = 'repairHistory';
     // 表单search监听
     form.on('submit(search)', function (data) {
         // 时间转换 string -> long
         timeConverter(data);
-        if (data.field.repairTime !== '') { // 选择时间才进行操作 否则时间转换出现NaN
-            let arr = data.field.repairTime.split(' - '); // 得到时间数组
-            let startTime = new Date(arr[0]); // 转换为Date
-            let endTime = new Date(arr[1]);
-            startTime = startTime.getTime(); // 转换为时间戳
-            endTime = endTime.getTime();
-            data.field.startTime1 = startTime; // 设置提交数据的值
-            data.field.endTime1 = endTime;
-        }
         delete data.field.createTime; // 传入后台可能出现类型不匹配问题，删除
         delete data.field.repairTime;
-        // search 后端数据渲染
-        tableRender(data.field);
-        toolProcess();
+
+        tableReload(tableName, data.field);
     });
     // 日期选择组件渲染
     laydate.render({
@@ -40,25 +30,23 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
         // eventElem: '#dateIcon',
         trigger: 'click'
     });
-    tableRender({});
+    tableRender();
     toolProcess();
     // 设置待处理事件 徽章
     setBadge();
     // 鼠标悬停显示用户详情
-    userInfoShow($);
+    userInfoShow();
 
     /**
      * 数据表格渲染
-     * @param where 查询传参
      */
-    function tableRender(where) {
+    function tableRender() {
         // 后端数据渲染
         table.render({
-            elem: '#repairHistory'
+            elem: '#'+ tableName
             ,url: getUrl('/equipmentSys/repair/historyPage')
             ,method: 'GET'
             ,async: false
-            ,where: where // 携带参数
             ,height: 370
             ,parseData: function(res){ //res 即为原始返回的数据
                 let result;
@@ -107,22 +95,13 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
      */
     function toolProcess() {
         // 头工具栏事件(新增)
-        table.on('toolbar(repairHistory)', function(obj){
+        table.on('toolbar('+ tableName +')', function(obj){
             let checkStatus = table.checkStatus(obj.config.id), // 选中行信息
                 data = checkStatus.data,
                 ids = [];
 
             switch(obj.event){
-                // case 'add':
-                //     addFormDialog(layer, form, $,
-                //         '新增设备信息', equipContent,
-                //         null,
-                //         null,
-                //         null,
-                //         null,
-                //         '/equipmentSys/equipment/add',
-                //         'addEquip');
-                //     break;
+
                 case 'getCheckLength':
                     layer.msg('选中了：'+ data.length + ' 个');
                     break;
@@ -147,30 +126,25 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                     break;
             }
         });
-        // 监听行工具事件(维修，报废)
-        table.on('tool(repairHistory)', function(obj){
+        // 监听行工具事件(删除记录)
+        table.on('tool('+ tableName +')', function(obj){
             let data = obj.data; // 操作行数据
+
             if (obj.event === 'del') {
                 layer.confirm('当前维修编号：'+data.repairNumber+'，设备名称：'+data.equipName+'，维修情况：'
-                    +data.repairStateName+'，确认删除此条记录？', {icon: 3, title: '警告'}, function (index) {
-                    $.ajax({
-                        async: false,
-                        type: 'POST',
-                        url: getUrl('/equipmentSys/repair/historyDel'), // 删除记录接口
-                        data: {id: data.id},
-                        success: function (data) {
-                            layer.close(index);
-                            if (data === 'success') {
-                                layer.msg('删除成功', {icon: 1});
-                                setTimeout(function () {
-                                    window.location.reload();
-                                }, 1500);
-                            }
-                            if (data === 'error') {
-                                layer.msg('删除失败，请重试或联系管理员！', {icon: 2});
-                            }
-                        }
-                    });
+                    +data.repairStateName+'，确认删除此条记录？', {icon: 3, title: '提示'}, function (index) {
+
+                    myAjax(
+                        'POST'
+                        , getUrl('/equipmentSys/repair/historyDel')
+                        , {id: data.id}
+                        , '删除成功'
+                        , '删除失败，请重试或联系管理员'
+                        , true
+                        , tableName
+                        , {}
+                    );
+                    layer.close(index);
                 });
             }
         });

@@ -3,18 +3,18 @@
  */
 
 layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
+
     let element = layui.element, // 导航栏相关
         form = layui.form, // 表单相关
         table = layui.table, // 数据表格相关
         laydate = layui.laydate, // 日期选择框
-        $ = layui.jquery; // jquery
+        tableName = 'equipTypeData';
+
     // 表单search监听
     form.on('submit(search)', function (data) {
         timeConverter(data);
         delete data.field.createTime; // 传入后台可能出现类型不匹配问题，删除
-        // search 后端数据渲染
-        tableRender(data.field);
-        toolProcess();
+        tableReload(tableName, data.field);
     });
     // 日期选择组件渲染
     laydate.render({
@@ -23,25 +23,23 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
         // eventElem: '#dateIcon',
         trigger: 'click'
     })
-    tableRender({});
+    tableRender();
     toolProcess();
     // 设置待处理事件 徽章
     setBadge();
     // 鼠标悬停显示用户详情
-    userInfoShow($);
+    userInfoShow();
 
     /**
      * 数据表格渲染
-     * @param where 参数
      */
-    function tableRender(where) {
+    function tableRender() {
         // 后端数据渲染
         table.render({
-            elem: '#equipTypeData'
+            elem: '#'+ tableName
             ,url: getUrl('/equipmentSys/equipmentType/page')
             ,method: 'GET'
             ,async: false
-            ,where: where // 携带参数
             ,height: 370
             ,parseData: function(res){ //res 即为原始返回的数据
                 let result;
@@ -86,46 +84,58 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
      */
     function toolProcess() {
         // 头工具栏事件(新增)
-        table.on('toolbar(equipTypeData)', function(obj){
-            let checkStatus = table.checkStatus(obj.config.id); // 选中行信息
+        table.on('toolbar('+ tableName +')', function(obj){
+            let checkStatus = table.checkStatus(obj.config.id) // 选中行信息
+                ,data = checkStatus.data;
+
             switch(obj.event){
                 case 'add':
-                    addFormDialog(layer, form, $,
-                        '新增设备类型信息', equipTypeContent,
-                        null,
-                        null,
-                        null,
-                        null,
-                        getUrl('/equipmentSys/equipmentType/add'),
-                        'addEquipType');
+                    formDialog(
+                        '新增设备类型信息'
+                        , equipTypeContent
+                        , null
+                        , null
+                        , null
+                        , null
+                        , getUrl('/equipmentSys/equipmentType/add')
+                        , 'addEquipType'
+                        , null
+                        , tableName
+                    );
                     break;
+
                 case 'getCheckLength':
-                    var data = checkStatus.data;
                     layer.msg('选中了：'+ data.length + ' 个');
                     break;
+
                 case 'isAll':
                     layer.msg(checkStatus.isAll ? '全选': '未全选');
                     break;
-                //自定义头工具栏右侧图标 - 提示
+
                 case 'LAYTABLE_TIPS':
                     layer.alert('这是工具栏右侧自定义的一个图标按钮');
                     break;
             }
         });
         // 监听行工具事件(编辑，删除)
-        table.on('tool(equipTypeData)', function(obj){
+        table.on('tool('+ tableName +')', function(obj){
             let data = obj.data; // 操作行数据
             if (obj.event === 'edit') {
-                addFormDialog(layer, form, $,
-                    '编辑设备类型信息', equipTypeContent,
-                    null,
-                    null,
-                    null,
-                    null,
-                    getUrl('/equipmentSys/equipmentType/update'),
-                    'editEquipType', data);
+                formDialog(
+                    '编辑设备类型信息'
+                    , equipTypeContent
+                    , null
+                    , null
+                    , null
+                    , null
+                    , getUrl('/equipmentSys/equipmentType/update')
+                    , 'editEquipType'
+                    , data
+                    , tableName
+                );
+
             } else if (obj.event === 'del') {
-                layer.confirm('确定删除设备类型 '+data.equipTypeName+' 的信息？', function (index) {
+                layer.confirm('确定删除设备类型 '+data.equipTypeName+' ？', function (index) {
                     $.ajax({
                         async: false,
                         type: 'POST',
@@ -134,17 +144,18 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                         success: function (data) {
                             layer.close(index);
                             if (data === 'existsEquip') {
-                                layer.alert('删除失败，该类型下存在设备；如果您仍要删除，请先慎重考虑后删除该类型下设备再执行该操作！', {icon: 5});
+                                layer.alert('删除失败，该类型下存在设备；如果您仍要删除，请先慎重考虑后删除该类型下设备再执行该操作', {icon: 5});
                             }
                             if (data === 'success') {
-                                layer.msg('删除成功', {icon: 1});
-                                setTimeout(function () {
-                                    window.location.reload();
-                                }, 1500);
+                                layer.msg('删除成功', {icon: 1, time: 1000});
+                                tableReload(tableName, {});
                             }
                             if (data === 'error') {
-                                layer.msg('删除失败，请重试或联系管理员！', {icon: 2});
+                                layer.msg('删除失败，请重试或联系管理员', {icon: 5, time: 1000});
                             }
+                        },
+                        error: function () {
+                            layer.msg('系统错误，请联系管理员', {icon: 2, time: 1000});
                         }
                     });
                 });

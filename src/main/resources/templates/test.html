@@ -1,46 +1,70 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" http-equiv="X-Frame-Options" content="SAMEORIGIN">
+    <meta >
     <title>Title</title>
     <link href="https://www.layuicdn.com/layui/css/layui.css" rel="stylesheet">
     <script src="https://www.layuicdn.com/layui/layui.js"></script>
     <script src="https://lib.baomitu.com/jquery/3.5.1/jquery.js"></script>
 </head>
 <body>
-<form class="layui-form">
+<form class="layui-col-md12 layui-form" id="dialogAddForm">
     <div class="layui-form-item">
-        <label class="layui-form-label">职位</label>
+        <label class="layui-form-label input-required">用户名：</label>
         <div class="layui-input-block">
-            <select name="roleType" id="roleType" lay-verify="required">
+            <input id="userName" type="text" class="layui-input" name="userName" required lay-verify="required" placeholder="请输入用户名" autocomplete="off"/>
+            </div>
+        </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label input-required">密码：</label>
+        <div class="layui-input-block">
+            <input id="pwd" type="password" class="layui-input" name="password" required lay-verify="required" placeholder="请输入密码"/>
+            </div>
+        </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label input-required">再次输入：</label>
+        <div class="layui-input-block">
+            <input id="pwd2" type="password" class="layui-input" name="password2" required lay-verify="required" placeholder="请再次输入密码"/>
+            </div>
+        </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">真实姓名：</label>
+        <div class="layui-input-block">
+            <input class="layui-input" name="trueName" placeholder="请输入真实姓名" autocomplete="off"/>
+            </div>
+        </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label input-required">职位：</label>
+        <div class="layui-input-block">
+            <select name="roleType" id="roleType" lay-verify="required" lay-filter="roleType">
                 <option value=""></option>
                 <option value="0">管理员</option>
                 <option value="1">普通用户</option>
                 <option value="2">维修员</option>
-            </select>
+                </select>
+            </div>
         </div>
-    </div>
     <div class="layui-form-item">
-        <label class="layui-form-label">部门</label>
+        <label class="layui-form-label input-required">部门：</label>
         <div class="layui-input-block">
             <select name="deptNumber" id="deptNumber" lay-verify="required">
                 <option value=""></option>
-            </select>
+                <option value="1001">管理一部</option>
+                <option value="2001">用户一部</option>
+                <option value="3001">维修一部</option>
+                </select>
+            </div>
         </div>
-    </div>
     <div class="layui-form-item">
-        <label class="layui-form-label">ss</label>
-        <div class="layui-input-block">
-            <input id="input1"/>
+        <div class="dialog-btn-container">
+            <button id="dialogSave" type="button" class="layui-btn layui-btn-normal" lay-submit lay-filter="dialogSave">保存</button>
+            <button id="cancel" type="button" class="layui-btn layui-btn-primary">取消</button>
+            </div>
         </div>
-    </div>
-</form>
+    </form>
 
-<select id="select">
-    <option value="2">2</option>
-    <option value="1">1</option>
-</select>
-<input id="input"/>
+
 </body>
 <script>
     layui.use('form', function () {

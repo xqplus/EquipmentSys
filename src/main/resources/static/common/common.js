@@ -5,7 +5,7 @@
  * 新增用户信息弹窗内容
  * @type {string}
  */
-let addUserContent = '<form class="layui-form" id="dialogAddForm">\n' +
+let addUserContent = '<form class="layui-col-md11 layui-form" id="dialogAddForm">\n' +
     '    <div class="layui-form-item">\n' +
     '        <label class="layui-form-label input-required">用户名：</label>\n' +
     '        <div class="layui-input-block">\n' +
@@ -65,7 +65,7 @@ let addUserContent = '<form class="layui-form" id="dialogAddForm">\n' +
  * 编辑用户信息弹窗内容
  * @type {string}
  */
-let editUserContent = '<form class="layui-form" id="dialogAddForm">\n' +
+let editUserContent = '<form class="layui-col-md11 layui-form" id="dialogAddForm">\n' +
     '    <div class="layui-form-item">\n' +
     '        <label class="layui-form-label input-required">用户名：</label>\n' +
     '        <div class="layui-input-block">\n' +
@@ -119,7 +119,7 @@ let editUserContent = '<form class="layui-form" id="dialogAddForm">\n' +
  * 部门信息弹窗内容,新增和编辑都可以用
  * @type {string}
  */
-let deptContent = '<form class="layui-form" id="dialogAddForm">\n' +
+let deptContent = '<form class="layui-col-md11 layui-form" id="dialogAddForm">\n' +
     '    <input id="deptId" type="hidden" name="id" readonly>\n' +
     '    <div class="layui-form-item">\n' +
     '        <label class="layui-form-label input-required">部门类型：</label>\n' +
@@ -162,7 +162,7 @@ let deptContent = '<form class="layui-form" id="dialogAddForm">\n' +
  * 设备信息弹窗内容
  * @type {string}
  */
-let equipContent = '<form class="layui-form" id="dialogAddForm">\n' +
+let equipContent = '<form class="layui-col-md11 layui-form" id="dialogAddForm">\n' +
     '    <input id="equipId" type="hidden" name="id" readonly>\n' +
     '    <div class="layui-form-item">\n' +
     '        <label class="layui-form-label input-required">设备编号：</label>\n' +
@@ -206,7 +206,7 @@ let equipContent = '<form class="layui-form" id="dialogAddForm">\n' +
  * 设备类型信息弹窗内容
  * @type {string}
  */
-let equipTypeContent = '<form class="layui-form" id="dialogAddForm">\n' +
+let equipTypeContent = '<form class="layui-col-md11 layui-form" id="dialogAddForm">\n' +
     '    <input id="equipTypeId" type="hidden" name="id" readonly>\n' +
     '    <div class="layui-form-item">\n' +
     '        <label class="layui-form-label input-required">设备类型编号：</label>\n' +
@@ -238,7 +238,7 @@ let equipTypeContent = '<form class="layui-form" id="dialogAddForm">\n' +
  * 职位申请信息弹窗内容
  * @type {string}
  */
-let applyContent = '<form class="layui-form" id="dialogAddForm">\n' +
+let applyContent = '<form class="layui-col-md11 layui-form" id="dialogAddForm">\n' +
     '    <input id="applyId" type="hidden" name="id" readonly>\n' +
     '    <div class="layui-form-item">\n' +
     '        <label class="layui-form-label input-required">申请编号：</label>\n' +
@@ -330,7 +330,7 @@ function userExistsCheck(selector, boolean) {
                     }
                 }
             },
-            error: function (e) {
+            error: function () {
                 layer.msg('系统错误，请联系管理员', {icon: 2, time: 1000});
             }
         });
@@ -425,7 +425,7 @@ function roleDeptCascade(filter) {
 }
 
 /**
- * 定制化layui新增信息弹窗
+ * 定制化layui表单信息弹窗
  * @param title 弹窗标题
  * @param content 弹窗内容
  * @param userNameSelector 用户名校验selector
@@ -435,18 +435,20 @@ function roleDeptCascade(filter) {
  * @param saveUrl 保存事件ajax请求接口
  * @param type 弹窗类型 可选参数 'addUser','editUser','addDept','editDept','addEquip','editEquip'
  * @param data 数据参数
+ * @param tableName 刷新表格的名称
  * @description 提交事件名必须为'dialogSave'，取消id必须为'cancel'
  */
-function addFormDialog(title, content, userNameSelector, pwdId1, pwdId2, filter, saveUrl, type ,data) {
+function formDialog(title, content, userNameSelector, pwdId1, pwdId2, filter, saveUrl, type ,data, tableName) {
     let currIndex = layer.open({
-        title: [title, 'font-size: 18px; text-align: center; margin:10px 0;']
+        type: 1 // 解决弹出msg关闭弹窗的问题
+        ,title: [title, 'font-size: 18px; text-align: center; margin:10px 0;']
         // content不能使用$('#dialogAddForm')的形式，会出现关闭弹窗再打开不显示的问题
         ,content: content
-        ,area: '500px' // 宽  宽高：['width', 'height']
+        ,area: '550px' // 宽  宽高：['width', 'height']
         // ,btn: ['保存', '取消'] // 按钮
         ,btn: false // 关闭弹窗自带按钮
         ,btnAlign: 'c' // 按钮居中对齐
-        ,success: function (index) {
+        ,success: function () {
             layui.form.render('select'); // 渲染select 否则显示异常
             // 用户编辑时将行数据显示在表单上
             if (type === 'editUser') {
@@ -505,7 +507,6 @@ function addFormDialog(title, content, userNameSelector, pwdId1, pwdId2, filter,
             }
             // 弹窗成功后监听表单dialogSave提交
             layui.form.on('submit(dialogSave)', function (data) {
-                // TODO 未填写必填项不应该发送请求和关闭弹窗,此处不可用 msg冲突
                 $.ajax({
                     async: false,
                     type: 'POST',
@@ -521,7 +522,7 @@ function addFormDialog(title, content, userNameSelector, pwdId1, pwdId2, filter,
                                 layer.msg('更新成功', {icon: 1, time: 1000});
                             }
                             // 重载
-                            tableReload('userData', {});
+                            tableReload(tableName, {});
                         }
                         // 部门编辑变更时部门下有用户的情况
                         if (data === 'existsUser') {
@@ -542,7 +543,7 @@ function addFormDialog(title, content, userNameSelector, pwdId1, pwdId2, filter,
                         if (data === 'applySuccess') {
                             layer.msg('申请成功', {icon: 1, time: 1000});
                             // 重载
-                            tableReload('userData', {});
+                            tableReload(tableName, {});
                         }
                         if (data === 'conflict') {
                             layer.msg('您已经是该职位，不可重复申请', {icon: 0, time: 1000});
@@ -617,16 +618,35 @@ function getNextEquipNumber() {
 /**
  * 时间转换，用于查询传参
  * @param data 表单数据
+ * @description yyyy-MM-dd -> timestamp
  */
 function timeConverter(data) {
-    if (data.field.createTime !== '') { // 选择时间才进行操作 否则时间转换出现NaN
-        let arr = data.field.createTime.split(' - '); // 得到时间数组
-        let startTime = new Date(arr[0]); // 转换为Date
+    // 选择时间才进行操作 否则时间转换出现NaN
+    if (data.field.createTime !== '') {
+        // 得到时间数组
+        let arr = data.field.createTime.split(' - ');
+        // 转换为Date
+        let startTime = new Date(arr[0]);
         let endTime = new Date(arr[1]);
-        startTime = startTime.getTime(); // 转换为时间戳
+        // 转换为时间戳
+        startTime = startTime.getTime();
         endTime = endTime.getTime();
-        data.field.startTime = startTime; // 设置提交数据的值
+        // 设置提交数据的值
+        data.field.startTime = startTime;
         data.field.endTime = endTime;
+    }
+    if (data.field.approvalTime && data.field.approvalTime !== '') {
+
+        let arr = data.field.approvalTime.split(' - ');
+
+        let startTime = new Date(arr[0]);
+        let endTime = new Date(arr[1]);
+
+        startTime = startTime.getTime();
+        endTime = endTime.getTime();
+
+        data.field.startTime1 = startTime;
+        data.field.endTime1 = endTime;
     }
 }
 
@@ -723,9 +743,8 @@ function setBadge() {
 
 /**
  * 鼠标悬停用户上展示用户详细信息 选择器固定 不可拓展
- * @param $ layui jquery
  */
-function userInfoShow($) {
+function userInfoShow() {
     // 鼠标悬停用户展示详细信息
     $('#user')
         .mouseover(function () {
@@ -755,13 +774,13 @@ function myAjax(type, url, requestData, successInfo, errorInfo, isReload, tableI
         data: requestData,
         success: function (data) {
             if (data === 'success') {
-                layer.msg(successInfo, {icon: 1});
+                layer.msg(successInfo, {icon: 1, time: 1000});
                 if (isReload) {
                     tableReload(tableId, where);
                 }
             }
             if (data === 'error') {
-                layer.msg(errorInfo, {icon: 2});
+                layer.msg(errorInfo, {icon: 5, time: 1000});
             }
         },
         error: function () {
@@ -790,6 +809,7 @@ function exportExcel(confirmMsg, url, param) {
  * 接口数据返回格式限定及分页处理
  * @param res 返回数据
  * @param _this this
+ * @deprecated <br> **分页无法使用**
  */
 function parseRes(res, _this) {
     let result;
@@ -813,7 +833,7 @@ function parseRes(res, _this) {
  * @returns {string}
  */
 function getUrl(url) {
-    if (url.substring(0, 5) === '/jweb') return ;
+    if (url.substring(0, 5) === '/jweb') return url;
     return '/jweb' + url;
 }
 

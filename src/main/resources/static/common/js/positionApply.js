@@ -7,25 +7,15 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
         form = layui.form, // 表单相关
         table = layui.table, // 数据表格相关
         laydate = layui.laydate, // 日期选择框
-        $ = layui.jquery; // jquery
+        tableName = 'applyData';
     // 表单search监听
     form.on('submit(search)', function (data) {
         // 时间转换 string -> long
         timeConverter(data);
-        if (data.field.approvalTime !== '') { // 选择时间才进行操作 否则时间转换出现NaN
-            let arr = data.field.approvalTime.split(' - '); // 得到时间数组
-            let startTime = new Date(arr[0]); // 转换为Date
-            let endTime = new Date(arr[1]);
-            startTime = startTime.getTime(); // 转换为时间戳
-            endTime = endTime.getTime();
-            data.field.startTime1 = startTime; // 设置提交数据的值
-            data.field.endTime1 = endTime;
-        }
-        delete data.field.createTime; // 传入后台可能出现类型不匹配问题，删除
+        delete data.field.createTime;
         delete data.field.approvalTime;
-        // search 后端数据渲染
-        tableRender(data.field);
-        toolProcess();
+
+        tableReload(tableName, data.field);
     });
     // 日期选择组件渲染
     laydate.render({
@@ -40,78 +30,85 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
         // eventElem: '#dateIcon',
         trigger: 'click'
     });
-    tableRender({});
+    tableRender();
     toolProcess();
     // 设置待处理事件 徽章
     setBadge();
     // 鼠标悬停显示用户详情
-    userInfoShow($);
+    userInfoShow();
 
     /**
      * 头工具栏和行工具栏事件
      */
     function toolProcess() {
         // 头工具栏事件(新增)
-        table.on('toolbar(applyData)', function(obj){
-            let checkStatus = table.checkStatus(obj.config.id); // 选中行信息
+        table.on('toolbar('+ tableName +')', function(obj){
+            let checkStatus = table.checkStatus(obj.config.id) // 选中行信息
+                ,data = checkStatus.data;
+
             switch(obj.event){
                 case 'apply':
-                    addFormDialog(layer, form, $,
-                        '新建职位申请', applyContent,
-                        null,
-                        null,
-                        null,
-                        'applyType',
-                        getUrl('/equipmentSys/apply/add'),
-                        'addApply');
+                    formDialog(
+                        '新建职位申请'
+                        , applyContent
+                        , null
+                        , null
+                        , null
+                        , 'applyType'
+                        , getUrl('/equipmentSys/apply/add')
+                        , 'addApply'
+                        , null
+                        , tableName
+                    );
                     break;
+
                 case 'getCheckLength':
-                    var data = checkStatus.data;
                     layer.msg('选中了：'+ data.length + ' 个');
                     break;
+
                 case 'isAll':
                     layer.msg(checkStatus.isAll ? '全选': '未全选');
                     break;
-                //自定义头工具栏右侧图标 - 提示
+
                 case 'LAYTABLE_TIPS':
                     layer.alert('这是工具栏右侧自定义的一个图标按钮');
                     break;
             }
         });
         // 监听行工具事件(编辑，通过，驳回，删除)
-        table.on('tool(applyData)', function(obj){
+        table.on('tool('+ tableName +')', function(obj){
             let data = obj.data; // 操作行数据
+
             if (obj.event === 'edit') {
-                addFormDialog(layer, form, $,
-                    '编辑职位申请', applyContent,
-                    null,
-                    null,
-                    null,
-                    'applyType',
-                    getUrl('/equipmentSys/apply/update'),
-                    'editApply', data);
+                formDialog(
+                    '编辑职位申请'
+                    , applyContent
+                    , null
+                    , null
+                    , null
+                    , 'applyType'
+                    , getUrl('/equipmentSys/apply/update')
+                    , 'editApply'
+                    , data
+                    , tableName
+                );
+
             } else if (obj.event === 'del') {
                 layer.confirm('当前申请编号：'+ data.applyNumber +'，申请人：'+ data.userName +'，申请职位：' + data.applyTypeName
-                    +'，申请状态：'+ data.applyStateName +'，确认删除？', {icon: 3, title: '警告'}, function (index) {
-                    $.ajax({
-                        async: false,
-                        type: 'POST',
-                        url: getUrl('/equipmentSys/apply/delete'),
-                        data: {id: data.id},
-                        success: function (data) {
-                            layer.close(index);
-                            if (data === 'success') {
-                                layer.msg('删除成功', {icon: 1});
-                                setTimeout(function () {
-                                    window.location.reload();
-                                }, 1500);
-                            }
-                            if (data === 'error') {
-                                layer.msg('删除失败，请重试或联系管理员！', {icon: 2});
-                            }
-                        }
-                    });
+                    +'，申请状态：'+ data.applyStateName +'，确认删除？', {icon: 3, title: '提示'}, function (index) {
+                    myAjax(
+                        'POST'
+                        , getUrl('/equipmentSys/apply/delete')
+                        , {id: data.id}
+                        , '删除成功'
+                        , '删除失败，请重试或联系管理员'
+                        , true
+                        , tableName
+                        , {}
+                    );
+                    layer.close(index);
                 });
+
             } else if (obj.event === 'pass') { // 审批通过
                 layer.confirm('当前申请编号：'+ data.applyNumber
                     +'，申请人：'+ data.userName +'，申请职位：' + data.applyTypeName
@@ -125,27 +122,22 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                     }, function(value, index1, elem){
                         data.approvalOpinion = value;
                         data.approverName = getCurrentUserInfo().userName;
-                        $.ajax({
-                            async: false,
-                            type: 'GET',
-                            url: getUrl('/equipmentSys/apply/pass'),
-                            data: data,
-                            success: function (data) {
-                                if (data === 'success') {
-                                    layer.msg('审批通过成功', {icon: 1});
-                                    setTimeout(function () {
-                                        window.location.reload();
-                                    }, 1500);
-                                }
-                                if (data === 'error') {
-                                    layer.msg('审批失败，请重试或联系管理员！', {icon: 2});
-                                }
-                            }
-                        });
+
+                        myAjax(
+                            'GET'
+                            , getUrl('/equipmentSys/apply/pass')
+                            , data
+                            , '审批通过成功'
+                            , '审批失败，请重试或联系管理员'
+                            , true
+                            , tableName
+                            , {}
+                        );
                         layer.close(index1);
                         layer.close(index);
                     });
                 });
+
             } else if (obj.event === 'reject') { // 审批驳回
                 layer.confirm('当前申请编号：'+ data.applyNumber
                     +'，申请人：'+ data.userName +'，申请职位：' + data.applyTypeName
@@ -159,23 +151,17 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                     }, function(value, index1, elem){
                         data.approvalOpinion = value;
                         data.approverName = getCurrentUserInfo().userName;
-                        $.ajax({
-                            async: false,
-                            type: 'GET',
-                            url: getUrl('/equipmentSys/apply/reject'),
-                            data: data,
-                            success: function (data) {
-                                if (data === 'success') {
-                                    layer.msg('审批驳回成功', {icon: 1});
-                                    setTimeout(function () {
-                                        window.location.reload();
-                                    }, 1500);
-                                }
-                                if (data === 'error') {
-                                    layer.msg('审批失败，请重试或联系管理员！', {icon: 2});
-                                }
-                            }
-                        });
+
+                        myAjax(
+                            'GET'
+                            , getUrl('/equipmentSys/apply/reject')
+                            , data
+                            , '审批驳回成功'
+                            , '审批失败，请重试或联系管理员'
+                            , true
+                            , tableName
+                            , {}
+                        );
                         layer.close(index1);
                         layer.close(index);
                     });
@@ -185,16 +171,14 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
     }
     /**
      * 数据表格渲染
-     * @param where 查询传参
      */
-    function tableRender(where) {
+    function tableRender() {
         // 后端数据渲染
         table.render({
-            elem: '#applyData'
+            elem: '#'+ tableName
             ,url: getUrl('/equipmentSys/apply/page')
             ,method: 'GET'
             ,async: false
-            ,where: where // 携带参数
             ,height: 370
             ,parseData: function(res){ //res 即为原始返回的数据
                 let result;
