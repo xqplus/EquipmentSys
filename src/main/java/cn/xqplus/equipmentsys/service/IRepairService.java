@@ -37,9 +37,10 @@ public interface IRepairService extends IService<Repair>, ICommonService {
     /**
      * 设备维修
      * @param id 维修id
+     * @param repairLog 维修日志
      * @return boolean
      */
-    boolean repair(int id);
+    boolean repair(int id, String repairLog);
 
     /**
      * 设备报废

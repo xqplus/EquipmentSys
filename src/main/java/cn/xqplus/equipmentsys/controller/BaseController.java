@@ -20,9 +20,8 @@ public abstract class BaseController {
     public static String stringResult(boolean flag) {
         if (flag) {
             return CommonConst.SUCCESS;
-        } else {
-            return CommonConst.ERROR;
         }
+        return CommonConst.ERROR;
     }
 
     protected <T> JsonResult<T> jr(){

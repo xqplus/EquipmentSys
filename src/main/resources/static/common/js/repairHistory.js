@@ -85,8 +85,10 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                     ,{field: 'equipName', title: '设备名称'}
                     ,{field: 'equipTypeName', title: '设备类型名称'}
                     ,{field: 'reporterName', title: '报修人'}
+                    ,{field: 'faultRemark', title: '故障描述'}
                     ,{field: 'reportDate', title: '报修时间', sort: true}
                     ,{field: 'repairerName', title: '维修人'}
+                    ,{field: 'repairLog', title: '维修日志'}
                     ,{field: 'repairDate', title: '维修时间', sort: true}
                     ,{field: 'repairStateName', title: '维修情况'}
                     ,{fixed: 'right', title:'操作', toolbar: '#rightToolBar', width: 100}]

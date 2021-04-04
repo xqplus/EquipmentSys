@@ -92,31 +92,34 @@ public class EquipmentServiceImpl extends ServiceImpl<IEquipmentMapper, Equipmen
     }
 
     @Override
-    public String reportRepair(int id) {
+    public String reportRepair(int id, String faultRemark) {
         Equipment equipment = equipmentMapper.selectById(id);
+
         // 只有使用中的设备才能报修
-        if (equipment.getEquipState() == 0) {
-            Equipment equipment1 = new Equipment();
-            equipment1.setEquipState(1);
-            // 改变设备状态
-            int id1 = equipmentMapper.update(equipment1, new UpdateWrapper<Equipment>()
-                    .eq("id", id));
-            // 创建维修信息
-            Repair repair = repairService.getNextRepairNumber();
-            repair.setEquipNumber(equipment.getEquipNumber());
-            // 获得当前登录用户
-            User currentUserInfo = userService.getCurrentUserInfo();
-            repair.setReporterNumber(currentUserInfo.getUserNumber());
-            boolean save = repairService.save(repair);
-            if ((id1 >= 1) && save) {
-                return "success";
-            } else {
-                return "error";
-            }
-        } else {
+        if (equipment.getEquipState() != 0) {
             // 流程不正确 （使用中 -报修-> 维修中 -报废-> 已报废）
             return "noProcess";
         }
+
+        // 改变设备状态
+        Equipment equipment1 = new Equipment();
+        equipment1.setEquipState(1);
+        equipment1.setId(id);
+        int id1 = equipmentMapper.updateById(equipment1);
+
+        // 创建维修信息
+        Repair repair = repairService.getNextRepairNumber();
+        repair.setEquipNumber(equipment.getEquipNumber());
+        repair.setFaultRemark(faultRemark);
+
+        // 获得当前登录用户
+        User currentUserInfo = userService.getCurrentUserInfo();
+        repair.setReporterNumber(currentUserInfo.getUserNumber());
+        boolean save = repairService.save(repair);
+        if ((id1 >= 1) && save) {
+            return "success";
+        }
+        return "error";
     }
 
     @Override

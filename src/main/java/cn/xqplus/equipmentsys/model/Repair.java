@@ -42,6 +42,12 @@ public class Repair extends LogicDeleteEntity implements Serializable {
     private String reporterNumber;
 
     /**
+     * 故障描述
+     */
+    @TableField(value = "fault_remark", jdbcType = JdbcType.VARCHAR)
+    private String faultRemark;
+
+    /**
      * 报修时间（创建时间）
      */
     @TableField(value = "report_time", jdbcType = JdbcType.DECIMAL, fill = FieldFill.INSERT)
@@ -52,6 +58,12 @@ public class Repair extends LogicDeleteEntity implements Serializable {
      */
     @TableField(value = "repairer_number", jdbcType = JdbcType.VARCHAR)
     private String repairerNumber;
+
+    /**
+     * 维修日志
+     */
+    @TableField(value = "repair_log", jdbcType = JdbcType.VARCHAR)
+    private String repairLog;
 
     /**
      * 维修时间（更新时间，严格更新时插入）

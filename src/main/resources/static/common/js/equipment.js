@@ -141,28 +141,41 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                 });
 
             } else if (obj.event === 'reportRepair') { // 报修
-                layer.confirm('当前设备：'+data.equipTypeName+data.equipName+'，设备编号：'+data.equipNumber+'，确认报修？', {icon: 3, title: '提示'}, function (index) {
-                    $.ajax({
-                        async: false,
-                        type: 'GET',
-                        url: getUrl('/equipmentSys/equipment/reportRepair'), // 报修接口
-                        data: {id: data.id},
-                        success: function (data) {
-                            layer.close(index);
-                            if (data === 'success') {
-                                layer.msg('报修成功', {icon: 1, time: 1000});
-                                tableReload(tableName, {});
+                layer.confirm('当前设备：'+data.equipTypeName+data.equipName+'，设备编号：'+data.equipNumber+'，确认报修？'
+                    , {icon: 3, title: '提示'}, function (index) {
+                    layer.prompt({
+                        formType: 2,
+                        maxlength: 200,
+                        placeholder: '请简单描述一下故障原因...',
+                        title: '故障描述',
+                        area: ['500px', '300px'] //自定义文本域宽高
+                    }, function(value, index1, elem){
+                        data.faultRemark = value;
+
+                        $.ajax({
+                            async: false,
+                            type: 'GET',
+                            url: getUrl('/equipmentSys/equipment/reportRepair'), // 报修接口
+                            data: {id: data.id, faultRemark: data.faultRemark},
+                            success: function (data) {
+                                layer.close(index);
+                                if (data === 'success') {
+                                    layer.msg('报修成功', {icon: 1, time: 1000});
+                                    tableReload(tableName, {});
+                                }
+                                if (data === 'noProcess') {
+                                    layer.msg('抱歉，当前设备状态不能报修', {icon: 5, time: 1000});
+                                }
+                                if (data === 'error') {
+                                    layer.msg('报修失败，请重试或联系管理员', {icon: 5, time: 1000});
+                                }
+                            },
+                            error: function () {
+                                layer.msg('系统错误，请联系管理员', {icon: 2, time: 1000});
                             }
-                            if (data === 'noProcess') {
-                                layer.msg('抱歉，当前设备状态不能报修', {icon: 5, time: 1000});
-                            }
-                            if (data === 'error') {
-                                layer.msg('报修失败，请重试或联系管理员', {icon: 5, time: 1000});
-                            }
-                        },
-                        error: function () {
-                            layer.msg('系统错误，请联系管理员', {icon: 2, time: 1000});
-                        }
+                        });
+                        layer.close(index1);
+                        layer.close(index);
                     });
                 });
             }

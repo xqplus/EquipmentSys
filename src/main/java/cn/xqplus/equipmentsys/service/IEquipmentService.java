@@ -27,9 +27,10 @@ public interface IEquipmentService extends IService<Equipment>, ICommonService {
 
     /**
      * 设备报修
-     * @param id
-     * @return
+     * @param id 设备id
+     * @param faultRemark 故障描述
+     * @return 回调值
      */
-    String reportRepair(int id);
+    String reportRepair(int id, String faultRemark);
 
 }

@@ -79,6 +79,7 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                 ,{field: 'equipName', title: '设备名称'}
                 ,{field: 'equipTypeName', title: '设备类型名称'}
                 ,{field: 'reporterName', title: '报修人'}
+                ,{field: 'faultRemark', title: '故障描述'}
                 ,{field: 'reportDate', title: '报修时间', sort: true}
                 ,{field: 'currentState', title: '当前状态'}
                 ,{fixed: 'right', title:'操作', toolbar: '#rightToolBar', width: 150}]
@@ -118,17 +119,28 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
             if (obj.event === 'repair') {
                 layer.confirm('当前设备：'+data.equipTypeName+data.equipName+'，维修编号：'+data.repairNumber+'，确认维修完成？'
                     , {icon: 3, title: '提示'}, function (index) {
-                    myAjax(
-                        'GET'
-                        , getUrl('/equipmentSys/repair/repair')
-                        , {id: data.id}
-                        , '维修成功'
-                        , '维修失败，请重试或联系管理员'
-                        , true
-                        , tableName
-                        , {}
-                    );
-                    layer.close(index);
+                    layer.prompt({
+                        formType: 2,
+                        maxlength: 200,
+                        placeholder: '请输入维修日志（维修了什么）...',
+                        title: '维修日志',
+                        area: ['500px', '300px'] //自定义文本域宽高
+                    }, function(value, index1, elem){
+                        data.repairLog = value;
+
+                        myAjax(
+                            'GET'
+                            , getUrl('/equipmentSys/repair/repair')
+                            , {id: data.id, repairLog: data.repairLog}
+                            , '维修成功'
+                            , '维修失败，请重试或联系管理员'
+                            , true
+                            , tableName
+                            , {}
+                        );
+                        layer.close(index1);
+                        layer.close(index);
+                    });
                 });
 
             } else if (obj.event === 'scrap') {

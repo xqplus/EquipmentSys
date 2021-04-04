@@ -114,20 +114,22 @@ public class RepairServiceImpl extends ServiceImpl<IRepairMapper, Repair>
     }
 
     @Override
-    public boolean repair(int id) {
-        Repair repair = repairMapper.selectById(id);
+    public boolean repair(int id, String repairLog) {
+        Repair curRepair = repairMapper.selectById(id);
+
+        // 更新设备状态
         Equipment equipment = new Equipment();
         equipment.setEquipState(0);
-        // 更新设备状态
         boolean equipUpdate = equipmentService.update(equipment, new UpdateWrapper<Equipment>()
-                .eq("equip_number", repair.getEquipNumber()));
-        Repair repair1 = new Repair();
-        repair1.setRepairerNumber(userService.getCurrentUserInfo().getUserNumber());
-        // 维修完成，维修状态
-        repair1.setRepairState(0);
+                .eq("equip_number", curRepair.getEquipNumber()));
+
         // 更新维修信息
-        int repairUpdate = repairMapper.update(repair1, new UpdateWrapper<Repair>()
-                .eq("id", id));
+        Repair updateRepair = new Repair();
+        updateRepair.setId(id);
+        updateRepair.setRepairerNumber(userService.getCurrentUserInfo().getUserNumber());
+        updateRepair.setRepairState(0);
+        updateRepair.setRepairLog(repairLog);
+        int repairUpdate = repairMapper.updateById(updateRepair);
 
         return (equipUpdate && (repairUpdate >= 1));
     }

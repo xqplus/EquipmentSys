@@ -62,8 +62,8 @@ public class EquipmentController extends BaseController {
     }
 
     @GetMapping(value = "/reportRepair", name = "设备报修")
-    public String reportRepair(@NotNull int id) {
-        return equipmentService.reportRepair(id);
+    public String reportRepair(@NotNull int id, String faultRemark) {
+        return equipmentService.reportRepair(id, faultRemark);
     }
 
     @PostMapping(value = "deleteBatch", name = "批量删除")

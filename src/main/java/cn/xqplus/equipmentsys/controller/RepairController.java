@@ -39,8 +39,8 @@ public class RepairController extends BaseController {
     }
 
     @GetMapping(value = "/repair", name = "设备维修")
-    public String repair(@NotNull int id) {
-        boolean repair = repairService.repair(id);
+    public String repair(@NotNull int id, String repairLog) {
+        boolean repair = repairService.repair(id, repairLog);
         return stringResult(repair);
     }
 
