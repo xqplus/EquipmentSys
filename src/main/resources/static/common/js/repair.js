@@ -30,6 +30,10 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
     setBadge();
     // 鼠标悬停显示用户详情
     userInfoShow();
+    // 重置搜索框刷新数据表格
+    resetTableReload(function () {
+        tableRender();
+    });
 
     /**
      * 数据表格渲染

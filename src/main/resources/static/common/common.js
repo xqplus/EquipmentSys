@@ -851,3 +851,13 @@ function tableReload(tableId, where) {
         }
     });
 }
+
+/**
+ * 搜索框点击重置刷新数据表格
+ * @param func 匿名函数
+ */
+function resetTableReload(func) {
+    $('#reset').click(function () {
+        func();
+    });
+}
