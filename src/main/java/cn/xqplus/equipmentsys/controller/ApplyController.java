@@ -11,6 +11,7 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,7 +47,14 @@ public class ApplyController extends BaseController {
 
     @PostMapping(value = "/add", name = "申请新增")
     public String add(ApplyForm applyForm) {
+
         User currentUserInfo = userService.getCurrentUserInfo();
+        Apply curUserApply = applyService.getOne(new QueryWrapper<Apply>()
+                .eq("user_number", currentUserInfo.getUserNumber())
+                .eq("apply_state", 0));
+        if (curUserApply != null) {
+            return "existed";
+        }
         if (currentUserInfo.getRoleType().equals(applyForm.getApplyType())) {
             return "conflict";
         } else {

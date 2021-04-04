@@ -295,7 +295,7 @@ function passwordsInputCheck(pwdId1, pwdId2) {
         let pwd2 = $(pwdId2).val();
         let pwd = $(pwdId1).val();
         if (pwd2 !== pwd) {
-            layer.msg('两次输入的密码不一致', {icon: 0});
+            layer.msg('两次输入的密码不一致', {icon: 0, time: 1500});
             $(pwdId1).val("");
             $(pwdId2).val("");
         }
@@ -321,17 +321,17 @@ function userExistsCheck(selector, boolean) {
                 if (boolean) {
                     if (data === "exists") {
                         $(selector).val("");
-                        layer.msg('用户名不可用', {icon: 0, time: 1000});
+                        layer.msg('用户名不可用', {icon: 0, time: 1500});
                     }
                 } else {
                     if (data === "noExists") {
                         $(selector).val("");
-                        layer.msg('该用户不存在', {icon: 0, time: 1000});
+                        layer.msg('该用户不存在', {icon: 0, time: 1500});
                     }
                 }
             },
             error: function () {
-                layer.msg('系统错误，请联系管理员', {icon: 2, time: 1000});
+                layer.msg('系统错误，请联系管理员', {icon: 2, time: 1500});
             }
         });
     });
@@ -350,7 +350,7 @@ function formSubmitEvent(filter, url, boolean) {
         let pwd2 = data.field.password2;
         let pwd = data.field.password;
         if (pwd2 !== pwd) {
-            layer.msg('两次输入的密码不一致', {icon: 0, time: 1000});
+            layer.msg('两次输入的密码不一致', {icon: 0, time: 1500});
             $("#pwd").val("");
             $("#pwd2").val("");
         }
@@ -368,7 +368,7 @@ function formSubmitEvent(filter, url, boolean) {
                         $('#userName').val("");
                     }
                     if (data === "error") {
-                        layer.msg('注册失败，请重新注册或联系管理员', {icon: 5, time: 1000});
+                        layer.msg('注册失败，请重新注册或联系管理员', {icon: 5, time: 1500});
                     }
                 } else { // 密码找回
                     if (data === "success") {
@@ -376,16 +376,16 @@ function formSubmitEvent(filter, url, boolean) {
                         $('#userName').val("");
                     }
                     if (data === "noMatch") {
-                        layer.msg('用户信息不匹配，请重试', {icon: 5, time: 1000});
+                        layer.msg('用户信息不匹配，请重试', {icon: 5, time: 1500});
 
                     }
                     if (data === "error") {
-                        layer.msg('找回失败，请重试或联系管理员！', {icon: 5, time: 1000});
+                        layer.msg('找回失败，请重试或联系管理员！', {icon: 5, time: 1500});
                     }
                 }
             },
             error: function () {
-                layer.msg('系统错误，请联系管理员', {icon: 2, time: 1000});
+                layer.msg('系统错误，请联系管理员', {icon: 2, time: 1500});
             }
         });
     });
@@ -417,7 +417,7 @@ function roleDeptCascade(filter) {
                     layui.form.render("select"); // layui select渲染
                 },
                 error: function () {
-                    layer.msg('系统错误，请联系管理员', {icon: 2, time: 1000});
+                    layer.msg('系统错误，请联系管理员', {icon: 2, time: 1500});
                 }
             });
         }
@@ -534,10 +534,10 @@ function formDialog(title, content, userNameSelector, pwdId1, pwdId2, filter, sa
                         }
                         if (data === 'error') {
                             if (type.substring(0,3) === 'add') {
-                                layer.msg('新增失败，请重试或联系管理员',{icon: 5, time: 1000});
+                                layer.msg('新增失败，请重试或联系管理员',{icon: 5, time: 1500});
                             }
                             if (type.substring(0,4) === 'edit') {
-                                layer.msg('更新失败，请重试或联系管理员',{icon: 5, time: 1000});
+                                layer.msg('更新失败，请重试或联系管理员',{icon: 5, time: 1500});
                             }
                         }
                         if (data === 'applySuccess') {
@@ -545,15 +545,18 @@ function formDialog(title, content, userNameSelector, pwdId1, pwdId2, filter, sa
                             // 重载
                             tableReload(tableName, {});
                         }
+                        if (data === 'existed') {
+                            layer.msg('您当前有申请进行中，不可继续申请', {icon: 5, time: 1500});
+                        }
                         if (data === 'conflict') {
-                            layer.msg('您已经是该职位，不可重复申请', {icon: 0, time: 1000});
+                            layer.msg('您已经是该职位，不可重复申请', {icon: 5, time: 1500});
                         }
                         if (data === 'applyError') {
-                            layer.msg('申请失败，请重试或联系管理员', {icon: 5, time: 1000});
+                            layer.msg('申请失败，请重试或联系管理员', {icon: 5, time: 1500});
                         }
                     },
                     error: function () {
-                        layer.msg("系统错误，请联系管理员", {icon: 2, time: 1000});
+                        layer.msg("系统错误，请联系管理员", {icon: 2, time: 1500});
                     }
                 });
             });
@@ -586,7 +589,7 @@ function getNextDeptByRole() {
                     $('#deptName').val(data.deptName);
                 },
                 error: function () {
-                    layer.msg('系统错误，请联系管理员', {icon: 2, time: 1000});
+                    layer.msg('系统错误，请联系管理员', {icon: 2, time: 1500});
                 }
             });
         }
@@ -610,7 +613,7 @@ function getNextEquipNumber() {
             $('#equipNumber').val(data.equipNumber);
         },
         error: function () {
-            layer.msg('系统错误，请联系管理员', {icon: 2, time: 1000});
+            layer.msg('系统错误，请联系管理员', {icon: 2, time: 1500});
         }
     });
 }
@@ -667,7 +670,7 @@ function getNextEquipTypeNumber() {
             $('#equipTypeNumber').val(data.equipTypeNumber);
         },
         error: function () {
-            layer.msg('系统错误，请联系管理员', {icon: 2, time: 1000});
+            layer.msg('系统错误，请联系管理员', {icon: 2, time: 1500});
         }
     });
 }
@@ -675,8 +678,8 @@ function getNextEquipTypeNumber() {
 /**
  * 通过部门编号获取最新设备编号，用于新建申请信息
  */
-function getNextApplyNumberByDept(form, $) {
-    form.on('select(deptNumber)', function (data) {
+function getNextApplyNumberByDept() {
+    layui.form.on('select(deptNumber)', function (data) {
         if (data.value !== '') {
             $.ajax({
                 async: false, // 异步提交
@@ -690,7 +693,7 @@ function getNextApplyNumberByDept(form, $) {
                     $('#applyNumber').val(data);
                 },
                 error: function () {
-                    layer.msg('系统错误，请联系管理员', {icon: 2, time: 1000});
+                    layer.msg('系统错误，请联系管理员', {icon: 2, time: 1500});
                 }
             });
         }
@@ -711,7 +714,7 @@ function getCurrentUserInfo() {
             currentUserInfo = data;
         },
         error: function () {
-            layer.msg('系统错误，请联系管理员', {icon: 2, time: 1000});
+            layer.msg('系统错误，请联系管理员', {icon: 2, time: 1500});
         }
     });
     return currentUserInfo;
@@ -736,7 +739,7 @@ function setBadge() {
             }
         },
         error: function () {
-            layer.msg('系统错误，请联系管理员', {icon: 2, time: 1000});
+            layer.msg('系统错误，请联系管理员', {icon: 2, time: 1500});
         }
     });
 }
@@ -780,11 +783,11 @@ function myAjax(type, url, requestData, successInfo, errorInfo, isReload, tableI
                 }
             }
             if (data === 'error') {
-                layer.msg(errorInfo, {icon: 5, time: 1000});
+                layer.msg(errorInfo, {icon: 5, time: 1500});
             }
         },
         error: function () {
-            layer.msg('系统错误，请联系管理员', {icon: 2, time: 1000});
+            layer.msg('系统错误，请联系管理员', {icon: 2, time: 1500});
         }
     });
 }

@@ -40,27 +40,39 @@ public class RepairHistoryResp implements Serializable {
     private String reporterName;
 
     /**
+     * 故障描述
+     */
+    @Excel(name = "故障描述", orderNum = "4", width = 30)
+    private String faultRemark;
+
+    /**
      * 报修时间
      */
-    @Excel(name = "报修时间", orderNum = "4", width = 20)
+    @Excel(name = "报修时间", orderNum = "5", width = 20)
     private String reportDate;
 
     /**
      * 维修人
      */
-    @Excel(name = "维修人", orderNum = "5", width = 15)
+    @Excel(name = "维修人", orderNum = "6", width = 15)
     private String repairerName;
+
+    /**
+     * 维修日志
+     */
+    @Excel(name = "维修日志", orderNum = "7", width = 30)
+    private String repairLog;
 
     /**
      * 维修时间
      */
-    @Excel(name = "维修时间", orderNum = "6", width = 20)
+    @Excel(name = "维修时间", orderNum = "8", width = 20)
     private String repairDate;
 
     /**
      * 维修情况
      */
-    @Excel(name = "维修情况", orderNum = "7", width = 15)
+    @Excel(name = "维修情况", orderNum = "9", width = 15)
     private String repairStateName;
 
 }

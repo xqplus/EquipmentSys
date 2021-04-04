@@ -42,7 +42,7 @@ public class Apply extends LogicDeleteEntity implements Serializable {
     private String userNumber;
 
     /**
-     * 申请部门编号
+     * 意向部门编号
      */
     @TableField(value = "dept_number", jdbcType = JdbcType.VARCHAR)
     private String deptNumber;

@@ -52,7 +52,7 @@ public class ApplyServiceImpl extends ServiceImpl<IApplyMapper, Apply>
                 if (applyForm.getApplyType() == 0) {
                     applyForm.setApplyTypeName("管理员");
                 }
-                if (applyForm.getApplyType() == 1) {
+                if (applyForm.getApplyType() == 2) {
                     applyForm.setApplyTypeName("维修员");
                 }
                 // 申请状态转换

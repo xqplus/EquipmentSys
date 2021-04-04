@@ -155,11 +155,11 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                                 tableReload(tableName, {});
                             }
                             if (data === 'error') {
-                                layer.msg('删除失败，请重试或联系管理员', {icon: 5, time: 1000});
+                                layer.msg('删除失败，请重试或联系管理员', {icon: 5, time: 1500});
                             }
                         },
                         error: function () {
-                            layer.msg('系统错误，请联系管理员', {icon: 2, time: 1000});
+                            layer.msg('系统错误，请联系管理员', {icon: 2, time: 1500});
                         }
                     });
                 });

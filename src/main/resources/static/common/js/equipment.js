@@ -164,14 +164,14 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                                     tableReload(tableName, {});
                                 }
                                 if (data === 'noProcess') {
-                                    layer.msg('抱歉，当前设备状态不能报修', {icon: 5, time: 1000});
+                                    layer.msg('抱歉，当前设备状态不能报修', {icon: 5, time: 1500});
                                 }
                                 if (data === 'error') {
-                                    layer.msg('报修失败，请重试或联系管理员', {icon: 5, time: 1000});
+                                    layer.msg('报修失败，请重试或联系管理员', {icon: 5, time: 1500});
                                 }
                             },
                             error: function () {
-                                layer.msg('系统错误，请联系管理员', {icon: 2, time: 1000});
+                                layer.msg('系统错误，请联系管理员', {icon: 2, time: 1500});
                             }
                         });
                         layer.close(index1);
