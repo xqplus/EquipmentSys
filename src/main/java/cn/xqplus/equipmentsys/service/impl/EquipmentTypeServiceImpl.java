@@ -1,5 +1,6 @@
 package cn.xqplus.equipmentsys.service.impl;
 
+import cn.xqplus.equipmentsys.ext.CommonConst;
 import cn.xqplus.equipmentsys.form.EquipmentTypeForm;
 import cn.xqplus.equipmentsys.mapper.IEquipmentTypeMapper;
 import cn.xqplus.equipmentsys.model.Equipment;
@@ -64,11 +65,10 @@ public class EquipmentTypeServiceImpl extends ServiceImpl<IEquipmentTypeMapper, 
             String[] zeros = {"", "00", "0", ""};
             listByNumberDesc.get(0).setEquipTypeNumber(zeros[next.length()] + next);
             return listByNumberDesc.get(0);
-        } else {
-            EquipmentType equipmentType = new EquipmentType();
-            equipmentType.setEquipTypeNumber("001");
-            return equipmentType;
         }
+        EquipmentType equipmentType = new EquipmentType();
+        equipmentType.setEquipTypeNumber("001");
+        return equipmentType;
     }
 
     @Override
@@ -82,14 +82,12 @@ public class EquipmentTypeServiceImpl extends ServiceImpl<IEquipmentTypeMapper, 
             int i = equipmentTypeMapper.update(equipmentType, new UpdateWrapper<EquipmentType>()
                     .eq("equip_type_number", equipmentType.getEquipTypeNumber()));
             if (i >= 1) {
-                return "success";
-            } else {
-                return "error";
+                return CommonConst.SUCCESS;
             }
-        } else {
-            // 类型下存在设备
-            return "existsEquip";
+            return CommonConst.ERROR;
         }
+        // 类型下存在设备
+        return CommonConst.EXISTS_EQUIP;
     }
 
     @Override
@@ -103,14 +101,12 @@ public class EquipmentTypeServiceImpl extends ServiceImpl<IEquipmentTypeMapper, 
         if (null == one) {
             int i = equipmentTypeMapper.deleteById(id);
             if (i >= 1) {
-                return "success";
-            } else {
-                return "error";
+                return CommonConst.SUCCESS;
             }
-        } else {
-            // 类型下存在设备
-            return "existsEquip";
+            return CommonConst.ERROR;
         }
+        // 类型下存在设备
+        return CommonConst.EXISTS_EQUIP;
     }
 
 }

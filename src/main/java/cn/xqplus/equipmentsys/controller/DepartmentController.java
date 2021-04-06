@@ -36,7 +36,7 @@ public class DepartmentController extends BaseController {
 
     @GetMapping(value = "/page", name = "部门信息page")
     public PageResult<DepartmentForm> page(@RequestParam(defaultValue = "1") int page,
-                           @RequestParam(defaultValue = "10") int limit, DepartmentForm wrapper){
+            @RequestParam(defaultValue = "10") int limit, DepartmentForm wrapper){
         IPage<DepartmentForm> iPage = departmentService.selectPage(new Page<>(page, limit), wrapper);
         return jr(iPage);
     }

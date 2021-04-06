@@ -28,7 +28,7 @@ public class EquipmentTypeController extends BaseController {
 
     @GetMapping(value = "/page", name = "设备类型信息page")
     public PageResult<EquipmentTypeForm> page(@RequestParam(defaultValue = "1") int page,
-                           @RequestParam(defaultValue = "10") int limit, EquipmentTypeForm wrapper){
+            @RequestParam(defaultValue = "10") int limit, EquipmentTypeForm wrapper){
         IPage<EquipmentTypeForm> iPage = equipmentTypeService.selectPage(new Page<>(page, limit), wrapper);
         return jr(iPage);
     }

@@ -1,5 +1,6 @@
 package cn.xqplus.equipmentsys.service.impl;
 
+import cn.xqplus.equipmentsys.ext.CommonConst;
 import cn.xqplus.equipmentsys.form.DepartmentForm;
 import cn.xqplus.equipmentsys.mapper.IDepartmentMapper;
 import cn.xqplus.equipmentsys.form.UserForm;
@@ -114,29 +115,27 @@ public class DepartmentServiceImpl extends ServiceImpl<IDepartmentMapper, Depart
                 .eq("dept_number", dept.getDeptNumber()));
         // 部门下有用户不能更改
         if (users.size() > 0) {
-            return "existsUser";
-        } else {
-            RoleDept roleDept = new RoleDept();
-            roleDept.setRoleType(departmentForm.getRoleType());
-            roleDept.setDeptNumber(departmentForm.getDeptNumber());
-            // 更新角色部门关联信息
-            roleDeptService.update(roleDept, new UpdateWrapper<RoleDept>()
-                    .eq("dept_number", dept.getDeptNumber()));
-            Department department = new Department();
-            try {
-                BeanUtils.copyProperties(department, departmentForm);
-            } catch (IllegalAccessException | InvocationTargetException e) {
-                e.printStackTrace();
-            }
-            // 更新部门信息
-            int update = departmentMapper.update(department, new UpdateWrapper<Department>()
-                    .eq("dept_number", dept.getDeptNumber()));
-            if (update >= 1) {
-                return "success";
-            } else {
-                return "error";
-            }
+            return CommonConst.EXISTS_USER;
         }
+        RoleDept roleDept = new RoleDept();
+        roleDept.setRoleType(departmentForm.getRoleType());
+        roleDept.setDeptNumber(departmentForm.getDeptNumber());
+        // 更新角色部门关联信息
+        roleDeptService.update(roleDept, new UpdateWrapper<RoleDept>()
+                .eq("dept_number", dept.getDeptNumber()));
+        Department department = new Department();
+        try {
+            BeanUtils.copyProperties(department, departmentForm);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        // 更新部门信息
+        int update = departmentMapper.update(department, new UpdateWrapper<Department>()
+                .eq("dept_number", dept.getDeptNumber()));
+        if (update >= 1) {
+            return CommonConst.SUCCESS;
+        }
+        return CommonConst.ERROR;
     }
 
     @Override
@@ -147,19 +146,17 @@ public class DepartmentServiceImpl extends ServiceImpl<IDepartmentMapper, Depart
         List<User> users = userService.list(new QueryWrapper<User>()
                 .eq("dept_number", department.getDeptNumber()));
         if (users.size() > 0) {
-            return "existsUser";
-        } else {
-            // 删除相应角色部门关联信息（根据部门编号删除）
-            roleDeptService.remove(new QueryWrapper<RoleDept>()
-                    .eq("dept_number", department.getDeptNumber()));
-            // 删除部门信息
-            int deleteById = departmentMapper.deleteById(id);
-            if (deleteById >= 1) {
-                return "success";
-            } else {
-                return "error";
-            }
+            return CommonConst.EXISTS_USER;
         }
+        // 删除相应角色部门关联信息（根据部门编号删除）
+        roleDeptService.remove(new QueryWrapper<RoleDept>()
+                .eq("dept_number", department.getDeptNumber()));
+        // 删除部门信息
+        int deleteById = departmentMapper.deleteById(id);
+        if (deleteById >= 1) {
+            return CommonConst.SUCCESS;
+        }
+        return CommonConst.ERROR;
     }
 
     @Override

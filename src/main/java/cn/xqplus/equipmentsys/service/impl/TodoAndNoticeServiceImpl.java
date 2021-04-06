@@ -73,9 +73,8 @@ public class TodoAndNoticeServiceImpl implements ITodoAndNoticeService {
                 .last("LIMIT 1"));
         if (null == apply) {
             return 0;
-        } else {
-            return apply.getApplyState();
         }
+        return apply.getApplyState();
     }
 
 }

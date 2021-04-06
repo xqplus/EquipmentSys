@@ -42,23 +42,22 @@ public class SecurityServiceImpl implements UserDetailsService {
                 .eq("user_name", userName));
         if (user == null) {
             throw new UsernameNotFoundException("用户不存在！");
-        } else {
-            // 用户存在
-            // 创建用户role集合 暂支持一种角色，待优化
-            List<GrantedAuthority> authorities = new ArrayList<>();
-            // 根据用户信息查询角色信息
-            List<Role> roles = roleMapper.selectList(new QueryWrapper<Role>()
-                    .eq("role_type", user.getRoleType()));
-            if (CollectionUtils.isNotEmpty(roles)) {
-                for (Role role : roles) {
-                    authorities.add(new SimpleGrantedAuthority(role.getRoleAuth()));
-                }
+        }
+        // 用户存在
+        // 创建用户role集合 暂支持一种角色，待优化
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        // 根据用户信息查询角色信息
+        List<Role> roles = roleMapper.selectList(new QueryWrapper<Role>()
+                .eq("role_type", user.getRoleType()));
+        if (CollectionUtils.isNotEmpty(roles)) {
+            for (Role role : roles) {
+                authorities.add(new SimpleGrantedAuthority(role.getRoleAuth()));
             }
-            logger.debug(() -> userName + " 登入");
+        }
+        logger.debug(() -> userName + " 登入");
 
-            // 这里的User是spring security的用户认证类
-            return new org.springframework.security.core.userdetails
+        // 这里的User是spring security的用户认证类
+        return new org.springframework.security.core.userdetails
             .User(user.getUserName(), user.getPassword(), authorities);
         }
-    }
 }

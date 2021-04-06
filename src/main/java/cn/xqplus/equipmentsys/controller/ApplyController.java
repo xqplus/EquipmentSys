@@ -1,5 +1,6 @@
 package cn.xqplus.equipmentsys.controller;
 
+import cn.xqplus.equipmentsys.ext.CommonConst;
 import cn.xqplus.equipmentsys.ext.PageResult;
 import cn.xqplus.equipmentsys.form.ApplyForm;
 import cn.xqplus.equipmentsys.model.Apply;
@@ -34,8 +35,7 @@ public class ApplyController extends BaseController {
 
     @GetMapping(value = "/page", name = "申请信息page")
     public PageResult<ApplyForm> page(@RequestParam(defaultValue = "1") int page,
-                           @RequestParam(defaultValue = "10") int limit, ApplyForm wrapper,
-                           String name) {
+            @RequestParam(defaultValue = "10") int limit, ApplyForm wrapper, String name) {
         IPage<ApplyForm> iPage = applyService.selectPage(new Page<>(page, limit), wrapper, name);
         return jr(iPage);
     }
@@ -53,46 +53,43 @@ public class ApplyController extends BaseController {
                 .eq("user_number", currentUserInfo.getUserNumber())
                 .eq("apply_state", 0));
         if (curUserApply != null) {
-            return "existed";
+            return CommonConst.EXISTS;
         }
         if (currentUserInfo.getRoleType().equals(applyForm.getApplyType())) {
-            return "conflict";
-        } else {
-            User user = userService.getOne(new QueryWrapper<User>()
-                    .eq("user_name", applyForm.getUserName()));
-            applyForm.setUserNumber(user.getUserNumber());
-            applyForm.setApplyState(0);
-            Apply apply = new Apply();
-            try {
-                BeanUtils.copyProperties(apply, applyForm);
-            } catch (IllegalAccessException | InvocationTargetException e) {
-                e.printStackTrace();
-            }
-            boolean save = applyService.save(apply);
-            if (save) {
-                return "applySuccess";
-            } else {
-                return "applyError";
-            }
+            return CommonConst.CONFLICT;
         }
+        User user = userService.getOne(new QueryWrapper<User>()
+                .eq("user_name", applyForm.getUserName()));
+        applyForm.setUserNumber(user.getUserNumber());
+        applyForm.setApplyState(0);
+        Apply apply = new Apply();
+        try {
+            BeanUtils.copyProperties(apply, applyForm);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        boolean save = applyService.save(apply);
+        if (save) {
+            return CommonConst.APPLY_SUCCESS;
+        }
+        return CommonConst.APPLY_ERROR;
     }
 
     @PostMapping(value = "update", name = "申请编辑")
     public String update(ApplyForm applyForm) {
         User currentUserInfo = userService.getCurrentUserInfo();
         if (currentUserInfo.getRoleType().equals(applyForm.getApplyType())) {
-            return "conflict";
-        } else {
-            Apply apply = new Apply();
-            try {
-                BeanUtils.copyProperties(apply, applyForm);
-            } catch (IllegalAccessException | InvocationTargetException e) {
-                e.printStackTrace();
-            }
-            boolean update = applyService.update(apply, new UpdateWrapper<Apply>()
-                    .eq("id", applyForm.getId()));
-            return stringResult(update);
+            return CommonConst.CONFLICT;
         }
+        Apply apply = new Apply();
+        try {
+            BeanUtils.copyProperties(apply, applyForm);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        boolean update = applyService.update(apply, new UpdateWrapper<Apply>()
+                .eq("id", applyForm.getId()));
+        return stringResult(update);
     }
 
     @PostMapping(value = "/delete", name = "申请删除")

@@ -1,5 +1,6 @@
 package cn.xqplus.equipmentsys.controller;
 
+import cn.xqplus.equipmentsys.ext.CommonConst;
 import cn.xqplus.equipmentsys.ext.PageResult;
 import cn.xqplus.equipmentsys.form.UserForm;
 import cn.xqplus.equipmentsys.model.User;
@@ -27,12 +28,9 @@ public class UserController extends BaseController {
     @Autowired
     private IUserService userService;
 
-    @Autowired
-    private IPasswordVisibleService passwordVisibleService;
-
     @GetMapping(value = "/page", name = "用户信息page")
     public PageResult<UserForm> page(@RequestParam(defaultValue = "1") int page,
-                       @RequestParam(defaultValue = "10") int limit, UserForm wrapper){
+            @RequestParam(defaultValue = "10") int limit, UserForm wrapper){
         IPage<UserForm> iPage = userService.selectPage(new Page<>(page, limit), wrapper);
         return jr(iPage);
     }
@@ -70,10 +68,9 @@ public class UserController extends BaseController {
         List<User> userList = userService.list(new QueryWrapper<User>()
                 .eq("user_name", userName));
         if (CollectionUtils.isNotEmpty(userList)) {
-            return "exists";
-        } else {
-            return "noExists";
+            return CommonConst.EXISTS;
         }
+        return CommonConst.NO_EXISTS;
     }
 
     @GetMapping(value = "/getCurrentUserInfo", name = "当前登录用户信息")

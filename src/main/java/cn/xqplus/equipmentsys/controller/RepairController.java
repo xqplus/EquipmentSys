@@ -33,7 +33,7 @@ public class RepairController extends BaseController {
 
     @GetMapping(value = "/page", name = "维修信息page")
     public PageResult<RepairForm> page(@RequestParam(defaultValue = "1") int page,
-                           @RequestParam(defaultValue = "10") int limit, RepairForm wrapper){
+            @RequestParam(defaultValue = "10") int limit, RepairForm wrapper){
         IPage<RepairForm> iPage = repairService.selectPage(new Page<>(page, limit), wrapper);
         return jr(iPage);
     }
@@ -51,7 +51,7 @@ public class RepairController extends BaseController {
 
     @GetMapping(value = "/historyPage", name = "维修历史记录page")
     public PageResult<RepairForm> historyPage(@RequestParam(defaultValue = "1") int page,
-                              @RequestParam(defaultValue = "10") int limit, RepairForm wrapper) {
+            @RequestParam(defaultValue = "10") int limit, RepairForm wrapper) {
         IPage<RepairForm> iPage = repairService.selectHistoryPage(new Page<>(page, limit), wrapper);
         return jr(iPage);
     }

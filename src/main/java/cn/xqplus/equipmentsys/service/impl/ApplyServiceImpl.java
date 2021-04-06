@@ -86,9 +86,8 @@ public class ApplyServiceImpl extends ServiceImpl<IApplyMapper, Apply>
                 .orderByDesc("apply_number"));
         if (CollectionUtils.isNotEmpty(applyList)) {
             return String.valueOf(Integer.parseInt(applyList.get(0).getApplyNumber()) + 1);
-        } else {
-            return deptNumber + "0001";
         }
+        return deptNumber + "0001";
     }
 
     @Override

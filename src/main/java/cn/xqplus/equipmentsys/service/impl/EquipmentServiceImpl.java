@@ -1,5 +1,6 @@
 package cn.xqplus.equipmentsys.service.impl;
 
+import cn.xqplus.equipmentsys.ext.CommonConst;
 import cn.xqplus.equipmentsys.form.EquipmentForm;
 import cn.xqplus.equipmentsys.mapper.IEquipmentMapper;
 import cn.xqplus.equipmentsys.model.Equipment;
@@ -54,19 +55,7 @@ public class EquipmentServiceImpl extends ServiceImpl<IEquipmentMapper, Equipmen
         IPage<EquipmentForm> iPage = equipmentMapper.getList(page, wrapper);
         if (CollectionUtils.isNotEmpty(iPage.getRecords())) {
             for (EquipmentForm equipmentForm : iPage.getRecords()) {
-                // 时间转换
-                equipmentForm.setCreateDate(new SimpleDateFormat("yyyy-MM-dd").format(equipmentForm.getCreateTime()));
-                equipmentForm.setUpdateDate(new SimpleDateFormat("yyyy-MM-dd").format(equipmentForm.getUpdateTime()));
-                // 设备状态转换（String展示）
-                if (equipmentForm.getEquipState() == 0) {
-                    equipmentForm.setEquipStateName("使用中");
-                }
-                if (equipmentForm.getEquipState() == 1) {
-                    equipmentForm.setEquipStateName("维修中");
-                }
-                if (equipmentForm.getEquipState() == 2) {
-                    equipmentForm.setEquipStateName("已报废");
-                }
+                equipConvert(equipmentForm);
             }
         }
         page.setTotal(iPage.getRecords().size());
@@ -84,11 +73,10 @@ public class EquipmentServiceImpl extends ServiceImpl<IEquipmentMapper, Equipmen
             String[] zeros = {"", "000", "00", "0", ""};
             listByNumberDesc.get(0).setEquipNumber(zeros[next.length()] + next);
             return listByNumberDesc.get(0);
-        } else {
-            Equipment equipment = new Equipment();
-            equipment.setEquipNumber("0001");
-            return equipment;
         }
+        Equipment equipment = new Equipment();
+        equipment.setEquipNumber("0001");
+        return equipment;
     }
 
     @Override
@@ -98,7 +86,7 @@ public class EquipmentServiceImpl extends ServiceImpl<IEquipmentMapper, Equipmen
         // 只有使用中的设备才能报修
         if (equipment.getEquipState() != 0) {
             // 流程不正确 （使用中 -报修-> 维修中 -报废-> 已报废）
-            return "noProcess";
+            return CommonConst.NO_PROCESS;
         }
 
         // 改变设备状态
@@ -117,9 +105,9 @@ public class EquipmentServiceImpl extends ServiceImpl<IEquipmentMapper, Equipmen
         repair.setReporterNumber(currentUserInfo.getUserNumber());
         boolean save = repairService.save(repair);
         if ((id1 >= 1) && save) {
-            return "success";
+            return CommonConst.SUCCESS;
         }
-        return "error";
+        return CommonConst.ERROR;
     }
 
     @Override
@@ -130,20 +118,7 @@ public class EquipmentServiceImpl extends ServiceImpl<IEquipmentMapper, Equipmen
         List<EquipmentResp> exportList = new ArrayList<>();
 
         for (EquipmentForm ef : equipmentFormList) {
-            // 时间转换
-            ef.setCreateDate(new SimpleDateFormat("yyyy-MM-dd").format(ef.getCreateTime()));
-            ef.setUpdateDate(new SimpleDateFormat("yyyy-MM-dd").format(ef.getUpdateTime()));
-            // 设备状态转换
-            if (ef.getEquipState() == 0) {
-                ef.setEquipStateName("使用中");
-            }
-            if (ef.getEquipState() == 1) {
-                ef.setEquipStateName("维修中");
-            }
-            if (ef.getEquipState() == 2) {
-                ef.setEquipStateName("已报废");
-            }
-
+            equipConvert(ef);
             EquipmentResp equipmentResp = new EquipmentResp();
             try {
                 BeanUtils.copyProperties(equipmentResp, ef);
@@ -155,6 +130,26 @@ public class EquipmentServiceImpl extends ServiceImpl<IEquipmentMapper, Equipmen
         ExcelUtils.exportExcel(exportList, "设备管理系统设备信息", "设备信息",
                 EquipmentResp.class, "设备管理系统设备信息-" + new SimpleDateFormat("yyyy-MM-dd")
                         .format(new Date().getTime()), response);
+    }
+
+    /**
+     * 设备参数转换（时间、设备状态等）
+     * @param equipmentForm
+     */
+    private void equipConvert(EquipmentForm equipmentForm) {
+        // 时间转换
+        equipmentForm.setCreateDate(new SimpleDateFormat("yyyy-MM-dd").format(equipmentForm.getCreateTime()));
+        equipmentForm.setUpdateDate(new SimpleDateFormat("yyyy-MM-dd").format(equipmentForm.getUpdateTime()));
+        // 设备状态转换（String展示）
+        if (equipmentForm.getEquipState() == 0) {
+            equipmentForm.setEquipStateName("使用中");
+        }
+        if (equipmentForm.getEquipState() == 1) {
+            equipmentForm.setEquipStateName("维修中");
+        }
+        if (equipmentForm.getEquipState() == 2) {
+            equipmentForm.setEquipStateName("已报废");
+        }
     }
 
 }

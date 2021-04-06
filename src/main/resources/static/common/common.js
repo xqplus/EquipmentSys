@@ -545,7 +545,7 @@ function formDialog(title, content, userNameSelector, pwdId1, pwdId2, filter, sa
                             // 重载
                             tableReload(tableName, {});
                         }
-                        if (data === 'existed') {
+                        if (data === 'exists') {
                             layer.msg('您当前有申请进行中，不可继续申请', {icon: 5, time: 1500});
                         }
                         if (data === 'conflict') {
@@ -556,7 +556,7 @@ function formDialog(title, content, userNameSelector, pwdId1, pwdId2, filter, sa
                         }
                     },
                     error: function () {
-                        layer.msg("系统错误，请联系管理员", {icon: 2, time: 1500});
+                        layer.msg('系统错误，请联系管理员', {icon: 2, time: 1500});
                     }
                 });
             });

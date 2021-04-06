@@ -1,5 +1,6 @@
 package cn.xqplus.equipmentsys.service.impl;
 
+import cn.xqplus.equipmentsys.ext.CommonConst;
 import cn.xqplus.equipmentsys.form.RepairForm;
 import cn.xqplus.equipmentsys.mapper.IRepairMapper;
 import cn.xqplus.equipmentsys.model.Equipment;
@@ -104,12 +105,12 @@ public class RepairServiceImpl extends ServiceImpl<IRepairMapper, Repair>
         if (CollectionUtils.isNotEmpty(listByNumberDesc)) {
             String number = listByNumberDesc.get(0).getRepairNumber();
             String nextNumber = String.valueOf(Integer.parseInt(number) + 1);
-            // 这里的算法限定维修编号五位数 <100000
+            // 这里的做法限定维修编号五位数 <100000
             String[] zeros = {"", "0000", "000", "00", "0", ""};
             repair.setRepairNumber(zeros[nextNumber.length()] + nextNumber);
-        } else {
-            repair.setRepairNumber("00001");
+            return repair;
         }
+        repair.setRepairNumber("00001");
         return repair;
     }
 
@@ -152,14 +153,12 @@ public class RepairServiceImpl extends ServiceImpl<IRepairMapper, Repair>
             int repairUpdate = repairMapper.update(repair1, new UpdateWrapper<Repair>()
                     .eq("id", id));
             if (update && (repairUpdate >= 1)) {
-                return "success";
-            } else {
-                return "error";
+                return CommonConst.SUCCESS;
             }
-        } else {
-            // 流程不正确 （使用中 -报修-> 维修中 -报废-> 已报废）
-            return "noProcess";
+            return CommonConst.ERROR;
         }
+        // 流程不正确 （使用中 -报修-> 维修中 -报废-> 已报废）
+        return CommonConst.NO_PROCESS;
     }
 
     @Override
