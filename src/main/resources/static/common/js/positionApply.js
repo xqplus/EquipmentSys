@@ -11,11 +11,11 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
     // 表单search监听
     form.on('submit(search)', function (data) {
         // 时间转换 string -> long
-        timeConverter(data);
+        methods.timeConverter(data);
         delete data.field.createTime;
         delete data.field.approvalTime;
 
-        tableReload(tableName, data.field);
+        methods.tableReload(tableName, data.field);
     });
     // 日期选择组件渲染
     laydate.render({
@@ -33,11 +33,11 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
     tableRender();
     toolProcess();
     // 设置待处理事件 徽章
-    setBadge();
+    methods.setBadge();
     // 鼠标悬停显示用户详情
-    userInfoShow();
+    methods.userInfoShow();
     // 重置搜索框刷新数据表格
-    resetTableReload(function () {
+    methods.resetTableReload(function () {
         tableRender();
     });
 
@@ -52,14 +52,14 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
 
             switch(obj.event){
                 case 'apply':
-                    formDialog(
+                    methods.formDialog(
                         '新建职位申请'
                         , applyContent
                         , null
                         , null
                         , null
                         , 'applyType'
-                        , getUrl('/equipmentSys/apply/add')
+                        , methods.getUrl('/equipmentSys/apply/add')
                         , 'addApply'
                         , null
                         , tableName
@@ -84,14 +84,14 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
             let data = obj.data; // 操作行数据
 
             if (obj.event === 'edit') {
-                formDialog(
+                methods.formDialog(
                     '编辑职位申请'
                     , applyContent
                     , null
                     , null
                     , null
                     , 'applyType'
-                    , getUrl('/equipmentSys/apply/update')
+                    , methods.getUrl('/equipmentSys/apply/update')
                     , 'editApply'
                     , data
                     , tableName
@@ -100,9 +100,9 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
             } else if (obj.event === 'del') {
                 layer.confirm('当前申请编号：'+ data.applyNumber +'，申请人：'+ data.userName +'，申请职位：' + data.applyTypeName
                     +'，申请状态：'+ data.applyStateName +'，确认删除？', {icon: 3, title: '提示'}, function (index) {
-                    myAjax(
+                    methods.myAjax(
                         'POST'
-                        , getUrl('/equipmentSys/apply/delete')
+                        , methods.getUrl('/equipmentSys/apply/delete')
                         , {id: data.id}
                         , '删除成功'
                         , '删除失败，请重试或联系管理员'
@@ -125,11 +125,11 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                         area: ['500px', '300px'] //自定义文本域宽高
                     }, function(value, index1, elem){
                         data.approvalOpinion = value;
-                        data.approverName = getCurrentUserInfo().userName;
+                        data.approverName = methods.getCurrentUserInfo().userName;
 
-                        myAjax(
+                        methods.myAjax(
                             'GET'
-                            , getUrl('/equipmentSys/apply/pass')
+                            , methods.getUrl('/equipmentSys/apply/pass')
                             , data
                             , '审批通过成功'
                             , '审批失败，请重试或联系管理员'
@@ -154,11 +154,11 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                         area: ['500px', '300px'] //自定义文本域宽高
                     }, function(value, index1, elem){
                         data.approvalOpinion = value;
-                        data.approverName = getCurrentUserInfo().userName;
+                        data.approverName = methods.getCurrentUserInfo().userName;
 
-                        myAjax(
+                        methods.myAjax(
                             'GET'
-                            , getUrl('/equipmentSys/apply/reject')
+                            , methods.getUrl('/equipmentSys/apply/reject')
                             , data
                             , '审批驳回成功'
                             , '审批失败，请重试或联系管理员'
@@ -180,7 +180,7 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
         // 后端数据渲染
         table.render({
             elem: '#'+ tableName
-            ,url: getUrl('/equipmentSys/apply/page')
+            ,url: methods.getUrl('/equipmentSys/apply/page')
             ,method: 'GET'
             ,async: false
             ,height: 370

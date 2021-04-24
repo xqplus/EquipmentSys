@@ -11,10 +11,10 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
     // 表单search监听
     form.on('submit(search)', function (data) {
         // 时间转换 string -> long
-        timeConverter(data);
+        methods.timeConverter(data);
         delete data.field.createTime; // 传入后台可能出现类型不匹配问题，删除
         // search 后重载表格
-        tableReload(tableName, data.field);
+        methods.tableReload(tableName, data.field);
     });
     // 日期选择组件渲染
     laydate.render({
@@ -26,11 +26,11 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
     tableRender();
     toolProcess();
     // 设置待处理事件 徽章
-    setBadge();
+    methods.setBadge();
     // 鼠标悬停显示用户详情
-    userInfoShow();
+    methods.userInfoShow();
     // 重置搜索框刷新数据表格
-    resetTableReload(function () {
+    methods.resetTableReload(function () {
         tableRender();
     });
 
@@ -46,14 +46,14 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
 
             switch(obj.event){
                 case 'add': // 新增
-                    formDialog(
+                    methods.formDialog(
                         '新增设备信息'
                         , equipContent
                         , null
                         , null
                         , null
                         , null
-                        , getUrl('/equipmentSys/equipment/add')
+                        , methods.getUrl('/equipmentSys/equipment/add')
                         , 'addEquip'
                         , null
                         , tableName
@@ -69,9 +69,9 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                         return;
                     }
                     layer.confirm('确定删除选中的设备信息？', {icon: 3, title: '提示'}, function (index) {
-                        myAjax(
+                        methods.myAjax(
                             'POST'
-                            , getUrl('/equipmentSys/equipment/deleteBatch')
+                            , methods.getUrl('/equipmentSys/equipment/deleteBatch')
                             , {ids: ids}
                             , '批量删除成功'
                             , '只能删除报废的设备，请重试'
@@ -89,13 +89,13 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                     });
                     if (ids.length === 0) {
                         // 在没有选定数据行的时候导出全部数据
-                        exportExcel("是否导出全部设备信息？",
-                            getUrl("/equipmentSys/equipment/exportExcel"), ids);
+                        methods.exportExcel("是否导出全部设备信息？",
+                            methods.getUrl("/equipmentSys/equipment/exportExcel"), ids);
                         return;
                     }
                     // 选定行时导出选中的数据
-                    exportExcel("是否导出选中设备信息？",
-                        getUrl("/equipmentSys/equipment/exportExcel"), ids);
+                    methods.exportExcel("是否导出选中设备信息？",
+                        methods.getUrl("/equipmentSys/equipment/exportExcel"), ids);
                     break;
 
                 case 'importBatch': // 批量导入
@@ -112,14 +112,14 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
             let data = obj.data; // 操作行数据
 
             if (obj.event === 'edit') {
-                formDialog(
+                methods.formDialog(
                     '编辑设备信息'
                     , equipContent
                     , null
                     , null
                     , null
                     , null
-                    , getUrl('/equipmentSys/equipment/update')
+                    , methods.getUrl('/equipmentSys/equipment/update')
                     , 'editEquip'
                     , data
                     , tableName
@@ -127,9 +127,9 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
 
             } else if (obj.event === 'del') {
                 layer.confirm('确定删除设备 '+ data.equipName + ' ？', {icon: 3, title: '提示'}, function (index) {
-                    myAjax(
+                    methods.myAjax(
                         'POST'
-                        , getUrl('/equipmentSys/equipment/delete')
+                        , methods.getUrl('/equipmentSys/equipment/delete')
                         , {id: data.id}
                         , '删除成功'
                         , '删除失败，请重试或联系管理员'
@@ -155,13 +155,13 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                         $.ajax({
                             async: false,
                             type: 'GET',
-                            url: getUrl('/equipmentSys/equipment/reportRepair'), // 报修接口
+                            url: methods.getUrl('/equipmentSys/equipment/reportRepair'), // 报修接口
                             data: {id: data.id, faultRemark: data.faultRemark},
                             success: function (data) {
                                 layer.close(index);
                                 if (data === 'success') {
                                     layer.msg('报修成功', {icon: 1, time: 1000});
-                                    tableReload(tableName, {});
+                                    methods.tableReload(tableName, {});
                                 }
                                 if (data === 'noProcess') {
                                     layer.msg('抱歉，当前设备状态不能报修', {icon: 5, time: 1500});
@@ -188,7 +188,7 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
         // 后端数据渲染
         table.render({
             elem: '#'+ tableName
-            ,url: getUrl('/equipmentSys/equipment/page')
+            ,url: methods.getUrl('/equipmentSys/equipment/page')
             ,method: 'GET'
             ,async: false
             ,height: 370

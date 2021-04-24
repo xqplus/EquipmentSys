@@ -12,9 +12,9 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
 
     // 表单search监听
     form.on('submit(search)', function (data) {
-        timeConverter(data);
+        methods.timeConverter(data);
         delete data.field.createTime; // 传入后台可能出现类型不匹配问题，删除
-        tableReload(tableName, data.field);
+        methods.tableReload(tableName, data.field);
     });
     // 日期选择组件渲染
     laydate.render({
@@ -26,11 +26,11 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
     tableRender();
     toolProcess();
     // 设置待处理事件 徽章
-    setBadge();
+    methods.setBadge();
     // 鼠标悬停显示用户详情
-    userInfoShow();
+    methods.userInfoShow();
     // 重置搜索框刷新数据表格
-    resetTableReload(function () {
+    methods.resetTableReload(function () {
         tableRender();
     });
 
@@ -41,7 +41,7 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
         // 后端数据渲染
         table.render({
             elem: '#'+ tableName
-            ,url: getUrl('/equipmentSys/equipmentType/page')
+            ,url: methods.getUrl('/equipmentSys/equipmentType/page')
             ,method: 'GET'
             ,async: false
             ,height: 370
@@ -94,14 +94,14 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
 
             switch(obj.event){
                 case 'add':
-                    formDialog(
+                    methods.formDialog(
                         '新增设备类型信息'
                         , equipTypeContent
                         , null
                         , null
                         , null
                         , null
-                        , getUrl('/equipmentSys/equipmentType/add')
+                        , methods.getUrl('/equipmentSys/equipmentType/add')
                         , 'addEquipType'
                         , null
                         , tableName
@@ -125,14 +125,14 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
         table.on('tool('+ tableName +')', function(obj){
             let data = obj.data; // 操作行数据
             if (obj.event === 'edit') {
-                formDialog(
+                methods.formDialog(
                     '编辑设备类型信息'
                     , equipTypeContent
                     , null
                     , null
                     , null
                     , null
-                    , getUrl('/equipmentSys/equipmentType/update')
+                    , methods.getUrl('/equipmentSys/equipmentType/update')
                     , 'editEquipType'
                     , data
                     , tableName
@@ -143,7 +143,7 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                     $.ajax({
                         async: false,
                         type: 'POST',
-                        url: getUrl('/equipmentSys/equipmentType/delete'),
+                        url: methods.getUrl('/equipmentSys/equipmentType/delete'),
                         data: {id: data.id},
                         success: function (data) {
                             layer.close(index);
@@ -152,7 +152,7 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                             }
                             if (data === 'success') {
                                 layer.msg('删除成功', {icon: 1, time: 1000});
-                                tableReload(tableName, {});
+                                methods.tableReload(tableName, {});
                             }
                             if (data === 'error') {
                                 layer.msg('删除失败，请重试或联系管理员', {icon: 5, time: 1500});

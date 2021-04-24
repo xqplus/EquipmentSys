@@ -7,14 +7,14 @@ layui.use(['layer', 'form', 'jquery'], function (){
         form = layui.form,
         $ = layui.jquery;
     // 监听用户输入，密码找回boolean参数为false
-    userExistsCheck('#userName', false);
+    methods.userExistsCheck('#userName', false);
     // 监听提交按钮，密码找回回调boolean参数为false
-    formSubmitEvent(
+    methods.formSubmitEvent(
         'resetPassword',
         '/equipmentSys/registry/resetPasswordCheck',
         false);
     // 角色部门级联
-    roleDeptCascade('roleType');
+    methods.roleDeptCascade('roleType');
     // 两次密码输入校验
-    passwordsInputCheck('#pwd', '#pwd2');
+    methods.passwordsInputCheck('#pwd', '#pwd2');
 });

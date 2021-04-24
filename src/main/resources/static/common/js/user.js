@@ -11,10 +11,10 @@ layui.use(['element', 'table', 'laydate', 'form', 'jquery'], function(){
         ,tableName = 'userData';
     // 表单search监听
     form.on('submit(search)', function (data) {
-        timeConverter(data);
+        methods.timeConverter(data);
         delete data.field.createTime; // 传入后台可能出现类型不匹配问题，删除
         // 表格数据重载
-        tableReload(tableName, data.field);
+        methods.tableReload(tableName, data.field);
     });
     // 日期选择组件渲染
     laydate.render({
@@ -27,13 +27,14 @@ layui.use(['element', 'table', 'laydate', 'form', 'jquery'], function(){
     tableRender();
     toolProcess();
     // 设置待处理事件 徽章
-    setBadge();
+    methods.setBadge();
     // 鼠标悬停显示用户详情
-    userInfoShow();
+    methods.userInfoShow();
     // 重置搜索框刷新数据表格
-    resetTableReload(function () {
+    methods.resetTableReload(function () {
        tableRender();
     });
+
     /**
      * 数据表格渲染
      */
@@ -41,7 +42,7 @@ layui.use(['element', 'table', 'laydate', 'form', 'jquery'], function(){
         // 后端数据渲染
         table.render({
             elem: '#'+ tableName
-            ,url: getUrl('/equipmentSys/user/page')
+            ,url: methods.getUrl('/equipmentSys/user/page')
             ,method: 'GET'
             ,async: false
             ,height: 370
@@ -98,14 +99,14 @@ layui.use(['element', 'table', 'laydate', 'form', 'jquery'], function(){
 
             switch(obj.event){
                 case 'add': // 用户新增
-                    formDialog(
+                    methods.formDialog(
                         '新增用户信息'
                         , addUserContent
                         , '#userName'
                         , '#pwd'
                         , '#pwd2'
                         , 'roleType'
-                        , getUrl('/equipmentSys/user/add')
+                        , methods.getUrl('/equipmentSys/user/add')
                         , 'addUser'
                         , null
                         , tableName
@@ -121,8 +122,8 @@ layui.use(['element', 'table', 'laydate', 'form', 'jquery'], function(){
                         return;
                     }
                     layer.confirm('确定删除选中的用户信息？', {icon: 3, title: '提示'}, function (index) {
-                        myAjax('POST'
-                            , getUrl('/equipmentSys/user/deleteBatch')
+                        methods.myAjax('POST'
+                            , methods.getUrl('/equipmentSys/user/deleteBatch')
                             , {ids: ids}
                             , '批量删除成功'
                             , '批量删除失败，请重试或联系管理员'
@@ -140,13 +141,13 @@ layui.use(['element', 'table', 'laydate', 'form', 'jquery'], function(){
                     });
                     if (ids.length === 0) {
                         // 在没有选定数据行的时候导出全部数据
-                        exportExcel("是否导出全部用户信息？",
-                            getUrl("/equipmentSys/user/exportExcel"), ids);
+                        methods.exportExcel("是否导出全部用户信息？",
+                            methods.getUrl("/equipmentSys/user/exportExcel"), ids);
                         return;
                     }
                     // 选定行时导出选中的数据
-                    exportExcel("是否导出选中用户信息？",
-                        getUrl("/equipmentSys/user/exportExcel"), ids);
+                    methods.exportExcel("是否导出选中用户信息？",
+                        methods.getUrl("/equipmentSys/user/exportExcel"), ids);
                     break;
 
                 case 'importBatch': // 批量导入
@@ -157,22 +158,22 @@ layui.use(['element', 'table', 'laydate', 'form', 'jquery'], function(){
         table.on('tool('+ tableName +')', function(obj){
             let data = obj.data; // 操作行数据
             if (obj.event === 'edit') {
-                formDialog(
+                methods.formDialog(
                     '编辑用户信息'
                     , editUserContent
                     , '#userName'
                     , '#pwd'
                     , '#pwd2'
                     , 'roleType'
-                    , getUrl('/equipmentSys/user/update')
+                    , methods.getUrl('/equipmentSys/user/update')
                     , 'editUser'
                     , data
                     , tableName
                 );
             } else if (obj.event === 'del') {
                 layer.confirm('确定删除用户 '+data.userName+' ？', {icon: 3, title: '提示'}, function (index) {
-                    myAjax('POST'
-                        , getUrl('/equipmentSys/user/delete')
+                    methods.myAjax('POST'
+                        , methods.getUrl('/equipmentSys/user/delete')
                         , {id: data.id}
                         , "删除成功"
                         , "删除失败，请重试或联系管理员"

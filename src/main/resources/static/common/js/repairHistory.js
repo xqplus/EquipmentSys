@@ -11,11 +11,11 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
     // 表单search监听
     form.on('submit(search)', function (data) {
         // 时间转换 string -> long
-        timeConverter(data);
+        methods.timeConverter(data);
         delete data.field.createTime; // 传入后台可能出现类型不匹配问题，删除
         delete data.field.repairTime;
 
-        tableReload(tableName, data.field);
+        methods.tableReload(tableName, data.field);
     });
     // 日期选择组件渲染
     laydate.render({
@@ -33,11 +33,11 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
     tableRender();
     toolProcess();
     // 设置待处理事件 徽章
-    setBadge();
+    methods.setBadge();
     // 鼠标悬停显示用户详情
-    userInfoShow();
+    methods.userInfoShow();
     // 重置搜索框刷新数据表格
-    resetTableReload(function () {
+    methods.resetTableReload(function () {
         tableRender();
     });
 
@@ -48,7 +48,7 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
         // 后端数据渲染
         table.render({
             elem: '#'+ tableName
-            ,url: getUrl('/equipmentSys/repair/historyPage')
+            ,url: methods.getUrl('/equipmentSys/repair/historyPage')
             ,method: 'GET'
             ,async: false
             ,height: 370
@@ -122,13 +122,13 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                     });
                     if (ids.length === 0) {
                         // 在没有选定数据行的时候导出全部数据
-                        exportExcel("是否导出全部维修历史信息？",
-                            getUrl("/equipmentSys/repair/exportHistoryExcel"), ids);
+                        methods.exportExcel("是否导出全部维修历史信息？",
+                            methods.getUrl("/equipmentSys/repair/exportHistoryExcel"), ids);
                         return;
                     }
                     // 选定行时导出选中的数据
-                    exportExcel("是否导出选中维修历史信息？",
-                        getUrl("/equipmentSys/repair/exportHistoryExcel"), ids);
+                    methods.exportExcel("是否导出选中维修历史信息？",
+                        methods.getUrl("/equipmentSys/repair/exportHistoryExcel"), ids);
                     break;
             }
         });
@@ -140,9 +140,9 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                 layer.confirm('当前维修编号：'+data.repairNumber+'，设备名称：'+data.equipName+'，维修情况：'
                     +data.repairStateName+'，确认删除此条记录？', {icon: 3, title: '提示'}, function (index) {
 
-                    myAjax(
+                    methods.myAjax(
                         'POST'
-                        , getUrl('/equipmentSys/repair/historyDel')
+                        , methods.getUrl('/equipmentSys/repair/historyDel')
                         , {id: data.id}
                         , '删除成功'
                         , '删除失败，请重试或联系管理员'

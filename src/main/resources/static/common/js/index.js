@@ -19,5 +19,5 @@ layui.use(['element', 'carousel', 'jquery'], function(){
         $('#myNoticeDot').removeClass("layui-badge-dot");
     });
     // 鼠标悬停显示用户详情
-    userInfoShow();
+    methods.userInfoShow();
 });

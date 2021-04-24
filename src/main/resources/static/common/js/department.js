@@ -10,10 +10,10 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
         tableName = 'deptData';
     // 表单search监听
     form.on('submit(search)', function (data) {
-        timeConverter(data);
+        methods.timeConverter(data);
         delete data.field.createTime; // 传入后台可能出现类型不匹配问题，删除
         // search 后表格数据重载
-        tableReload(tableName, data.field);
+        methods.tableReload(tableName, data.field);
     });
     // 日期选择组件渲染
     laydate.render({
@@ -25,11 +25,11 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
     tableRender();
     toolProcess();
     // 设置待处理事件 徽章
-    setBadge();
+    methods.setBadge();
     // 鼠标悬停显示用户详情
-    userInfoShow();
+    methods.userInfoShow();
     // 重置搜索框刷新数据表格
-    resetTableReload(function () {
+    methods.resetTableReload(function () {
         tableRender();
     });
 
@@ -40,7 +40,7 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
         // 后端数据渲染
         table.render({
             elem: '#'+ tableName
-            ,url: getUrl('/equipmentSys/department/page')
+            ,url: methods.getUrl('/equipmentSys/department/page')
             ,method: 'GET'
             ,async: false
             ,height: 370
@@ -93,14 +93,14 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                 ,ids = [];
             switch(obj.event){
                 case 'add':
-                    formDialog(
+                    methods.formDialog(
                         '新增部门信息'
                         , deptContent
                         , null
                         , null
                         , null
                         , 'roleType'
-                        , getUrl('/equipmentSys/department/add')
+                        , methods.getUrl('/equipmentSys/department/add')
                         , 'addDept'
                         , null
                         , tableName
@@ -117,13 +117,13 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                     });
                     if (ids.length === 0) {
                         // 在没有选定数据行的时候导出全部数据
-                        exportExcel("是否导出全部部门信息？",
-                            getUrl("/equipmentSys/department/exportExcel"), ids);
+                        methods.exportExcel("是否导出全部部门信息？",
+                            methods.getUrl("/equipmentSys/department/exportExcel"), ids);
                         return;
                     }
                     // 选定行时导出选中的数据
-                    exportExcel("是否导出选中部门信息？",
-                        getUrl("/equipmentSys/department/exportExcel"), ids);
+                    methods.exportExcel("是否导出选中部门信息？",
+                        methods.getUrl("/equipmentSys/department/exportExcel"), ids);
                     break;
 
                 case 'importBatch': // 批量导入
@@ -134,24 +134,24 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
         table.on('tool('+ tableName +')', function(obj){
             let data = obj.data; // 操作行数据
             if (obj.event === 'edit') {
-                formDialog(
+                methods.formDialog(
                     '编辑部门信息'
                     , deptContent
                     , null
                     , null
                     , null
                     , 'roleType'
-                    , getUrl('/equipmentSys/department/update')
+                    , methods.getUrl('/equipmentSys/department/update')
                     , 'editDept'
                     , data
                     , tableName
                 );
             } else if (obj.event === 'del') {
-                layer.confirm('确定删除部门 '+ data.deptName +' ？', function (index) {
+                layer.confirm('确定删除部门 '+ data.deptName +' ？', {icon: 3, title: '提示'}, function (index) {
                     $.ajax({
                         async: false,
                         type: 'POST',
-                        url: getUrl('/equipmentSys/department/delete'),
+                        url: methods.getUrl('/equipmentSys/department/delete'),
                         data: {id: data.id},
                         success: function (data) {
                             layer.close(index);
@@ -160,7 +160,7 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                             }
                             if (data === 'success') {
                                 layer.msg('删除成功', {icon: 1, time: 1000});
-                                tableReload(tableName, {});
+                                methods.tableReload(tableName, {});
                             }
                             if (data === 'error') {
                                 layer.msg('删除失败，请重试或联系管理员', {icon: 5, time: 1500});

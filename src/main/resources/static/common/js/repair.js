@@ -12,10 +12,10 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
     // 表单search监听
     form.on('submit(search)', function (data) {
         // 时间转换 string -> long
-        timeConverter(data);
+        methods.timeConverter(data);
         delete data.field.createTime; // 传入后台可能出现类型不匹配问题，删除
 
-        tableReload(tableName, data.field);
+        methods.tableReload(tableName, data.field);
     });
     // 日期选择组件渲染
     laydate.render({
@@ -27,11 +27,11 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
     tableRender();
     toolProcess();
     // 设置待处理事件 徽章
-    setBadge();
+    methods.setBadge();
     // 鼠标悬停显示用户详情
-    userInfoShow();
+    methods.userInfoShow();
     // 重置搜索框刷新数据表格
-    resetTableReload(function () {
+    methods.resetTableReload(function () {
         tableRender();
     });
 
@@ -42,7 +42,7 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
         // 后端数据渲染
         table.render({
             elem: '#'+ tableName
-            ,url: getUrl('/equipmentSys/repair/page')
+            ,url: methods.getUrl('/equipmentSys/repair/page')
             ,method: 'GET'
             ,async: false
             ,height: 370
@@ -128,9 +128,9 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                     }, function(value, index1, elem){
                         data.repairLog = value;
 
-                        myAjax(
+                        methods.myAjax(
                             'GET'
-                            , getUrl('/equipmentSys/repair/repair')
+                            , methods.getUrl('/equipmentSys/repair/repair')
                             , {id: data.id, repairLog: data.repairLog}
                             , '维修成功'
                             , '维修失败，请重试或联系管理员'
@@ -149,13 +149,13 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                     $.ajax({
                         async: false,
                         type: 'GET',
-                        url: getUrl('/equipmentSys/repair/scrap'), // 报废接口
+                        url: methods.getUrl('/equipmentSys/repair/scrap'), // 报废接口
                         data: {id: data.id},
                         success: function (data) {
                             layer.close(index);
                             if (data === 'success') {
                                 layer.msg('报废成功', {icon: 1, time: 1000});
-                                tableReload(tableName, {});
+                                methods.tableReload(tableName, {});
                             }
                             if (data === 'noProcess') {
                                 layer.msg('抱歉，当前设备状态不能报废', {icon: 5, time: 1500});
