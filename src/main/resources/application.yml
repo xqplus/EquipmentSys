@@ -1,8 +1,8 @@
 # 端口号
 server:
   port: 8090
-#  servlet:
-#    context-path: /equipmentSys
+  servlet:
+    context-path: /jweb
 # hikari 连接池
 spring:
   datasource:
