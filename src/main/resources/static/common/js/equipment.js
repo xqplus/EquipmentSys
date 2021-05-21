@@ -58,6 +58,7 @@ layui.use(['element', 'form', 'table', 'laydate', 'jquery'], function () {
                         , null
                         , tableName
                     );
+                    methods.setEquipType();
                     break;
 
                 case 'deleteBatch': // 批量删除

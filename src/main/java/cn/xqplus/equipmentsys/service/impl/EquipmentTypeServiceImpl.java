@@ -109,4 +109,10 @@ public class EquipmentTypeServiceImpl extends ServiceImpl<IEquipmentTypeMapper, 
         return CommonConst.EXISTS_EQUIP;
     }
 
+    @Override
+    public List<EquipmentType> getEquipType() {
+        return equipmentTypeMapper.selectList(new QueryWrapper<EquipmentType>()
+                .orderByAsc("equip_type_number"));
+    }
+
 }

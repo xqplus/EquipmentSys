@@ -175,10 +175,10 @@ let equipContent = '<form class="layui-col-md11 layui-form" id="dialogAddForm">\
     '        <div class="layui-input-block">\n' +
     '            <select name="equipTypeNumber" id="equipTypeNumber" lay-verify="required" lay-filter="equipTypeNumber">\n' +
     '                <option value=""></option>\n' +
-    '                <option value="001">康明斯系列</option>\n' +
-    '                <option value="002">HPT系列</option>\n' +
-    '                <option value="003">VSI6X系列</option>\n' +
-    '                <option value="004">LUM立式</option>\n' +
+    // '                <option value="001">康明斯系列</option>\n' +
+    // '                <option value="002">HPT系列</option>\n' +
+    // '                <option value="003">VSI6X系列</option>\n' +
+    // '                <option value="004">LUM立式</option>\n' +
     '            </select>\n' +
     '        </div>\n' +
     '    </div>\n' +
@@ -426,6 +426,32 @@ let methods = {
                         layer.msg('系统错误，请联系管理员', {icon: 2, time: 1500});
                     }
                 });
+            }
+        });
+    },
+
+    /**
+     * 获取设备类型并渲染
+     */
+    setEquipType: function () {
+        $('#equipTypeNumber').html("<option value=\"\"></option>");
+        $.ajax({
+            async: false, // 异步提交
+            type: 'GET',
+            url: methods.getUrl('/equipmentSys/equipmentType/getEquipType'),
+            data: {
+
+            },
+            // dataType: 'json',
+            success: function (data) {
+                // 动态追加option和动态参数
+                $.each(data, function (index, item) {
+                    $("#equipTypeNumber").append(new Option(item.equipTypeName, item.equipTypeNumber));// 下拉菜单里添加元素
+                });
+                layui.form.render("select"); // layui select渲染
+            },
+            error: function () {
+                layer.msg('系统错误，请联系管理员', {icon: 2, time: 1500});
             }
         });
     },

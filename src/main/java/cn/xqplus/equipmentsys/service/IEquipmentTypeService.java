@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * 设备类型信息 服务层
  */
@@ -38,4 +40,10 @@ public interface IEquipmentTypeService extends IService<EquipmentType> {
      * @return String
      */
     String deleteEquipTypeById(int id);
+
+    /**
+     * 设备类型列表（排序）
+     * @return List<EquipmentType>
+     */
+    List<EquipmentType> getEquipType();
 }

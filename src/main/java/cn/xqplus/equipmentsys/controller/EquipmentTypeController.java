@@ -55,4 +55,10 @@ public class EquipmentTypeController extends BaseController {
     public String delete(@NotNull int id) {
         return equipmentTypeService.deleteEquipTypeById(id);
     }
+
+    @GetMapping(value = "/getEquipType", name = "设备类型编号")
+    public Object getEquipType() {
+        return equipmentTypeService.getEquipType();
+    }
+
 }
